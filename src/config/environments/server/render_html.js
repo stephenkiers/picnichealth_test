@@ -11,7 +11,7 @@ export default () => {
 <html>
   <head>
     <title>
-        Granify Test
+        React Starting Point Test
     </title>
     <!--
         I am skipping favicons and metadata, because this isn't a real site
