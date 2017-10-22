@@ -1,35 +1,35 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import RecordContainer from "../show/ThingContainer";
+import ThingContainer from "../show/ThingContainer";
 
-
-class Records extends Component {
+class Things extends Component {
 
     render() {
+        const {thing_ids} = this.props;
         return (
             <div className="index-of-records">
-                {
-                    this.props.records
-                        .sortBy(record => record.get('created_at'))
-                        .reverse()
-                        .map(record => {
-                            return (
-                                <RecordContainer
-                                    key={record.get('id')}
-                                    record={record}
-                                />
-                            )
-                        }).toJS()
-                }
+                {thing_ids
+                    /*
+                    .sortBy(record => record.get('created_at'))
+                    .reverse()
+                    */
+                    .map(thing_id => {
+                        return (
+                            <ThingContainer
+                                key={thing_id}
+                                thing_id={thing_id}
+                            />
+                        )
+                    }).toJS()}
             </div>
         )
     }
 }
-Records.defaultProps = {
+Things.defaultProps = {
 };
-Records.propTypes = {
-    records: ImmutablePropTypes.set.isRequired,
+Things.propTypes = {
+    thing_ids: ImmutablePropTypes.set.isRequired,
 }
 
-export default Records
+export default Things

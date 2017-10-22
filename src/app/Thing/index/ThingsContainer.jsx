@@ -1,42 +1,28 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import Records from "./Things";
-import {getRecords} from "../../reducers";
-import {apiRecordGetLatest} from "../actions";
+import Things from "./Things";
+import {getArrayOfThingIds} from "../../reducers";
 
-
-class RecordsContainer extends Component {
-    constructor(props) {
-        super(props);
-        if (props.things.size === 0) {
-            props.apiRecordGetLatest()
-        }
-    }
-
+class ThingsContainer extends Component {
     render() {
         return (
-            <Records
-                records={this.props.things}
+            <Things
+                thing_ids={this.props.thing_ids}
             />
         )
     }
 }
-RecordsContainer.defaultProps = {
+ThingsContainer.defaultProps = {
 };
-RecordsContainer.propTypes = {
-}
+ThingsContainer.propTypes = {
+};
 
 
 const mapStateToProps = (state, ownProps) => ({
-    records: getRecords(state),
-})
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    apiRecordGetLatest() {
-        dispatch(apiRecordGetLatest())
-    }
+    thing_ids: getArrayOfThingIds(state),
 });
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+});
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(RecordsContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(ThingsContainer)
