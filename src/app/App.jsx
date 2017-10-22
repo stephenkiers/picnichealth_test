@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import RecordsContainer from "./Record/index/RecordsContainer";
+import RecordsContainer from "./Thing/index/ThingsContainer";
 import NewRecordButtonContainer from "./components/NewRecordButton/NewRecordButtonContainer";
-import UpdateRecordModalContainer from "./Record/update_modal/UpdateRecordModalContainer";
+import UpdateRecordModalContainer from "./Thing/update_modal/UpdateRecordModalContainer";
 import StatsContainer from "./AppState/Stats/StatsContainer";
 import ApplicationLayout from "./layouts/ApplicationLayout";
 

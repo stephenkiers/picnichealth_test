@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import Record from "./Record";
+import Record from "./Thing";
 import {reduxAppStateSetModalId} from "../../AppState/actions";
 import {apiRecordDelete} from "../actions";
 
@@ -11,7 +11,7 @@ class RecordContainer extends Component {
     constructor(props) {
         super(props);
         this.onDelete = () => {
-            if (confirm("Are you sure you want to delete this record?")) {
+            if (confirm("Are you sure you want to delete this thing?")) {
                 this.props.deleteRecord(this.props.record.get('id'));
             }
         }

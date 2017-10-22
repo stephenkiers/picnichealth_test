@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import RecordContainer from "../show/RecordContainer";
+import RecordContainer from "../show/ThingContainer";
 
 
 class Records extends Component {
