@@ -4,11 +4,15 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import Thing from "./Thing";
 import {getThing} from "../../reducers";
+import {thingDelete} from "../actions";
 
 
 class ThingContainer extends Component {
     constructor(props) {
         super(props);
+        this.handleDelete = () => {
+            this.props.handleDelete();
+        }
     }
     render() {
         const {thing} = this.props;
@@ -16,6 +20,7 @@ class ThingContainer extends Component {
             <Thing
                 id={thing.get('id')}
                 thing={thing}
+                handleDelete={this.handleDelete}
             />
         )
     }
@@ -31,6 +36,9 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+    handleDelete() {
+        dispatch(thingDelete(ownProps.thing_id));
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ThingContainer)

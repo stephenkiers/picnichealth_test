@@ -23,24 +23,26 @@ class ThingNew extends PureComponent {
             <form
                 onSubmit={this.onSubmit}
             >
-                <div className="row">
-                    <div className="form-group col-8">
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="AddName"
-                            placeholder="Add Name"
-                            onChange={this.onChange}
-                            value={this.state.name}
-                        />
-                    </div>
-                    <div className="col-4">
-                        <button
-                            type="submit"
-                            className="btn btn-primary btn-block"
-                        >
-                            Add
-                        </button>
+                <div className="thing-new">
+                    <div className="row">
+                        <div className="form-group col-8">
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="AddName"
+                                placeholder="Add Name"
+                                onChange={this.onChange}
+                                value={this.state.name}
+                            />
+                        </div>
+                        <div className="col-4">
+                            <button
+                                type="submit"
+                                className="btn btn-primary btn-block"
+                            >
+                                Add
+                            </button>
+                        </div>
                     </div>
                 </div>
             </form>

@@ -10,7 +10,9 @@ class ThingNewContainer extends Component {
         super(props, context);
         this.state = {};
         this.onSubmit = new_name => {
-            this.props.thingUpsert(new_name);
+            if (new_name.trim().length > 0) {
+                this.props.thingUpsert(new_name);
+            }
         };
     }
     render () {
