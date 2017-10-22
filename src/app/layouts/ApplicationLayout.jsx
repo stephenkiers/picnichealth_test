@@ -7,11 +7,18 @@ class ApplicationLayout extends PureComponent {
         return (
             <div>
                 <header>
-                    <div className="d-flex align-items-center">
-                        <img src="https://placehold.it/25x25" />
-                        <h1>
-                            React Test Application
-                        </h1>
+                    <div className="container">
+                        <div className="d-flex align-items-center">
+                            <div>
+                                <img
+                                    src="https://placehold.it/25x25"
+                                    className="header-logo mr-3"
+                                />
+                            </div>
+                            <h1 className="header-h1">
+                                React Test Application
+                            </h1>
+                        </div>
                     </div>
                 </header>
                 <div className="container">
