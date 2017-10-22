@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Stats displays correct 1`] = `
+<div>
+  <div
+    className="pill"
+    title="Total"
+  >
+    <strong>
+      Total
+    </strong>
+    <span>
+      1
+    </span>
+  </div>
+  <div
+    className="pill"
+    title="Avg /hour"
+  >
+    <strong>
+      Avg /hour
+    </strong>
+    <span>
+      2
+    </span>
+  </div>
+  <div
+    className="pill positive"
+    title="Last hour"
+  >
+    <strong>
+      Last hour
+    </strong>
+    <span>
+      +3
+    </span>
+  </div>
+</div>
+`;

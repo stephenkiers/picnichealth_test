@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App displays correct 1`] = `
+<div>
+  <header>
+    <h1>
+      <img
+        src="https://www.granify.com/hs-fs/hub/315877/file-2096520345-png/images/granify-logo-white-1.png?t=1499980498886"
+      />
+      <span>
+        Javascript Test Application
+      </span>
+    </h1>
+  </header>
+  <div
+    className="container"
+  >
+    <div
+      className="universal-actions clearfix"
+    >
+      <div
+        className="pull-right"
+      >
+        <Connect(StatsContainer) />
+      </div>
+      <div
+        className="pull-left"
+      >
+        <Connect(NewRecordButtonContainer) />
+      </div>
+    </div>
+    <Connect(RecordsContainer) />
+  </div>
+  <Connect(UpdateRecordModalContainer) />
+</div>
+`;

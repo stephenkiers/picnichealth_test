@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Records displays correct 1`] = `
+<div
+  className="index-of-records"
+>
+  <Connect(RecordContainer)
+    record={
+      Immutable.Map {
+        id: "c3d4",
+        first_name: "FirstName2",
+        last_name: "LastName2",
+        phone_number: "6666666666",
+        created_at: 654321,
+        state: "idle",
+      }
+    }
+  />
+  <Connect(RecordContainer)
+    record={
+      Immutable.Map {
+        id: "a1b2",
+        first_name: "FirstName",
+        last_name: "LastName",
+        phone_number: "55555555555",
+        created_at: 123456,
+        state: "idle",
+      }
+    }
+  />
+</div>
+`;

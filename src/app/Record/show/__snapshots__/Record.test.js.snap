@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Record displays correct 1`] = `
+<div
+  className="record clearfix"
+>
+  <div
+    className="pull-left"
+  >
+    <strong
+      className="last-name"
+    >
+      LastName
+      ,
+       
+    </strong>
+    <span
+      className="first-name"
+    >
+      FirstName
+    </span>
+    <a
+      className="phone-number"
+      href="tel:5555555555"
+    >
+      555-555-5555
+    </a>
+  </div>
+  <div
+    className="pull-right"
+  >
+    <a
+      className="btn"
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      Update
+    </a>
+    <a
+      className="btn btn-danger"
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      Delete
+    </a>
+  </div>
+</div>
+`;
