@@ -23,7 +23,14 @@ const default_things = {
 const byId = function(state = Map(default_things), action) {
     switch (action.type) {
         case thing_constants.THING_UPSERT:
-            return state.update(action.id, r => thing(r, action));
+            const upsert_id = action.id || (new Date).getTime();
+            return state.update(
+                upsert_id.toString(),
+                r => thing(r, {
+                    ...action,
+                    id: upsert_id.toString(),
+                })
+            );
         case thing_constants.THING_DELETE:
             return state.delete(action.id);
         default:
