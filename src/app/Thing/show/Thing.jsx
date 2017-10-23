@@ -7,11 +7,11 @@ class Thing extends Component {
         const {thing} = this.props;
         return (
             <div className="thing">
-                <div className="row align-items-center">
-                    <div className="col-11">
+                <div className="d-flex align-items-center justify-content-between">
+                    <div>
                         {thing.get('name')}
                     </div>
-                    <div className="col-1">
+                    <div>
                         <button
                             className="btn btn-danger btn-block"
                             onClick={this.props.handleDelete}
