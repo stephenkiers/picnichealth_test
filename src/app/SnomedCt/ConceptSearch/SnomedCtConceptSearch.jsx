@@ -6,9 +6,24 @@ import SnomedCtConceptInput from "./SnomedCtConceptInput";
 
 class SnomedCtConceptSearch extends Component {
 
+    constructor() {
+        super();
+        this.state = {
+            value: '',
+        };
+        this.onInputChange = e => {
+            const value = e.target.value;
+            this.setState(() => ({value}))
+        };
+    }
+
     render () {
         return (
-            <SnomedCtConceptInput />
+            <SnomedCtConceptInput
+                onChange={this.onInputChange}
+                tabIndex={this.props.tabIndex}
+                value={this.state.value}
+            />
         );
     }
 }
@@ -16,6 +31,7 @@ class SnomedCtConceptSearch extends Component {
 SnomedCtConceptSearch.defaultProps = {
 };
 SnomedCtConceptSearch.propTypes = {
+    tabIndex: PropTypes.number.isRequired,
 };
 const mapStateToProps = (state, ownProps) => ({
 });
