@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import GetMatchingResults from "../getters/GetMatchingResults";
+import GetMatchingResults from "../../getters/GetMatchingResults";
 
 class AutocompleteResultsList extends Component {
     constructor(props, context) {

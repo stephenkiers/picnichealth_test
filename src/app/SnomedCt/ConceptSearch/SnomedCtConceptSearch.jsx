@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import SnomedCtConceptAutocomplete from "./SnomedCtConceptAutocomplete";
-import Input from "./components/Input";
+import SnomedCtConceptAutocomplete from "./Autocomplete/SnomedCtConceptAutocomplete";
+import Input from "./Autocomplete/components/Input";
 
 class SnomedCtConceptSearch extends Component {
     constructor() {

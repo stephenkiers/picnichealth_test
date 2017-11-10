@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import GetMatchingResults from "./getters/GetMatchingResults";
+import GetMatchingResults from "../getters/GetMatchingResults";
 import AutocompleteResultsList from "./components/AutocompleteResultsList";
 
 class SnomedCtConceptAutocomplete extends Component {
