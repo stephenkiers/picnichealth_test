@@ -1,6 +1,12 @@
 .autocomplete-container {
   .autocomplete-item {
+    padding: 10px;
+    border-bottom:1px solid #eee;
+    &:last-of-type {
+      border-bottom: none;
+    }
     &.active {
+      background: #eee;
     }
   }
 }

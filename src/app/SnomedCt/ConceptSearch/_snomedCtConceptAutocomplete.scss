@@ -8,7 +8,6 @@
   border-left-width: 0;
   border-right-width: 0;
   .internal-container {
-    padding:10px;
     background: #fff;
     border: 1px solid #222;
     .col-autocomplete {
@@ -16,11 +15,11 @@
       border-right:1px solid #ccc;
     }
     .col-heirarchy {
-      width:25%;
+      width:33%;
       padding:10px;
     }
     .col-definition {
-      width:25%;
+      width:34%;
       padding:10px;
     }
   }

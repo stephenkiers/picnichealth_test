@@ -32,7 +32,6 @@ class AutocompleteResultsList extends Component {
                     return (
                         <div className="autocomplete-container">
                             {autocompleteResults.get("results").map(result => {
-                                console.log(result);
                                 return (
                                     <div
                                         key={result.get('id')}
