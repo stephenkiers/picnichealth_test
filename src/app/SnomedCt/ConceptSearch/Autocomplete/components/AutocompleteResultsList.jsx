@@ -37,8 +37,12 @@ class AutocompleteResultsList extends Component {
                                         key={result.get('id')}
                                         className="autocomplete-item"
                                     >
-                                        {result.get('label')}<br />
-                                        {result.get('score')}
+                                        <div className="label">
+                                            {result.get('label')}
+                                        </div>
+                                        <div className="score">
+                                            {result.get('score')}
+                                        </div>
                                     </div>
                                 )
                             }).valueSeq().toArray()}
