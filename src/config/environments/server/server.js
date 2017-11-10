@@ -15,16 +15,16 @@ module.exports = {
         app.use(express.static('./public'));
 
         app.use('/api/v1/snomedct/', function(req, res) {
-            console.log(req.url);
+
             const options = {
-                url: 'https://snomed.terminology.tools/content/concept/SNOMEDCT' + req.url,
+                url: 'https://snomed.terminology.tools/content/concept/SNOMEDCT' + req.originalUrl.substr(16),
                 headers: {
                     'Authorization': 'guest'
                 }
             };
+            // console.log(options.url, req.originalUrl.substr(16));
             req.pipe(request.post(options)).pipe(res)
         });
-
 
         app.use((req, res, next) => res.status(200).send(renderFullPage())); // This is fired every time the server side receives a request
         // app.listen(port)
