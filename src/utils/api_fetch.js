@@ -35,11 +35,11 @@ const handleResponse = (response) => {
     })
 }
 
-const apiFetchPromise = (api_constant, body = {}) => {
+const apiFetchPromise = (api_constant, body = {}, json_body = false) => {
     return new Promise((resolve, reject) => {
         let url = `http://localhost:8080${api_constant.path}`;
         // const form_headers = new Headers();
-        const form_body = new FormData();
+        let form_body;
         if (body !== {} || body.length > 0) {
             if (api_constant.method === api_method.GET) {
                 url += "?";
@@ -58,10 +58,15 @@ const apiFetchPromise = (api_constant, body = {}) => {
                     }
                 }
             } else {
-                Object.keys(body).forEach((key) => {
-                    const value = body[key];
-                    form_body.append(key, value ? value : '');
-                })
+                if (json_body) {
+                    form_body = JSON.stringify(body)
+                } else {
+                    form_body = new FormData();
+                    Object.keys(body).forEach((key) => {
+                        const value = body[key];
+                        form_body.append(key, value ? value : '');
+                    })
+                }
             }
         }
         const fetch_params = {

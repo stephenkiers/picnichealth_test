@@ -7,7 +7,11 @@ export const snomedCtAutocompleteSearch = query => {
     return dispatch => {
         dispatch(searchStart(query));
         console.log('search for', query);
-        return apiFetch(api(api_endpoint.SNOMED_SEARCH, query))
+        return apiFetch(api(api_endpoint.SNOMED_SEARCH, query), {
+            maxResults: 10,
+            startIndex: 0,
+        }, true)
+        // return apiFetch(api(api_endpoint.SNOMED_SEARCH, query))
             .then((res) => {
                 console.log(res);
                 // dispatch(reduxUpdateCollection(

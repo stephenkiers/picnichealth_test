@@ -1,6 +1,7 @@
 import express from 'express';
 import request from 'request';
 import compress from 'compression';
+import requestProxy from 'express-request-proxy';
 
 import React from 'react'
 
@@ -14,16 +15,26 @@ module.exports = {
         app.use(compress());
         app.use(express.static('./public'));
 
-        app.use('/api/v1/snomedct/', function(req, res) {
-
+        // app.use('/api/v1/snomedct/:api_call', requestProxy({
+        //     url: 'https://snomed.terminology.tools/content/concept/SNOMEDCT/:api_call',
+        //     headers: {
+        //         'Authorization': 'guest'
+        //     }
+        // }));
+        app.use('/api/v1/snomedct/*', function(req, res) {
             const options = {
                 url: 'https://snomed.terminology.tools/content/concept/SNOMEDCT' + req.originalUrl.substr(16),
                 headers: {
-                    'Authorization': 'guest'
+                    Authorization: 'guest',
+                    'Content-Type': 'application/json'
                 }
             };
-            // console.log(options.url, req.originalUrl.substr(16));
-            req.pipe(request.post(options)).pipe(res)
+            // console.log(req);
+            // console.log("=====");
+            // console.log(req.body);
+            // console.log(options);
+            // req.pipe(request.post(options)).pipe(res)
+            req.pipe(request(options)).pipe(res)
         });
 
         app.use((req, res, next) => res.status(200).send(renderFullPage())); // This is fired every time the server side receives a request
