@@ -2,33 +2,33 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
 class Input extends Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            focus: false
-        };
-        this.handleChange = e => {
+    constructor() {
+        super();
+        // this.state = {
+        //     focus: false
+        // };
+        this.onChange = e => {
             if (typeof this.props.onChange === "function") {
                 this.props.onChange(e);
             }
         };
-        this.handleKeyDown = e => {
+        this.onKeyDown = e => {
             if (typeof this.props.onKeyDown === "function") {
                 this.props.onKeyDown(e);
             }
         };
-        this.handleKeyUp = e => {
+        this.onKeyUp = e => {
             if (typeof this.props.onKeyUp === "function") {
                 this.props.onKeyUp(e);
             }
         };
-        this.handleBlur = e => {
-            this.setState(() => ({focus: false}));
+        this.onBlur = e => {
+            // this.setState(() => ({focus: false}));
             if (typeof this.props.onBlur === "function") {
                 this.props.onBlur();
             }
         };
-        this.handleFocus = e => {
+        this.onFocus = e => {
             this.setState(() => ({focus: true}));
             if (typeof this.props.onFocus === "function") {
                 this.props.onFocus();
@@ -37,7 +37,7 @@ class Input extends Component {
     }
     render() {
         return (
-            <div className="form-group">
+            <div className={`form-group ${this.props.className}`}>
                 <label htmlFor="exampleFormControlInput1">
                     {this.props.label}
                 </label>
@@ -45,11 +45,11 @@ class Input extends Component {
                        id={this.props.id}
                        className="form-control"
                        value={ this.props.value ? this.props.value : "" }
-                       onChange={this.handleChange}
-                       onKeyDown={this.handleKeyDown}
-                       onKeyUp={this.handleKeyUp}
-                       onFocus={this.handleFocus}
-                       onBlur={this.handleBlur}
+                       onChange={this.onChange}
+                       onKeyDown={this.onKeyDown}
+                       onKeyUp={this.onKeyUp}
+                       onFocus={this.onFocus}
+                       onBlur={this.onBlur}
                        placeholder={ this.props.placeholder }
                        required={ this.props.required }
                        tabIndex={this.props.tabIndex}
@@ -68,6 +68,7 @@ Input.defaultProps = {
     has_validation: false,
     valid: true,
     autoFocus: false,
+    className: "",
 };
 
 Input.propTypes = {
@@ -87,7 +88,7 @@ Input.propTypes = {
     autoFocus: PropTypes.bool,
     // initialValue: PropTypes.string.isRequired,
     // placeholder_text: PropTypes.string.isRequired,
-    // handleBlur: PropTypes.func.isRequired
+    // onBlur: PropTypes.func.isRequired
 };
 
 export default Input;

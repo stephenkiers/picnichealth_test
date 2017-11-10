@@ -3,9 +3,13 @@
   top: 100%;
   left:0;
   right:0;
-  margin-top:10px;
 
-  padding:10px;
-  background: #fff;
-  border: 1px solid red;
+  border:5px solid #fff;
+  border-left-width: 0;
+  border-right-width: 0;
+  .internal-container {
+    padding:10px;
+    background: #fff;
+    border: 1px solid #222;
+  }
 }

@@ -1,5 +1,9 @@
 .snomed-concept-search {
   position: relative;
+  .snomed-concept-search-input {
+    position:relative;
+    z-index:2;
+  }
 }
 
 @import "ConceptSearch/snomedCtConceptAutocomplete";
