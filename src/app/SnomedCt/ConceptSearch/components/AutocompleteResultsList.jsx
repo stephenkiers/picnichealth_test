@@ -19,15 +19,33 @@ class AutocompleteResultsList extends Component {
     componentWillReceiveProps(nextProps) {
     }
 
-    render () {c
+    render () {
         return (
             <GetMatchingResults query={this.props.query}>
-                {autocompleteResults => (
-                    <span>
-                        auto-complete<br />
-                        {autocompleteResults && JSON.stringify(autocompleteResults.toJS())}
-                    </span>
-                )}
+                {autocompleteResults => {
+                    if (!autocompleteResults) {
+                        return <div>Searching...</div>;
+                    }
+                    if (autocompleteResults.get('totalCount') === 0 ) {
+                        return <div>No results found.</div>;
+                    }
+                    return (
+                        <div className="autocomplete-container">
+                            {autocompleteResults.get("results").map(result => {
+                                console.log(result);
+                                return (
+                                    <div
+                                        key={result.get('id')}
+                                        className="autocomplete-item"
+                                    >
+                                        {result.get('label')}<br />
+                                        {result.get('score')}
+                                    </div>
+                                )
+                            }).valueSeq().toArray()}
+                        </div>
+                    )
+                }}
             </GetMatchingResults>
         );
     }

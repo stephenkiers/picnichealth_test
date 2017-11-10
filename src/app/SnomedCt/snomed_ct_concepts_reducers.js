@@ -35,7 +35,7 @@ const searchResults = (state = Map(), action) => {
                 }));
         case snomed_ct_constants.SEARCH_RESULTS.APPEND:
             return state.set(action.query, Map({
-                results: state.get(action.query)
+                results: state.getIn([action.query, 'results'])
                     .merge(Set(action.mapOfResults)),
                 totalCount: action.totalCount
             }));

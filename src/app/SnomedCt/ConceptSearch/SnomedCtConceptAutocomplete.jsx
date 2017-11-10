@@ -13,16 +13,16 @@ class SnomedCtConceptAutocomplete extends Component {
         return (
             <div className="snomed-autocomplete-dropdown">
                 <div className="internal-container">
-                    <div className="row">
-                        <div className="col-4">
+                    <div className="d-flex">
+                        <div className="col-autocomplete">
                             <AutocompleteResultsList
                                 query={this.props.query}
                             />
                         </div>
-                        <div className="col-4">
+                        <div className="col-heirarchy">
                             heirarchy
                         </div>
-                        <div className="col-4">
+                        <div className="col-definition">
                             about?
                         </div>
                     </div>
