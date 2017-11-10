@@ -9,17 +9,8 @@ class AutocompleteResultsList extends Component {
         this.state = {
         };
     }
-    shouldComponentUpdate(nextProps, nextState) {
-        return true;
-    }
-    componentDidMount() {
-    }
-    componentWillUnmount() {
-    }
-    componentWillReceiveProps(nextProps) {
-    }
-
     render () {
+        let i = -1; // Map doesn't have an index, so we are providing one
         return (
             <GetMatchingResults query={this.props.query}>
                 {autocompleteResults => {
@@ -32,10 +23,11 @@ class AutocompleteResultsList extends Component {
                     return (
                         <div className="autocomplete-container">
                             {autocompleteResults.get("results").map(result => {
+                                i++;
                                 return (
                                     <div
                                         key={result.get('id')}
-                                        className="autocomplete-item"
+                                        className={`autocomplete-item${this.props.currentIndex === i ? ' current' : ''}`}
                                     >
                                         <div className="label">
                                             {result.get('label')}
@@ -58,6 +50,7 @@ AutocompleteResultsList.defaultProps = {
 };
 AutocompleteResultsList.propTypes = {
     query: PropTypes.string,
+    currentIndex: PropTypes.number.isRequired,
 };
 
 export default AutocompleteResultsList;

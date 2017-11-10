@@ -11,13 +11,37 @@ class SnomedCtConceptSearch extends Component {
         this.state = {
             value: '',
             ddOpen: false,
+            currentIndex: 0,
         };
         this.onInputChange = e => {
             const value = e.target.value;
-            this.setState(() => ({value}));
+            this.setState(() => ({
+                value,
+                currentIndex: 0,
+            }));
         };
         this.onInputFocus = e => {
             this.setState(() => ({ddOpen: true}));
+        };
+        this.onInputKeyDown = e => {
+            switch(e.key) {
+                case "ArrowDown":
+                    e.preventDefault();
+                    this.setState(state => ({currentIndex: state.currentIndex < 10 ? state.currentIndex + 1 : 10}));
+                    break;
+                case "ArrowUp":
+                    e.preventDefault();
+                    this.setState(state => ({currentIndex: state.currentIndex > 0 ? state.currentIndex - 1 : 0}));
+                    break;
+                // case "ArrowRight":
+                //     e.preventDefault();
+                //     break;
+                // case (e.key.match(/^[A-Za-z0-9]$/) || {} ).input:
+                //     e.preventDefault();
+                //     this.updateFilterTerm(e.key);
+                //     break;
+            }
+            console.log(e.key);
         };
         this.onInputBlur = e => {
             if (this.state.value.length === 0) {
@@ -26,6 +50,7 @@ class SnomedCtConceptSearch extends Component {
         };
     }
     render () {
+        console.log(this.state.currentIndex);
         return (
             <div className="snomed-concept-search">
                 <Input
@@ -37,11 +62,13 @@ class SnomedCtConceptSearch extends Component {
                     onChange={this.onInputChange}
                     onBlur={this.onInputBlur}
                     onFocus={this.onInputFocus}
+                    onKeyDown={this.onInputKeyDown}
                 />
                 {
                     this.state.ddOpen &&
                     <SnomedCtConceptAutocomplete
                         query={this.state.value}
+                        currentIndex={this.state.currentIndex}
                     />
                 }
             </div>

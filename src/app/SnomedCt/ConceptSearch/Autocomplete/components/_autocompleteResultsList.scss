@@ -13,8 +13,9 @@
     &:last-of-type {
       border-bottom: none;
     }
-    &.active {
-      background: #eee;
+    &.current {
+      background: #7DB1EF;
+      color: #fff;
     }
   }
 }

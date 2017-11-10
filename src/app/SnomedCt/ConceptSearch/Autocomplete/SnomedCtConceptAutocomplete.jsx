@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import GetMatchingResults from "../getters/GetMatchingResults";
 import AutocompleteResultsList from "./components/AutocompleteResultsList";
 
 class SnomedCtConceptAutocomplete extends Component {
@@ -17,6 +16,7 @@ class SnomedCtConceptAutocomplete extends Component {
                         <div className="col-autocomplete">
                             <AutocompleteResultsList
                                 query={this.props.query}
+                                currentIndex={this.props.currentIndex}
                             />
                         </div>
                         <div className="col-heirarchy">
@@ -36,6 +36,7 @@ SnomedCtConceptAutocomplete.defaultProps = {
 };
 SnomedCtConceptAutocomplete.propTypes = {
     query: PropTypes.string,
+    currentIndex: PropTypes.number,
 };
 
 const mapStateToProps = (state, ownProps) => ({
