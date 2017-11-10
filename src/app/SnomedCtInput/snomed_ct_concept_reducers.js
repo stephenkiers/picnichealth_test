@@ -1,4 +1,4 @@
-import { thing_constants } from './things_reducers'
+import { snomed_ct_concepts_constants } from './snomed_ct_concepts_reducers'
 import { Map } from 'immutable'
 
 const default_record = Map({ // export for testing
@@ -6,7 +6,7 @@ const default_record = Map({ // export for testing
     name: "",
 });
 
-const thing = (state = Map(default_record), action) => {
+const search_snomed_ct_concept = (state = Map(default_record), action) => {
     switch (action.type) {
         case thing_constants.THING_UPSERT:
             return state.merge(Map({
@@ -17,4 +17,4 @@ const thing = (state = Map(default_record), action) => {
             return state;
     }
 };
-export default thing
+export default search_snomed_ct_concept
