@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux-immutable'
 // import search_snomed_ct_concept from './snomed_ct_concept_reducers';
-import { Map, Set } from 'immutable'
+import { Map, OrderedMap, Set } from 'immutable'
 import {immutableNestedGetIn} from "../../utils/utils";
 
 
@@ -30,13 +30,14 @@ const searchResults = (state = Map(), action) => {
             return state.has(action.query) ?
                 state :
                 state.set(action.query, Map({
-                    results: Map(),
+                    results: OrderedMap(),
                     totalCount: undefined,
                 }));
         case snomed_ct_constants.SEARCH_RESULTS.APPEND:
             return state.set(action.query, Map({
                 results: state.getIn([action.query, 'results'])
-                    .merge(Set(action.mapOfResults)),
+                    .merge(Set(action.mapOfResults))
+                    .sort((a, b) => b.get('score') - a.get('score')),
                 totalCount: action.totalCount
             }));
         default:

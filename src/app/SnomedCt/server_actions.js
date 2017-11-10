@@ -1,6 +1,6 @@
 import apiFetch from '../../utils/api_fetch'
 import { api, api_endpoint } from '../../config/constants'
-import {Map} from 'immutable';
+import {OrderedMap, Map} from 'immutable';
 
 import {createSearchKey, updateSearchResults} from "./actions";
 
@@ -13,7 +13,7 @@ export const snomedCtAutocompleteSearch = query => {
         }, true)
         // return apiFetch(api(api_endpoint.SNOMED_SEARCH, query))
             .then((res) => {
-                let ids = Map();
+                let ids = OrderedMap();
                 res.results.forEach(concept => {
                     if (concept.terminology === "SNOMEDCT") {
                         ids = ids.set(concept.terminologyId, Map({
