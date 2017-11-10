@@ -1,17 +1,17 @@
-export const formatTelephoneNumber = number => {
-    number = number.toString();
-    if (number.length < 4) {
-        return number
-    } else if (number.length < 7) {
-        return number.replace(/(\d{3})(\d*)/, '$1-$2');
-    } else {
-        return number.replace(/(\d{3})(\d{3})(\d*)/, '$1-$2-$3');
+export const immutableNestedGetIn = (immutable_object, getInPath, fallbackResponse) =>{
+    if (!immutable_object) {
+        return fallbackResponse;
     }
-}
-
-export const generateRandomUUID = () => {
-    const time_id = (new Date).getTime().toString(36).substring(3);
-    const length_needed = 10-time_id.length;
-    const pad_chacters = Math.floor(Math.random()*123456789).toString(36).substring(0, length_needed);
-    return `${time_id}${pad_chacters}`
-}
+    for (let i = 0; i < getInPath.length; i++) {
+        if (i === 0) {
+            if (!immutable_object.has(getInPath[0]) || !immutable_object.get(getInPath[0])) {
+                return fallbackResponse;
+            }
+        }
+        const check = getInPath.slice(0,i+1);
+        if (!immutable_object.hasIn(check) || !immutable_object.getIn(check)) {
+            return fallbackResponse;
+        }
+    }
+    return immutable_object.getIn(getInPath);
+};
