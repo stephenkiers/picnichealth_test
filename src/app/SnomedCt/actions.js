@@ -1,12 +1,6 @@
-import {snomed_ct_concepts_constants} from './snomed_ct_concepts_reducers'
+import {snomed_ct_constants} from './snomed_ct_concepts_reducers'
 
-// export const thingUpsert = (id, name) => ({
-//     type: thing_constants.THING_UPSERT,
-//     id,
-//     name,
-// });
-// export const thingDelete = (id, name) => ({
-//     type: thing_constants.THING_DELETE,
-//     id,
-//     name,
-// });
+export const searchStart = (query) => ({
+    type: snomed_ct_constants.SEARCH_RESULTS.START,
+    query,
+});

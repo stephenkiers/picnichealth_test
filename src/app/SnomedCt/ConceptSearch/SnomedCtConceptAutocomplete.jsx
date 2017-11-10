@@ -2,24 +2,11 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import debounce from 'lodash/debounce';
+import GetMatchingResults from "./getters/GetMatchingResults";
 
 class SnomedCtConceptAutocomplete extends Component {
     constructor() {
         super();
-        this.triggerLookup = () => {
-            console.log("search for", this.props.query);
-        };
-        this.triggerLookupDebounced = debounce(this.triggerLookup, 300, {
-            leading: true,
-            trailing: true,
-            maxWait: 1500,
-        });
-    }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.query && nextProps.query !== this.props.query) {
-            this.triggerLookupDebounced();
-        }
     }
     render () {
         return (
@@ -27,7 +14,14 @@ class SnomedCtConceptAutocomplete extends Component {
                 <div className="internal-container">
                     <div className="row">
                         <div className="col-4">
-                            autocomplete
+                            <GetMatchingResults query={this.props.query}>
+                                {autocompleteResults => (
+                                    <span>
+                                        auto-complete<br />
+                                        {autocompleteResults && JSON.parse(autocompleteResults)}
+                                    </span>
+                                )}
+                            </GetMatchingResults>
                         </div>
                         <div className="col-4">
                             heirarchy
