@@ -1,5 +1,6 @@
-import express from 'express'
-import compress from 'compression'
+import express from 'express';
+import request from 'request';
+import compress from 'compression';
 
 import React from 'react'
 
@@ -12,6 +13,19 @@ module.exports = {
 
         app.use(compress());
         app.use(express.static('./public'));
+
+        app.use('/api/v1/snomedct/', function(req, res) {
+            console.log(req.url);
+            const options = {
+                url: 'https://snomed.terminology.tools/content/concept/SNOMEDCT' + req.url,
+                headers: {
+                    'Authorization': 'guest'
+                }
+            };
+            req.pipe(request.post(options)).pipe(res)
+        });
+
+
         app.use((req, res, next) => res.status(200).send(renderFullPage())); // This is fired every time the server side receives a request
         // app.listen(port)
         app.set('port', port);
