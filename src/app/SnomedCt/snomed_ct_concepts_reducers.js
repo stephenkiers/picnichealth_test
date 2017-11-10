@@ -8,7 +8,8 @@ export const snomed_ct_constants = {
     // STATE: {},
     BY_ID: {},
     SEARCH_RESULTS: {
-        START: "snomed.search_results.start",
+        CREATE: "snomed.search_results.create",
+        APPEND: "snomed.search_results.append",
     },
 };
 // const state = (state = Map(), action) => {
@@ -25,8 +26,19 @@ const byId = (state = Map(), action) => {
 };
 const searchResults = (state = Map(), action) => {
     switch (action.type) {
-        case snomed_ct_constants.SEARCH_RESULTS.START:
-            return state.has(action.query) ? state.get(action.query) : state.set(action.query, Set())
+        case snomed_ct_constants.SEARCH_RESULTS.CREATE:
+            return state.has(action.query) ?
+                state :
+                state.set(action.query, Map({
+                    results: Map(),
+                    totalCount: undefined,
+                }));
+        case snomed_ct_constants.SEARCH_RESULTS.APPEND:
+            return state.set(action.query, Map({
+                results: state.get(action.query)
+                    .merge(Set(action.mapOfResults)),
+                totalCount: action.totalCount
+            }));
         default:
             return state;
     }

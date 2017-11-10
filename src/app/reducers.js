@@ -12,4 +12,4 @@ const rootReducer = combineReducers({
 export default rootReducer
 
 export const getSearchResultIds = (state, query) =>
-    fromSnomedCTConcepts.getSearchResultIds(state.snomed_ct_concepts, query);
+    fromSnomedCTConcepts.getSearchResultIds(state.get('snomed_ct_concepts'), query);

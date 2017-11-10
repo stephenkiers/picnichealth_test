@@ -15,7 +15,7 @@ export const immutableNestedGetIn = (immutable_object, getInPath, fallbackRespon
     // }
     // return immutable_object.getIn(getInPath);
     try {
-        return immutable_object.getIn[getInPath];
+        return immutable_object.getIn(getInPath);
     }
     catch (err) {
         return fallbackResponse;

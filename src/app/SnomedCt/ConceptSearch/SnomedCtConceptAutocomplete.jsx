@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import GetMatchingResults from "./getters/GetMatchingResults";
+import AutocompleteResultsList from "./components/AutocompleteResultsList";
 
 class SnomedCtConceptAutocomplete extends Component {
     constructor() {
@@ -14,14 +15,9 @@ class SnomedCtConceptAutocomplete extends Component {
                 <div className="internal-container">
                     <div className="row">
                         <div className="col-4">
-                            <GetMatchingResults query={this.props.query}>
-                                {autocompleteResults => (
-                                    <span>
-                                        auto-complete<br />
-                                        {autocompleteResults && JSON.parse(autocompleteResults)}
-                                    </span>
-                                )}
-                            </GetMatchingResults>
+                            <AutocompleteResultsList
+                                query={this.props.query}
+                            />
                         </div>
                         <div className="col-4">
                             heirarchy
