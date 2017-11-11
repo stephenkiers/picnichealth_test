@@ -1,24 +1,31 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import GetConcept from "../../getters/GetConcept";
 
-class ConceptInformation extends Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
+class TermLink extends  PureComponent {
+    constructor(props) {
+        super(props);
+        this.onClick = e => {
+            this.props.setNewSearchQuery(this.props.term);
         };
     }
-    shouldComponentUpdate(nextProps, nextState) {
-        return true;
+    render () {
+        return (
+            <div>
+                <a
+                    href="javscript:void(0)"
+                    onClick={this.onClick}
+                    className="concept-alternative-term-link"
+                >
+                    {this.props.term}
+                </a>
+            </div>
+        )
     }
-    componentDidMount() {
-    }
-    componentWillUnmount() {
-    }
-    componentWillReceiveProps(nextProps) {
-    }
+}
 
+class ConceptInformation extends Component {
     render () {
         return (
             <GetConcept
@@ -41,7 +48,7 @@ class ConceptInformation extends Component {
                                         <div className="concept-header">
                                             Semantic types
                                         </div>
-                                        <div className="concept-results">
+                                        <div className="concept-body">
                                             {concept.get('semantic_types').map(t => t.get('label')).join(', ')}
                                         </div>
                                     </div>
@@ -53,8 +60,14 @@ class ConceptInformation extends Component {
                                         <div className="concept-header">
                                             Alternative terms
                                         </div>
-                                        <div className="concept-results">
-                                            {concept.get('alternative_terms').map(t => t.get('label')).join(', ')}
+                                        <div className="concept-body">
+                                            {concept.get('alternative_terms').map(term => {
+                                                return <TermLink
+                                                    key={term.hashCode()}
+                                                    setNewSearchQuery={this.props.setNewSearchQuery}
+                                                    term={term.get('label')}
+                                                />
+                                            })}
                                         </div>
                                     </div>
                                 )}
@@ -71,6 +84,7 @@ ConceptInformation.defaultProps = {
 };
 ConceptInformation.propTypes = {
     current_id: PropTypes.number,
+    setNewSearchQuery: PropTypes.func.isRequired,
 };
 
 export default ConceptInformation;

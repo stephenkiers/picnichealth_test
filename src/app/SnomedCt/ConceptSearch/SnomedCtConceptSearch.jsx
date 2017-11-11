@@ -48,17 +48,21 @@ class SnomedCtConceptSearch extends Component {
                 this.setState(() => ({ddOpen: false}));
             }
         };
-
         this.setNewSearchQuery = query => {
             this.setState(() => ({
                 value: query,
                 currentIndex: 0,
             }))
-        }
+        };
         this.setNewIndex = i => {
             this.setState(() => ({currentIndex: i}));
-        }
+        };
     }
+    // componentDidUpdate(prevProps, prevState) {
+    //     if (prevState.value !== this.state.value) {
+    //         this.input.input.focus();
+    //     }
+    // }
     render () {
         return (
             <div className="snomed-concept-search">
@@ -72,6 +76,7 @@ class SnomedCtConceptSearch extends Component {
                     onBlur={this.onInputBlur}
                     onFocus={this.onInputFocus}
                     onKeyDown={this.onInputKeyDown}
+                    /* ref={(input) => {this.input = input}} */
                 />
                 {
                     this.state.ddOpen &&

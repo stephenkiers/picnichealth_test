@@ -21,15 +21,16 @@ class HierarchyList extends Component {
                     }
                     return (
                         <div className="concept-hierarchy">
-                            {concept.get('parentTree') &&
-                            concept.get('parentTree').map(id => (
-                                <HierarchyNode
-                                    key={id}
-                                    id={id}
-                                    className="hierarchy-parent"
-                                    setNewSearchQuery={this.props.setNewSearchQuery}
-                                />
-                            ))}
+                            {concept.get('parentTree')
+                                && concept.get('parentTree').size > 0
+                                && concept.get('parentTree').map(id => (
+                                    <HierarchyNode
+                                        key={id}
+                                        id={id}
+                                        className="hierarchy-parent"
+                                        setNewSearchQuery={this.props.setNewSearchQuery}
+                                    />
+                                ))}
                             <div>
                                 <HierarchyNode
                                     className="hierarchy-current"
@@ -48,6 +49,7 @@ class HierarchyList extends Component {
                                         </div>
                                 )}
                                 {concept.get('parentTree')
+                                    && concept.get('parentTree').size > 0
                                     && <HierarchyChildren
                                             id={concept.get('parentTree').last()}
                                             setNewSearchQuery={this.props.setNewSearchQuery}

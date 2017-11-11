@@ -35,7 +35,7 @@ const byId = (state = Map(), action) => {
         case snomed_ct_constants.BY_ID.UPSERT_DEFAULT:
             return state.set(
                 action.id,
-                state.get(action.id).mergeDeep(
+                state.get(action.id).merge(
                     Map({
                         id: action.id,
                         name: action.name,

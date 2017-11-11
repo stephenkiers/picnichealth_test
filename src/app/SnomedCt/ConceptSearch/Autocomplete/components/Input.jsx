@@ -55,6 +55,7 @@ class Input extends Component {
                        tabIndex={this.props.tabIndex}
                        autoComplete={ this.props.autocomplete }
                        autoFocus={this.props.autoFocus}
+                       /*ref={(input) => {this.input = input}}*/
                 />
             </div>
         )

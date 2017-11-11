@@ -21,4 +21,10 @@
     border-top: 1px solid #ccc;
     margin-top: 1rem;
   }
+  .concept-body {
+    font-size: 12px;
+    .concept-alternative-term-link {
+      color: $select-color;
+    }
+  }
 }
