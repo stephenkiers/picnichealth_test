@@ -31,8 +31,8 @@ class AutocompleteResultsList extends Component {
                             <div className="label">
                                 {result.get('label')}
                             </div>
-                            <div className="score">
-                                {result.get('id')} : {result.get('score')}
+                            <div className="item-id">
+                                {result.get('id')}
                             </div>
                         </div>
                     )

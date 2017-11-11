@@ -1,12 +1,12 @@
 .concept-hierarchy {
   .hierarchy-node {
-    padding:10px;
+    padding:5px;
     line-height: 1.1;
-    border-bottom:1px solid #eee;
-
+    border-bottom:1px solid #ccc;
+    border-left: 0 solid #ccc;
     @for $i from 0 through 20 {
-      &:nth-child(#{$i}) {
-        padding-left:#{10 + ($i * 10)}px;
+      &:nth-child(#{$i+1}) {
+        border-left-width:#{2 + ($i * 10)}px;
       }
     }
 

@@ -10,9 +10,8 @@ export const snomed_ct_constants = {
         STATE_FETCHING: "snomed.by_id.state.fetching",
         STATE_IDLE: "snomed.by_id.state.idle",
         CREATE: "snomed.by_id.create",
-        UPSERT_BASIC: "snomed.by_id.upsert_basic",
-        BULK_UPSERT_TREE: "snomed.by_id.bulk.upsert_tree",
-        BULK_UPSERT_CHILDREN: "snomed.by_id.bulk.upsert_children",
+        UPSERT_DEFAULT: "snomed.by_id.upsert.default",
+        BULK_UPSERT: "snomed.by_id.bulk.upsert",
     },
     SEARCH_RESULTS: {
         CREATE: "snomed.search_results.create",
@@ -33,7 +32,7 @@ const byId = (state = Map(), action) => {
                 state.set(action.id, Map({
                     id: action.id
                 }));
-        case snomed_ct_constants.BY_ID.UPSERT_BASIC:
+        case snomed_ct_constants.BY_ID.UPSERT_DEFAULT:
             return state.set(
                 action.id,
                 state.get(action.id).mergeDeep(
@@ -46,13 +45,13 @@ const byId = (state = Map(), action) => {
                         complete: true,
                     }))
             );
-        case snomed_ct_constants.BY_ID.BULK_UPSERT_TREE:
+        case snomed_ct_constants.BY_ID.BULK_UPSERT:
             action.concepts.valueSeq().forEach(concept => {
                 const id = concept.get('id');
                 if (!state.get(id)) {
                     state = state.set(id, Map());
                 }
-                state = state.set(id, state.get(id).merge(concept));
+                state = state.set(id, state.get(id).mergeDeep(concept));
             });
             return state;
         case snomed_ct_constants.BY_ID.STATE_IDLE:

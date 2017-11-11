@@ -6,16 +6,22 @@ import HierarchyNode from "./HierarchyNode";
 
 class HierarchyParent extends Component {
     render () {
+        console.log(this.props.id);
         return (
             <GetConcept id={this.props.id}>
-                {concept => (
-                    <HierarchyNode
-                        className="hierarchy-parent"
-                        id={concept.get("id")}
-                        name={concept.get("name")}
-                        childrenCount={concept.get("childrenCount")}
-                    />
-                )}
+                {concept => {
+                    if (!concept) {
+                        return <div className="concept-info">loading...</div>;
+                    }
+                    return (
+                        <HierarchyNode
+                            className="hierarchy-parent"
+                            id={concept.get("id")}
+                            name={concept.get("name")}
+                            childrenCount={concept.get("childrenCount")}
+                        />
+                    )
+                }}
             </GetConcept>
         );
     }

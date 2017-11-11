@@ -33,14 +33,24 @@ class HierarchyList extends Component {
                             {concept.get('parentTree') && concept.get('parentTree').map(id => {
                                 return <HierarchyParent key={id} id={id}/>
                             })}
-                            <HierarchyNode
-                                className="hierarchy-current"
-                                id={concept.get("id")}
-                                name={concept.get("name")}
-                                childrenCount={concept.get("childrenCount")}
-                            />
-
-                            children: todo
+                            <div>
+                                <HierarchyNode
+                                    className="hierarchy-current"
+                                    id={concept.get("id")}
+                                    name={concept.get("name")}
+                                    childrenCount={concept.get("childrenCount")}
+                                />
+                                {
+                                    concept.get('children')
+                                    && JSON.stringify(concept.get('children'))
+                                }
+                                {
+                                    1 === 3
+                                    && concept.get('parentTree')
+                                    && concept.get('children')
+                                    && JSON.stringify(concept.get('children'))
+                                }
+                            </div>
                         </div>
                     )}}
             </GetConcept>

@@ -5,8 +5,7 @@
     .label {
       font-size: 14px;
     }
-    .score {
-      text-align:right;
+    .item-id {
       color: #999;
       font-size:10px;
     }
@@ -16,6 +15,9 @@
     &.current {
       background: $select-color;
       color: #fff;
+      .item-id {
+        color: #fff;
+      }
     }
   }
 }
