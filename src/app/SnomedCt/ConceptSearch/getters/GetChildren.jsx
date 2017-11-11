@@ -29,7 +29,8 @@ GetChildren.propTypes = {
 // });
 const mapDispatchToProps = (dispatch, ownProps) => ({
     snomedGetChildren() {
-        dispatch(snomedGetChildren(ownProps.concept.get('id'), ownProps.concept.get('parentTree')));
+        const parentTree = ownProps.concept.get('parentTree').add(ownProps.concept.get('id'));
+        dispatch(snomedGetChildren(parentTree));
     }
 });
 export default connect(undefined, mapDispatchToProps)(GetChildren);

@@ -61,11 +61,8 @@ const snomedGetParentNodes = id => {
                       concepts: normalizedResponse,
                   });
                   const parentTree = normalizedResponse.getIn([id, 'parentTree']);
-                  dispatch(snomedGetChildren(id, parentTree));
-                  dispatch(snomedGetChildren(
-                      parentTree.last(),
-                      parentTree.slice(0, parentTree.size - 2)
-                  )); // get siblings
+                  dispatch(snomedGetChildren(parentTree.add(id)));
+                  dispatch(snomedGetChildren(parentTree)); // get siblings
               }
           }, (err) => {
               // dispatch(handleApiErrors(err))
@@ -94,9 +91,10 @@ const prepareChildren = (node_array, parentTree) => {
     });
     return results;
 };
-export const snomedGetChildren = (id, parentTree )=> {
+export const snomedGetChildren = parentTree => {
     return dispatch => {
         // console.log("Get children for", id);
+        const id = parentTree.last();
         apiFetch(api(api_endpoint.SNOMED_GET_CHILDREN, id), {
             maxResults: 10,
             sortField:"nodeName",
