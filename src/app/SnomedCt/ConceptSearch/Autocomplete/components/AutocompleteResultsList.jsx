@@ -10,46 +10,42 @@ class AutocompleteResultsList extends Component {
         };
     }
     render () {
+        const {autocompleteResults} = this.props;
+        if (!autocompleteResults) {
+            return <div>Searching...</div>;
+        }
+        if (autocompleteResults.get('totalCount') === 0) {
+            return <div>No results found.</div>;
+        }
+
         let i = -1; // Map doesn't have an index, so we are providing one
         return (
-            <GetMatchingResults query={this.props.query}>
-                {autocompleteResults => {
-                    if (!autocompleteResults) {
-                        return <div>Searching...</div>;
-                    }
-                    if (autocompleteResults.get('totalCount') === 0 ) {
-                        return <div>No results found.</div>;
-                    }
+            <div className="autocomplete-container">
+                {autocompleteResults.get("results").map(result => {
+                    i++;
                     return (
-                        <div className="autocomplete-container">
-                            {autocompleteResults.get("results").map(result => {
-                                i++;
-                                return (
-                                    <div
-                                        key={result.get('id')}
-                                        className={`autocomplete-item${this.props.currentIndex === i ? ' current' : ''}`}
-                                    >
-                                        <div className="label">
-                                            {result.get('label')}
-                                        </div>
-                                        <div className="score">
-                                            {result.get('id')} : {result.get('score')}
-                                        </div>
-                                    </div>
-                                )
-                            }).valueSeq().toArray()}
+                        <div
+                            key={result.get('id')}
+                            className={`autocomplete-item${this.props.currentIndex === i ? ' current' : ''}`}
+                        >
+                            <div className="label">
+                                {result.get('label')}
+                            </div>
+                            <div className="score">
+                                {result.get('id')} : {result.get('score')}
+                            </div>
                         </div>
                     )
-                }}
-            </GetMatchingResults>
-        );
+                }).valueSeq().toArray()}
+            </div>
+        )
     }
 }
 
 AutocompleteResultsList.defaultProps = {
 };
 AutocompleteResultsList.propTypes = {
-    query: PropTypes.string,
+    autocompleteResults: ImmutablePropTypes.map,
     currentIndex: PropTypes.number.isRequired,
 };
 

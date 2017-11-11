@@ -31,7 +31,7 @@ const searchResults = (state = Map(), action) => {
                 state :
                 state.set(action.query, Map({
                     results: OrderedMap(),
-                    totalCount: undefined,
+                    totalCount: 0,
                 }));
         case snomed_ct_constants.SEARCH_RESULTS.APPEND:
             return state.set(action.query, Map({

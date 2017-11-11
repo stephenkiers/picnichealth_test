@@ -41,7 +41,7 @@ class SnomedCtConceptSearch extends Component {
                 //     this.updateFilterTerm(e.key);
                 //     break;
             }
-            console.log(e.key);
+            // console.log(e.key);
         };
         this.onInputBlur = e => {
             if (this.state.value.length === 0) {
@@ -50,7 +50,6 @@ class SnomedCtConceptSearch extends Component {
         };
     }
     render () {
-        console.log(this.state.currentIndex);
         return (
             <div className="snomed-concept-search">
                 <Input
