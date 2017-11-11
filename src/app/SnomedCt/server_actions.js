@@ -59,21 +59,6 @@ export const snomedCtGetDefinition = id => {
                     type: snomed_ct_constants.BY_ID.BULK_UPSERT_TREE,
                     concepts: traverseConceptTree(res.trees)
                 });
-
-
-
-                // dispatch({
-                //     type: snomed_ct_constants.BY_ID.UPSERT_TREE,
-                //     id: id,
-                //     name: res.name,
-                //     semantic_types: res.semanticTypes.map(semanticType => ({
-                //         label: semanticType.semanticType,
-                //         // this way so we can add more keys later if needed
-                //     })),
-                //     alternative_terms: res.atoms.map(term => ({
-                //         label: term.name,
-                //     })),
-                // });
             }, (err) => {
                 // dispatch(handleApiErrors(err))
                 // dispatch(reduxUpdateCollectionFetchStatus(collection_id, `search_vendors`, 'idle'))

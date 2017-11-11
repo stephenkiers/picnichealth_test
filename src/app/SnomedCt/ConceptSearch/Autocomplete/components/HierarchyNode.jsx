@@ -22,6 +22,7 @@ class HierarchyNode extends Component {
         return (
             <div className={`hierarchy-node ${this.props.className}`}>
                 <div className="hierarchy-node-primary">
+                    <span className="glyphicons glyphicons-chevron-down" />
                     <span className="hierarchy-node-name">
                         {this.props.name}
                     </span>

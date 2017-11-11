@@ -3,12 +3,24 @@
     padding:10px;
     line-height: 1.1;
     border-bottom:1px solid #eee;
+
+    @for $i from 0 through 20 {
+      &:nth-child(#{$i}) {
+        padding-left:#{10 + ($i * 10)}px;
+      }
+    }
+
     .hierarchy-node-primary {
       font-size:12px;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
       margin-bottom: 3px;
+      .glyphicons {
+        font-size:8px;
+        margin-right: 2px;
+        top: 3px;
+      }
     }
     .hierarchy-node-secondary {
       font-size:10px;
@@ -16,6 +28,7 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
+      margin-left: 15px;
     }
     .hierarchy-node-name {
       font-size:12px;
