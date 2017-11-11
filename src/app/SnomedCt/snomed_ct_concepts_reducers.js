@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux-immutable'
 // import search_snomed_ct_concept from './snomed_ct_concept_reducers';
-import { Map, OrderedMap, Set } from 'immutable'
+import {fromJS, Map, OrderedMap, Set} from 'immutable'
 import {immutableNestedGetIn} from "../../utils/utils";
 
 
@@ -8,6 +8,9 @@ export const snomed_ct_constants = {
     // STATE: {},
     BY_ID: {
         CREATE: "snomed.by_id.create",
+        UPSERT_BASIC: "snomed.by_id.upsert_basic",
+        UPSERT_PARENTS: "snomed.by_id.upsert_basic",
+        UPSERT_CHILDREN: "snomed.by_id.upsert_basic",
     },
     SEARCH_RESULTS: {
         CREATE: "snomed.search_results.create",
@@ -28,6 +31,17 @@ const byId = (state = Map(), action) => {
                 state.set(action.id, Map({
                     id: action.id
                 }));
+        case snomed_ct_constants.BY_ID.UPSERT_BASIC:
+            return state.set(
+                action.id,
+                state.get(action.id).mergeDeep(
+                    Map({
+                        id: action.id,
+                        name: action.name,
+                        semantic_types: fromJS(action.semantic_types),
+                        alternative_terms: fromJS(action.alternative_terms),
+                    }))
+            );
         default:
             return state;
     }

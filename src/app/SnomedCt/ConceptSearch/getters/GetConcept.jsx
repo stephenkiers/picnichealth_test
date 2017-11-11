@@ -14,7 +14,7 @@ class GetConcept extends Component {
     }
     getConceptFromServer(props) {
         if (!props.concept) {
-            this.props.snomedCtGetDefinition();
+            this.props.snomedCtGetDefinition(props.id);
         }
     }
     render () {
@@ -30,8 +30,8 @@ const mapStateToProps = (state, ownProps) => ({
     concept: getConcept(state, ownProps.id),
 });
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    snomedCtGetDefinition() {
-        dispatch(snomedCtGetDefinition(ownProps.id))
+    snomedCtGetDefinition(id) {
+        dispatch(snomedCtGetDefinition(id));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(GetConcept);

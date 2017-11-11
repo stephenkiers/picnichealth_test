@@ -14,13 +14,24 @@ export const snomedCtGetDefinition = id => {
         });
         return apiFetch(api(api_endpoint.SNOMED_GET, id), undefined, true)
             .then((res) => {
-                console.log(res);
+                dispatch({
+                    type: snomed_ct_constants.BY_ID.UPSERT_BASIC,
+                    id: id,
+                    name: res.name,
+                    semantic_types: res.semanticTypes.map(semanticType => ({
+                        label: semanticType.semanticType,
+                        // this way so we can add more keys later if needed
+                    })),
+                    alternative_terms: res.atoms.map(term => ({
+                        label: term.name,
+                    })),
+                });
             }, (err) => {
                 // dispatch(handleApiErrors(err))
                 // dispatch(reduxUpdateCollectionFetchStatus(collection_id, `search_vendors`, 'idle'))
             });
     }
-}
+};
 
 export const snomedCtAutocompleteSearch = query => {
     return dispatch => {

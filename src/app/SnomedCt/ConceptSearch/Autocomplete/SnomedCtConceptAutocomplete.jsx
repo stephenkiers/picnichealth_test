@@ -14,7 +14,7 @@ const getCurrentNodeId = (results, i) => {
     if (i > results.get('totalCount')) {
         i = results.get('totalCount');
     }
-    return results.get('results')._list.get(i)[1].get('id');
+    return parseInt(results.get('results')._list.get(i)[1].get('id'));
 };
 
 class SnomedCtConceptAutocomplete extends Component {
