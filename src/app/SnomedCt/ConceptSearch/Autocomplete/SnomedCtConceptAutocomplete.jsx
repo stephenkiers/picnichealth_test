@@ -31,13 +31,14 @@ class SnomedCtConceptAutocomplete extends Component {
                                             query={this.props.query}
                                             currentIndex={this.props.currentIndex}
                                             autocompleteResults={autocompleteResults}
-                                            handleSetNewIndex={this.props.handleSetNewIndex}
+                                            setNewIndex={this.props.setNewIndex}
                                         />
                                     </div>
                                     <div className="col-heirarchy">
                                         {current_id &&
                                             <HierarchyList
                                                 current_id={current_id}
+                                                setNewSearchQuery={this.props.setNewSearchQuery}
                                             />
                                         }
                                     </div>
@@ -45,6 +46,7 @@ class SnomedCtConceptAutocomplete extends Component {
                                         {current_id &&
                                             <ConceptInformation
                                                 current_id={current_id}
+                                                setNewSearchQuery={this.props.setNewSearchQuery}
                                             />
                                         }
                                     </div>
@@ -63,6 +65,7 @@ SnomedCtConceptAutocomplete.defaultProps = {
 SnomedCtConceptAutocomplete.propTypes = {
     query: PropTypes.string,
     currentIndex: PropTypes.number,
-    handleSetNewIndex: PropTypes.func.isRequired,
+    setNewIndex: PropTypes.func.isRequired,
+    setNewSearchQuery: PropTypes.func.isRequired,
 };
 export default SnomedCtConceptAutocomplete;

@@ -8,7 +8,7 @@ class AutocompleteResultsListItem extends Component {
         super();
         this.onClick = e => {
             e.preventDefault();
-            this.props.handleSetNewIndex(this.props.index)
+            this.props.setNewIndex(this.props.index)
         };
     }
     render () {
@@ -55,7 +55,7 @@ class AutocompleteResultsList extends Component {
                             key={result.get('id')}
                             result={result}
                             index={i}
-                            handleSetNewIndex={this.props.handleSetNewIndex}
+                            setNewIndex={this.props.setNewIndex}
                             current={this.props.currentIndex === i}
                         />
                     )
@@ -70,7 +70,7 @@ AutocompleteResultsList.defaultProps = {
 AutocompleteResultsList.propTypes = {
     autocompleteResults: ImmutablePropTypes.map,
     currentIndex: PropTypes.number.isRequired,
-    handleSetNewIndex: PropTypes.func.isRequired,
+    setNewIndex: PropTypes.func.isRequired,
 };
 
 export default AutocompleteResultsList;

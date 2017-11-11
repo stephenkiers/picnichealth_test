@@ -8,8 +8,10 @@
     border-left: 10px solid #ccc;
   }
   .hierarchy-node {
+    cursor: pointer;
     padding:5px;
     line-height: 1.1;
+    background: #fff;
     border-bottom:1px solid #ccc;
 
     .hierarchy-node-primary {
@@ -44,6 +46,7 @@
 
     }
     &.hierarchy-current {
+      pointer: default;
       background: $select-color;
       color: #fff;
       .hierarchy-node-secondary,

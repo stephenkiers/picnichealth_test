@@ -21,6 +21,7 @@ class HierarchyChildren extends Component {
                                     id={child_id}
                                     key={child_id}
                                     open={false}
+                                    setNewSearchQuery={this.props.setNewSearchQuery}
                                 />
                             ))}
                         </div>
@@ -35,6 +36,7 @@ HierarchyChildren.defaultProps = {
 };
 HierarchyChildren.propTypes = {
     id: PropTypes.number.isRequired,
+    setNewSearchQuery: PropTypes.func.isRequired,
 };
 
 export default HierarchyChildren;

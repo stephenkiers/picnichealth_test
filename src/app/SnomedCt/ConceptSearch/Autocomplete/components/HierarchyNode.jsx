@@ -12,7 +12,10 @@ class HierarchyNode extends Component {
                         return <div className="concept-info">loading...</div>;
                     }
                     return (
-                        <div className={`hierarchy-node ${this.props.className}`}>
+                        <div
+                            className={`hierarchy-node ${this.props.className}`}
+                            onClick={this.props.setNewSearchQuery.bind(this, concept.get('id').toString())}
+                        >
                             <div className="hierarchy-node-primary">
                                 <span className={`glyphicons glyphicons-chevron-${this.props.open ? 'down' : 'right'}`} />
                                 <span className="hierarchy-node-name">
@@ -37,12 +40,14 @@ class HierarchyNode extends Component {
 
 HierarchyNode.defaultProps = {
     className: "",
+    current: false,
     open: true,
 };
 HierarchyNode.propTypes = {
     id: PropTypes.number,
     className: PropTypes.string,
     open: PropTypes.bool,
+    setNewSearchQuery: PropTypes.func.isRequired,
 };
 
 export default HierarchyNode;

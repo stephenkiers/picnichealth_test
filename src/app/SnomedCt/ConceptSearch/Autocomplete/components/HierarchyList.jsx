@@ -6,15 +6,6 @@ import HierarchyNode from "./HierarchyNode";
 import HierarchyChildren from "./HierarchyChildren";
 
 class HierarchyList extends Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            current_id: undefined,
-        };
-    }
-    componentWillReceiveProps(nextProps) {
-
-    }
     render () {
         const {current_id} = this.props;
         if (!current_id) {
@@ -36,6 +27,7 @@ class HierarchyList extends Component {
                                     key={id}
                                     id={id}
                                     className="hierarchy-parent"
+                                    setNewSearchQuery={this.props.setNewSearchQuery}
                                 />
                             ))}
                             <div>
@@ -43,15 +35,22 @@ class HierarchyList extends Component {
                                     className="hierarchy-current"
                                     id={concept.get("id")}
                                     open={concept.get("childrenCount") > 0}
+                                    setNewSearchQuery={this.props.setNewSearchQuery}
                                 />
                                 {concept.get('children')
                                     && (
                                         <div className="hierarchy-children">
-                                            <HierarchyChildren id={concept.get('id')} />
+                                            <HierarchyChildren
+                                                id={concept.get('id')}
+                                                setNewSearchQuery={this.props.setNewSearchQuery}
+                                            />
                                         </div>
                                 )}
                                 {concept.get('parentTree')
-                                    && <HierarchyChildren id={concept.get('parentTree').last()} />
+                                    && <HierarchyChildren
+                                            id={concept.get('parentTree').last()}
+                                            setNewSearchQuery={this.props.setNewSearchQuery}
+                                        />
                                 }
                             </div>
                         </div>
@@ -65,7 +64,7 @@ HierarchyList.defaultProps = {
 };
 HierarchyList.propTypes = {
     current_id: PropTypes.number,
-
+    setNewSearchQuery: PropTypes.func.isRequired,
 };
 
 export default HierarchyList;

@@ -49,7 +49,10 @@ class SnomedCtConceptSearch extends Component {
             }
         };
 
-        this.handleSetNewIndex = i => {
+        this.setNewSearchQuery = query => {
+            this.setState(() => ({value: query}))
+        }
+        this.setNewIndex = i => {
             this.setState(() => ({currentIndex: i}));
         }
     }
@@ -72,7 +75,8 @@ class SnomedCtConceptSearch extends Component {
                     <SnomedCtConceptAutocomplete
                         query={this.state.value}
                         currentIndex={this.state.currentIndex}
-                        handleSetNewIndex={this.handleSetNewIndex}
+                        setNewIndex={this.setNewIndex}
+                        setNewSearchQuery={this.setNewSearchQuery}
                     />
                 }
             </div>
