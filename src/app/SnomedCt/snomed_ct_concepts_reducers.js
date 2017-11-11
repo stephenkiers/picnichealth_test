@@ -6,7 +6,9 @@ import {immutableNestedGetIn} from "../../utils/utils";
 
 export const snomed_ct_constants = {
     // STATE: {},
-    BY_ID: {},
+    BY_ID: {
+        CREATE: "snomed.by_id.create",
+    },
     SEARCH_RESULTS: {
         CREATE: "snomed.search_results.create",
         APPEND: "snomed.search_results.append",
@@ -20,6 +22,12 @@ export const snomed_ct_constants = {
 // };
 const byId = (state = Map(), action) => {
     switch (action.type) {
+        case snomed_ct_constants.BY_ID.CREATE:
+            return state.has(action.id) ?
+                state :
+                state.set(action.id, Map({
+                    id: action.id
+                }));
         default:
             return state;
     }
@@ -54,5 +62,7 @@ const snomed_ct_concepts = combineReducers({
 export default snomed_ct_concepts;
 
 
+export const getConcept = (snomed_ct_state, id) =>
+    immutableNestedGetIn(snomed_ct_state, ['byId', id], undefined);
 export const getSearchResultIds = (snomed_ct_state, query) =>
     immutableNestedGetIn(snomed_ct_state, ['searchResults', query], undefined);

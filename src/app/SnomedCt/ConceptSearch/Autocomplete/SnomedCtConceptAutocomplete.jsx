@@ -5,15 +5,16 @@ import { connect } from 'react-redux';
 import AutocompleteResultsList from "./components/AutocompleteResultsList";
 import GetMatchingResults from "../getters/GetMatchingResults";
 import HeirarchyList from "./components/HeirarchyList";
+import ConceptInformation from "./components/ConceptInformation";
 
-const getCurrentNode = (results, i) => {
+const getCurrentNodeId = (results, i) => {
     if (!results || results.get('totalCount') === 0) {
         return undefined;
     }
     if (i > results.get('totalCount')) {
         i = results.get('totalCount');
     }
-    return results.get('results')._list.get(i)[1]
+    return results.get('results')._list.get(i)[1].get('id');
 };
 
 class SnomedCtConceptAutocomplete extends Component {
@@ -24,7 +25,7 @@ class SnomedCtConceptAutocomplete extends Component {
         return (
             <GetMatchingResults query={this.props.query}>
                 {autocompleteResults => {
-                    const current = getCurrentNode(autocompleteResults, this.props.currentIndex);
+                    const current_id = getCurrentNodeId(autocompleteResults, this.props.currentIndex);
                     return (
                         <div className="snomed-autocomplete-dropdown">
                             <div className="internal-container">
@@ -37,12 +38,18 @@ class SnomedCtConceptAutocomplete extends Component {
                                         />
                                     </div>
                                     <div className="col-heirarchy">
-                                        <HeirarchyList
-                                            current_id={current && current.get('id')}
-                                        />
+                                        {current_id &&
+                                            <HeirarchyList
+                                                current_id={current_id}
+                                            />
+                                        }
                                     </div>
                                     <div className="col-definition">
-                                        about?
+                                        {current_id &&
+                                            <ConceptInformation
+                                                current_id={current_id}
+                                            />
+                                        }
                                     </div>
                                 </div>
                             </div>

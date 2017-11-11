@@ -11,5 +11,7 @@ const rootReducer = combineReducers({
 // export default rootReducer
 export default rootReducer
 
+export const getConcept = (state, id) =>
+    fromSnomedCTConcepts.getConcept(state.get('snomed_ct_concepts'), id);
 export const getSearchResultIds = (state, query) =>
     fromSnomedCTConcepts.getSearchResultIds(state.get('snomed_ct_concepts'), query);
