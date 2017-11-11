@@ -50,7 +50,10 @@ class SnomedCtConceptSearch extends Component {
         };
 
         this.setNewSearchQuery = query => {
-            this.setState(() => ({value: query}))
+            this.setState(() => ({
+                value: query,
+                currentIndex: 0,
+            }))
         }
         this.setNewIndex = i => {
             this.setState(() => ({currentIndex: i}));

@@ -94,7 +94,7 @@ const prepareChildren = (node_array, parentTree) => {
     });
     return results;
 };
-const snomedGetChildren = (id, parentTree )=> {
+export const snomedGetChildren = (id, parentTree )=> {
     return dispatch => {
         // console.log("Get children for", id);
         apiFetch(api(api_endpoint.SNOMED_GET_CHILDREN, id), {

@@ -36,6 +36,7 @@ class HierarchyList extends Component {
                                     id={concept.get("id")}
                                     open={concept.get("childrenCount") > 0}
                                     setNewSearchQuery={this.props.setNewSearchQuery}
+                                    current={true}
                                 />
                                 {concept.get('children')
                                     && (
@@ -50,6 +51,7 @@ class HierarchyList extends Component {
                                     && <HierarchyChildren
                                             id={concept.get('parentTree').last()}
                                             setNewSearchQuery={this.props.setNewSearchQuery}
+                                            skip={concept.get('id')}
                                         />
                                 }
                             </div>

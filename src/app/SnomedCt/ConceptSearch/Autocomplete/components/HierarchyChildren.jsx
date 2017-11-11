@@ -16,14 +16,19 @@ class HierarchyChildren extends Component {
                     }
                     return (
                         <div>
-                            {concept.get('children').map(child_id => (
-                                <HierarchyNode
-                                    id={child_id}
-                                    key={child_id}
-                                    open={false}
-                                    setNewSearchQuery={this.props.setNewSearchQuery}
-                                />
-                            ))}
+                            {concept.get('children').map(child_id => {
+                                if (child_id === this.props.skip) {
+                                    return null
+                                };
+                                return (
+                                    <HierarchyNode
+                                        id={child_id}
+                                        key={child_id}
+                                        open={false}
+                                        setNewSearchQuery={this.props.setNewSearchQuery}
+                                    />
+                                );
+                            })}
                         </div>
                     )
                 }}
@@ -33,10 +38,12 @@ class HierarchyChildren extends Component {
 }
 
 HierarchyChildren.defaultProps = {
+    skip: 0,
 };
 HierarchyChildren.propTypes = {
     id: PropTypes.number.isRequired,
     setNewSearchQuery: PropTypes.func.isRequired,
+    skip: PropTypes.number,
 };
 
 export default HierarchyChildren;
