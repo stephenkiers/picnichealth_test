@@ -13,7 +13,10 @@ class GetConcept extends Component {
         this.getConceptFromServer(nextProps);
     }
     getConceptFromServer(props) {
-        if (!props.concept) {
+        if (
+            !props.concept
+            || (props.concept.get('state') === 'idle' && !props.concept.get('complete'))
+        ) {
             this.props.snomedCtGetDefinition(props.id);
         }
     }

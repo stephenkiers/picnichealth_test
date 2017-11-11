@@ -7,10 +7,12 @@ import {immutableNestedGetIn} from "../../utils/utils";
 export const snomed_ct_constants = {
     // STATE: {},
     BY_ID: {
+        STATE_FETCHING: "snomed.by_id.state.fetching",
+        STATE_IDLE: "snomed.by_id.state.idle",
         CREATE: "snomed.by_id.create",
         UPSERT_BASIC: "snomed.by_id.upsert_basic",
-        UPSERT_PARENTS: "snomed.by_id.upsert_basic",
-        UPSERT_CHILDREN: "snomed.by_id.upsert_basic",
+        UPSERT_TREE: "snomed.by_id.upsert_tree",
+        UPSERT_CHILDREN: "snomed.by_id.upsert_children",
     },
     SEARCH_RESULTS: {
         CREATE: "snomed.search_results.create",
@@ -40,8 +42,17 @@ const byId = (state = Map(), action) => {
                         name: action.name,
                         semantic_types: fromJS(action.semantic_types),
                         alternative_terms: fromJS(action.alternative_terms),
+                        complete: true,
                     }))
             );
+        case snomed_ct_constants.BY_ID.UPSERT_TREE:
+            return state.set(
+                action.id
+            );
+        case snomed_ct_constants.BY_ID.STATE_IDLE:
+            return state.setIn([action.id, 'state'], 'idle');
+        case snomed_ct_constants.BY_ID.STATE_FETCHING:
+            return state.setIn([action.id, 'state'], 'fetching');
         default:
             return state;
     }

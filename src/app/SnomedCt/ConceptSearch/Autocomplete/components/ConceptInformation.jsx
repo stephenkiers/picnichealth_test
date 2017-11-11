@@ -28,6 +28,7 @@ class ConceptInformation extends Component {
                     if (!concept) {
                         return <div className="concept-info">loading...</div>;
                     }
+                    console.log('concept', concept.toJS())
                     return (
                         <div className="concept-info">
                             <div className="concept-name">

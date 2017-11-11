@@ -29,7 +29,7 @@ class SnomedCtConceptAutocomplete extends Component {
                     return (
                         <div className="snomed-autocomplete-dropdown">
                             <div className="internal-container">
-                                <div className="d-flex">
+                                <div className="d-flex align-items-stretch">
                                     <div className="col-autocomplete">
                                         <AutocompleteResultsList
                                             query={this.props.query}
