@@ -1,0 +1,40 @@
+.concept-hierarchy {
+  .hierarchy-node {
+    padding:10px;
+    line-height: 1.1;
+    border-bottom:1px solid #eee;
+    .hierarchy-node-primary {
+      font-size:12px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin-bottom: 3px;
+    }
+    .hierarchy-node-secondary {
+      font-size:10px;
+      color: #444;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .hierarchy-node-name {
+      font-size:12px;
+    }
+    .hierarchy-node-children-count {
+      color: #999;
+    }
+
+
+    &.hierarchy-parent {
+
+    }
+    &.hierarchy-current {
+      background: $select-color;
+      color: #fff;
+      .hierarchy-node-secondary,
+      .hierarchy-node-children-count {
+        color: #fff;
+      }
+    }
+  }
+}

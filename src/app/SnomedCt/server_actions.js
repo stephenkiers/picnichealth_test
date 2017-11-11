@@ -11,13 +11,14 @@ const traverseConceptTree = (node, response = Map(), parentTree = OrderedSet()) 
         return response
     }
     const current = node[0];
-    response = response.set(current.nodeTerminologyId, Map({
-        id: current.nodeTerminologyId,
-        label: current.nodeName,
+    const currentId = parseInt(current.nodeTerminologyId);
+    response = response.set(currentId, Map({
+        id: currentId,
+        name: current.nodeName,
         childrenCount: current.childCt,
         parentTree: parentTree
     }));
-    return traverseConceptTree(current.children, response, parentTree.add(current.nodeTerminologyId));
+    return traverseConceptTree(current.children, response, parentTree.add(currentId));
 };
 
 export const snomedCtGetDefinition = id => {

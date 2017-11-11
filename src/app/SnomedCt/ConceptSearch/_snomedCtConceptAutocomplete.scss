@@ -16,7 +16,6 @@
     }
     .col-heirarchy {
       width:33%;
-      padding:10px;
     }
     .col-definition {
       width:34%;
@@ -27,3 +26,4 @@
 }
 @import "Autocomplete/components/autocompleteResultsList";
 @import "Autocomplete/components/conceptInformation";
+@import "Autocomplete/components/hierarchy";

@@ -4,7 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import AutocompleteResultsList from "./components/AutocompleteResultsList";
 import GetMatchingResults from "../getters/GetMatchingResults";
-import HeirarchyList from "./components/HeirarchyList";
+import HierarchyList from "./components/HierarchyList";
 import ConceptInformation from "./components/ConceptInformation";
 
 const getCurrentNodeId = (results, i) => {
@@ -39,7 +39,7 @@ class SnomedCtConceptAutocomplete extends Component {
                                     </div>
                                     <div className="col-heirarchy">
                                         {current_id &&
-                                            <HeirarchyList
+                                            <HierarchyList
                                                 current_id={current_id}
                                             />
                                         }
