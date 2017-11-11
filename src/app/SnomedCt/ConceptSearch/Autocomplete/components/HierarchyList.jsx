@@ -31,7 +31,7 @@ class HierarchyList extends Component {
                     return (
                         <div className="concept-hierarchy">
                             {concept.get('parentTree') && concept.get('parentTree').map(id => {
-                                return <HierarchyParent key={id} id={id}/>
+                                return <HierarchyParent key={id} id={id} />
                             })}
                             <div>
                                 <HierarchyNode
