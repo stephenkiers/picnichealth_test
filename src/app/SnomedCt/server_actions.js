@@ -37,6 +37,7 @@ export const snomedCtGetDefinition = id => {
                         label: semanticType.semanticType,
                         // this way so we can add more keys later if needed
                     })),
+                    obsolete: res.obsolete,
                     alternative_terms: res.atoms && res.atoms.map(term => ({
                         label: term.name,
                     })),
@@ -56,7 +57,7 @@ export const snomedCtGetDefinition = id => {
                 console.log(res);
                 const transformedResponse = traverseConceptTree(res.trees)
                 transformedResponse.forEach(concept => {
-                    console.log(concept);
+                    console.log(concept.toJS());
                     // dispatch({
                     //     type: snomed_ct_constants.BY_ID.UPSERT_TREE,
                     // })

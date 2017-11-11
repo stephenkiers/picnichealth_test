@@ -30,6 +30,7 @@ class ConceptInformation extends Component {
                     }
                     return (
                         <div className="concept-info">
+                            {concept.get('obsolete') && <div className="concept-obsolete">This value is obsolete</div>}
                             <div className="concept-name">
                                 {concept.get('name')}
                             </div>

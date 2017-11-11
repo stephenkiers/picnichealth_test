@@ -42,6 +42,7 @@ const byId = (state = Map(), action) => {
                         name: action.name,
                         semantic_types: fromJS(action.semantic_types),
                         alternative_terms: fromJS(action.alternative_terms),
+                        obsolete: action.obsolete,
                         complete: true,
                     }))
             );

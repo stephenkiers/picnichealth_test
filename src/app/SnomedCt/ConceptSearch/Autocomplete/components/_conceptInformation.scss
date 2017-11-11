@@ -2,7 +2,12 @@
   padding:10px;
   overflow-y: scroll;
   overflow-x: hidden;
-
+  .concept-obsolete {
+    margin:0 0 10px;
+    padding:10px;
+    background: pink;
+    color: red;
+  }
   .concept-name {
     font-size: 16px;
     font-weight: 500;
