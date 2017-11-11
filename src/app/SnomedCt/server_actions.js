@@ -96,7 +96,7 @@ const prepareChildren = (node_array, parentTree) => {
 };
 const snomedGetChildren = (id, parentTree )=> {
     return dispatch => {
-        console.log("Get children for", id);
+        // console.log("Get children for", id);
         apiFetch(api(api_endpoint.SNOMED_GET_CHILDREN, id), {
             maxResults: 10,
             sortField:"nodeName",
@@ -112,7 +112,7 @@ const snomedGetChildren = (id, parentTree )=> {
                             children: results.get("childrenConcepts"),
                             childrenCount: res.totalCount,
                         }));
-                    console.log(id, results.toJS(), insertPackage.toJS());
+                    // console.log(id, results.toJS(), insertPackage.toJS());
                     dispatch({
                         type: snomed_ct_constants.BY_ID.BULK_UPSERT,
                         concepts: insertPackage,

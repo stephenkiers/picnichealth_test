@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import GetConcept from "../../getters/GetConcept";
 
 class HierarchyNode extends Component {
     constructor(props, context) {
@@ -20,22 +21,31 @@ class HierarchyNode extends Component {
 
     render () {
         return (
-            <div className={`hierarchy-node ${this.props.className}`}>
-                <div className="hierarchy-node-primary">
-                    <span className="glyphicons glyphicons-chevron-down" />
-                    <span className="hierarchy-node-name">
-                        {this.props.name}
-                    </span>
-                </div>
-                <div className="hierarchy-node-secondary">
-                    <span className="hierarchy-node-id">
-                        {this.props.id}
-                    </span>{' '}
-                    <span className="hierarchy-node-children-count">
-                        ({this.props.childrenCount} children)
-                    </span>
-                </div>
-            </div>
+            <GetConcept id={this.props.id}>
+                {concept => {
+                    if (!concept) {
+                        return <div className="concept-info">loading...</div>;
+                    }
+                    return (
+                        <div className={`hierarchy-node ${this.props.className}`}>
+                            <div className="hierarchy-node-primary">
+                                <span className="glyphicons glyphicons-chevron-down"/>
+                                <span className="hierarchy-node-name">
+                                    {concept.get('name')}
+                                </span>
+                            </div>
+                            <div className="hierarchy-node-secondary">
+                                <span className="hierarchy-node-id">
+                                    {concept.get('id')}
+                                </span>{' '}
+                                <span className="hierarchy-node-children-count">
+                                    ({concept.get('childrenCount') || 0} children)
+                                </span>
+                            </div>
+                        </div>
+                    )
+                }}
+            </GetConcept>
         );
     }
 }
@@ -44,9 +54,7 @@ HierarchyNode.defaultProps = {
     className: "",
 };
 HierarchyNode.propTypes = {
-    name: PropTypes.string,
     id: PropTypes.number,
-    childrenCount: PropTypes.number,
     className: PropTypes.string,
 };
 

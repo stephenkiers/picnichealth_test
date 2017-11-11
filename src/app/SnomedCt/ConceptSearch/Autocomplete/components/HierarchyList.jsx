@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import GetConcept from "../../getters/GetConcept";
-import HierarchyParent from "./HierarchyParent";
 import HierarchyNode from "./HierarchyNode";
+import HierarchyChildren from "./HierarchyChildren";
 
 class HierarchyList extends Component {
     constructor(props, context) {
@@ -30,25 +30,27 @@ class HierarchyList extends Component {
                     }
                     return (
                         <div className="concept-hierarchy">
-                            {concept.get('parentTree') && concept.get('parentTree').map(id => {
-                                return <HierarchyParent key={id} id={id} />
-                            })}
+                            {concept.get('parentTree') &&
+                            concept.get('parentTree').map(id => (
+                                <HierarchyNode
+                                    key={id}
+                                    id={id}
+                                    className="hierarchy-parent"
+                                />
+                            ))}
                             <div>
                                 <HierarchyNode
                                     className="hierarchy-current"
                                     id={concept.get("id")}
-                                    name={concept.get("name")}
-                                    childrenCount={concept.get("childrenCount")}
                                 />
-                                {
-                                    concept.get('children')
-                                    && JSON.stringify(concept.get('children'))
-                                }
-                                {
-                                    1 === 3
-                                    && concept.get('parentTree')
-                                    && concept.get('children')
-                                    && JSON.stringify(concept.get('children'))
+                                {concept.get('children')
+                                    && (
+                                        <div className="hierarchy-children">
+                                            <HierarchyChildren id={concept.get('id')} />
+                                        </div>
+                                )}
+                                {concept.get('parentTree')
+                                    && <HierarchyChildren id={concept.get('parentTree').last()} />
                                 }
                             </div>
                         </div>

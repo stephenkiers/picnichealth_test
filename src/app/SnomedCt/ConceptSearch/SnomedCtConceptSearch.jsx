@@ -9,7 +9,7 @@ class SnomedCtConceptSearch extends Component {
     constructor() {
         super();
         this.state = {
-            value: '',
+            value: '408739003',
             ddOpen: false,
             currentIndex: 0,
         };

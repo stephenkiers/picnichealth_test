@@ -4,6 +4,9 @@
       border-left:#{2 + ($i * 10)}px solid #ccc;
     }
   }
+  .hierarchy-children {
+    border-left: 10px solid #ccc;
+  }
   .hierarchy-node {
     padding:5px;
     line-height: 1.1;
