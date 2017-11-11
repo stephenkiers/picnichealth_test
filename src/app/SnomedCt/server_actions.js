@@ -108,6 +108,7 @@ const snomedGetChildren = (id, parentTree )=> {
                 if (results) {
                     const insertPackage = results.get('conceptsToCreate')
                         .set(id, Map({
+                            id: id,
                             children: results.get("childrenConcepts"),
                             childrenCount: res.totalCount,
                         }));
