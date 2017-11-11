@@ -11,8 +11,8 @@ export const snomed_ct_constants = {
         STATE_IDLE: "snomed.by_id.state.idle",
         CREATE: "snomed.by_id.create",
         UPSERT_BASIC: "snomed.by_id.upsert_basic",
-        UPSERT_TREE: "snomed.by_id.upsert_tree",
-        UPSERT_CHILDREN: "snomed.by_id.upsert_children",
+        BULK_UPSERT_TREE: "snomed.by_id.bulk.upsert_tree",
+        BULK_UPSERT_CHILDREN: "snomed.by_id.bulk.upsert_children",
     },
     SEARCH_RESULTS: {
         CREATE: "snomed.search_results.create",
@@ -46,10 +46,15 @@ const byId = (state = Map(), action) => {
                         complete: true,
                     }))
             );
-        case snomed_ct_constants.BY_ID.UPSERT_TREE:
-            return state.set(
-                action.id
-            );
+        case snomed_ct_constants.BY_ID.BULK_UPSERT_TREE:
+            action.concepts.valueSeq().forEach(concept => {
+                const id = concept.get('id');
+                if (!state.get(id)) {
+                    state = state.set(id, Map());
+                }
+                state = state.set(id, state.get(id).merge(concept));
+            });
+            return state;
         case snomed_ct_constants.BY_ID.STATE_IDLE:
             return state.setIn([action.id, 'state'], 'idle');
         case snomed_ct_constants.BY_ID.STATE_FETCHING:

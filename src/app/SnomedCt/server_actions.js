@@ -1,12 +1,12 @@
 import apiFetch from '../../utils/api_fetch'
 import { api, api_endpoint } from '../../config/constants'
-import {OrderedMap, Map} from 'immutable';
+import {OrderedMap, OrderedSet, Map} from 'immutable';
 
 import {createSearchKey, stateFetching, stateIdle, updateSearchResults} from "./actions";
 import {snomed_ct_constants} from "./snomed_ct_concepts_reducers";
 
 
-const traverseConceptTree = (node, response = Map(), parent_id = undefined) => {
+const traverseConceptTree = (node, response = Map(), parentTree = OrderedSet()) => {
     if (!node || node.length < 1) {
         return response
     }
@@ -14,10 +14,10 @@ const traverseConceptTree = (node, response = Map(), parent_id = undefined) => {
     response = response.set(current.nodeTerminologyId, Map({
         id: current.nodeTerminologyId,
         label: current.nodeName,
-        children_count: current.childCt,
-        parent: parent_id
+        childrenCount: current.childCt,
+        parentTree: parentTree
     }));
-    return traverseConceptTree(current.children, response, current.nodeTerminologyId);
+    return traverseConceptTree(current.children, response, parentTree.add(current.nodeTerminologyId));
 };
 
 export const snomedCtGetDefinition = id => {
@@ -54,14 +54,10 @@ export const snomedCtGetDefinition = id => {
                 queryRestriction: null,
             }, true)
             .then((res) => {
-                console.log(res);
-                const transformedResponse = traverseConceptTree(res.trees)
-                transformedResponse.forEach(concept => {
-                    console.log(concept.toJS());
-                    // dispatch({
-                    //     type: snomed_ct_constants.BY_ID.UPSERT_TREE,
-                    // })
-                })
+                dispatch({
+                    type: snomed_ct_constants.BY_ID.BULK_UPSERT_TREE,
+                    concepts: traverseConceptTree(res.trees)
+                });
 
 
 
