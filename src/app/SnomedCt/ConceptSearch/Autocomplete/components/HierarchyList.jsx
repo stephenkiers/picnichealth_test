@@ -42,6 +42,7 @@ class HierarchyList extends Component {
                                 <HierarchyNode
                                     className="hierarchy-current"
                                     id={concept.get("id")}
+                                    open={concept.get("childrenCount") > 0}
                                 />
                                 {concept.get('children')
                                     && (

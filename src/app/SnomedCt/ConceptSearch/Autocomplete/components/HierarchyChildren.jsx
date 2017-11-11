@@ -20,6 +20,7 @@ class HierarchyChildren extends Component {
                                 <HierarchyNode
                                     id={child_id}
                                     key={child_id}
+                                    open={false}
                                 />
                             ))}
                         </div>

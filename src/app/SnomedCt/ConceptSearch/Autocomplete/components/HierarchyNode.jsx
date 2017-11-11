@@ -4,21 +4,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import GetConcept from "../../getters/GetConcept";
 
 class HierarchyNode extends Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-        };
-    }
-    shouldComponentUpdate(nextProps, nextState) {
-        return true;
-    }
-    componentDidMount() {
-    }
-    componentWillUnmount() {
-    }
-    componentWillReceiveProps(nextProps) {
-    }
-
     render () {
         return (
             <GetConcept id={this.props.id}>
@@ -29,7 +14,7 @@ class HierarchyNode extends Component {
                     return (
                         <div className={`hierarchy-node ${this.props.className}`}>
                             <div className="hierarchy-node-primary">
-                                <span className="glyphicons glyphicons-chevron-down"/>
+                                <span className={`glyphicons glyphicons-chevron-${this.props.open ? 'down' : 'right'}`} />
                                 <span className="hierarchy-node-name">
                                     {concept.get('name')}
                                 </span>
@@ -52,10 +37,12 @@ class HierarchyNode extends Component {
 
 HierarchyNode.defaultProps = {
     className: "",
+    open: true,
 };
 HierarchyNode.propTypes = {
     id: PropTypes.number,
     className: PropTypes.string,
+    open: PropTypes.bool,
 };
 
 export default HierarchyNode;
