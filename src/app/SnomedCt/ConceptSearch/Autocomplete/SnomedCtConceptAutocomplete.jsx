@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
 import AutocompleteResultsList from "./components/AutocompleteResultsList";
 import GetMatchingResults from "../getters/GetMatchingResults";
 import HierarchyList from "./components/HierarchyList";
@@ -18,9 +17,6 @@ const getCurrentNodeId = (results, i) => {
 };
 
 class SnomedCtConceptAutocomplete extends Component {
-    constructor() {
-        super();
-    }
     render () {
         return (
             <GetMatchingResults query={this.props.query}>
@@ -35,6 +31,7 @@ class SnomedCtConceptAutocomplete extends Component {
                                             query={this.props.query}
                                             currentIndex={this.props.currentIndex}
                                             autocompleteResults={autocompleteResults}
+                                            handleSetNewIndex={this.props.handleSetNewIndex}
                                         />
                                     </div>
                                     <div className="col-heirarchy">
@@ -66,11 +63,6 @@ SnomedCtConceptAutocomplete.defaultProps = {
 SnomedCtConceptAutocomplete.propTypes = {
     query: PropTypes.string,
     currentIndex: PropTypes.number,
+    handleSetNewIndex: PropTypes.func.isRequired,
 };
-
-const mapStateToProps = (state, ownProps) => ({
-});
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-});
-export default connect(mapStateToProps, mapDispatchToProps)(SnomedCtConceptAutocomplete);
+export default SnomedCtConceptAutocomplete;

@@ -3,10 +3,37 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import GetMatchingResults from "../../getters/GetMatchingResults";
 
+class AutocompleteResultsListItem extends Component {
+    constructor() {
+        super();
+        this.onClick = e => {
+            e.preventDefault();
+            this.props.handleSetNewIndex(this.props.index)
+        };
+    }
+    render () {
+        const {result} = this.props;
+        return(
+            <div
+                key={result.get('id')}
+                className={`autocomplete-item${this.props.current ? ' current' : ''}`}
+                onClick={this.onClick}
+            >
+                <div className="label">
+                    {result.get('label')}
+                </div>
+                <div className="item-id">
+                    {result.get('id')}
+                </div>
+            </div>
+        )
+    }
+}
 class AutocompleteResultsList extends Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
+    constructor() {
+        super();
+        this.onClick = e => {
+            e.preventDefault();
         };
     }
     render () {
@@ -24,17 +51,13 @@ class AutocompleteResultsList extends Component {
                 {autocompleteResults.get("results").map(result => {
                     i++;
                     return (
-                        <div
+                        <AutocompleteResultsListItem
                             key={result.get('id')}
-                            className={`autocomplete-item${this.props.currentIndex === i ? ' current' : ''}`}
-                        >
-                            <div className="label">
-                                {result.get('label')}
-                            </div>
-                            <div className="item-id">
-                                {result.get('id')}
-                            </div>
-                        </div>
+                            result={result}
+                            index={i}
+                            handleSetNewIndex={this.props.handleSetNewIndex}
+                            current={this.props.currentIndex === i}
+                        />
                     )
                 }).valueSeq().toArray()}
             </div>
@@ -47,6 +70,7 @@ AutocompleteResultsList.defaultProps = {
 AutocompleteResultsList.propTypes = {
     autocompleteResults: ImmutablePropTypes.map,
     currentIndex: PropTypes.number.isRequired,
+    handleSetNewIndex: PropTypes.func.isRequired,
 };
 
 export default AutocompleteResultsList;
