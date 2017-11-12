@@ -68,11 +68,13 @@ const searchResults = (state = Map(), action) => {
             return state.has(action.query) ?
                 state :
                 state.set(action.query, Map({
+                    state: 'init',
                     results: OrderedMap(),
                     totalCount: 0,
                 }));
         case snomed_ct_constants.SEARCH_RESULTS.APPEND:
             return state.set(action.query, Map({
+                state: 'idle',
                 results: state.getIn([action.query, 'results'])
                     .merge(Set(action.mapOfResults))
                     .sort((a, b) => b.get('score') - a.get('score')),

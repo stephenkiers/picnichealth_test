@@ -19,12 +19,18 @@ const getCurrentNodeId = (results, i) => {
 class SnomedCtConceptAutocomplete extends Component {
     render () {
         return (
-            <GetMatchingResults query={this.props.query}>
-                {autocompleteResults => {
-                    const current_id = getCurrentNodeId(autocompleteResults, this.props.currentIndex);
-                    return (
-                        <div className="snomed-autocomplete-dropdown">
-                            <div className="internal-container">
+            <div className="snomed-autocomplete-dropdown">
+                <div className="internal-container">
+                    <GetMatchingResults query={this.props.query}>
+                        {autocompleteResults => {
+                            const current_id = getCurrentNodeId(autocompleteResults, this.props.currentIndex);
+                            if (!autocompleteResults || autocompleteResults.get('state') === "init") {
+                                return <div>Searching</div>
+                            }
+                            if (autocompleteResults.get('totalCount') === 0) {
+                                return <div>No results.</div>
+                            }
+                            return (
                                 <div className="d-flex align-items-stretch">
                                     <div className="col-autocomplete">
                                         <AutocompleteResultsList
@@ -52,11 +58,11 @@ class SnomedCtConceptAutocomplete extends Component {
                                         }
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    )
-                }}
-            </GetMatchingResults>
+                            )
+                        }}
+                    </GetMatchingResults>
+                </div>
+            </div>
         );
     }
 }

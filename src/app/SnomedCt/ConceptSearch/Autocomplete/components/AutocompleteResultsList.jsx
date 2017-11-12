@@ -47,13 +47,6 @@ class AutocompleteResultsList extends Component {
     }
     render () {
         const {autocompleteResults} = this.props;
-        if (!autocompleteResults) {
-            return <div>Searching...</div>;
-        }
-        if (autocompleteResults.get('totalCount') === 0) {
-            return <div>No results found.</div>;
-        }
-
         let i = -1; // Map doesn't have an index, so we are providing one
         return (
             <div className="autocomplete-container">
