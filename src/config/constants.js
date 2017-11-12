@@ -3,7 +3,7 @@ export const dev_mode = (process.browser) ?
     process.env.NODE_ENV !== "production";
 
 export const config = {
-    basePath: dev_mode ? "http://localhost:8080" : "https://picnichealth.herokuapp.com",
+    basePath: dev_mode ? "http://localhost:8080" : "https://picnichealth.herokuapp.com"
 };
 
 export const api_method = {
