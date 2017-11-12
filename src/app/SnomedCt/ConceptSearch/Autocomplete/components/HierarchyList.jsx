@@ -39,22 +39,28 @@ class HierarchyList extends Component {
                                     setNewSearchQuery={this.props.setNewSearchQuery}
                                     current={true}
                                 />
-                                {concept.get('children')
+                                {concept.get('childrenCount') > 0
                                     && (
                                         <div className="hierarchy-children">
                                             <HierarchyChildren
-                                                id={concept.get('id')}
+                                                concept={concept}
                                                 setNewSearchQuery={this.props.setNewSearchQuery}
                                             />
                                         </div>
                                 )}
                                 {concept.get('parentTree')
                                     && concept.get('parentTree').size > 0
-                                    && <HierarchyChildren
+                                    && <GetConcept
                                             id={concept.get('parentTree').last()}
-                                            setNewSearchQuery={this.props.setNewSearchQuery}
-                                            skip={concept.get('id')}
-                                        />
+                                        >
+                                            {parentConcept =>
+                                                <HierarchyChildren
+                                                    concept={parentConcept}
+                                                    setNewSearchQuery={this.props.setNewSearchQuery}
+                                                    skip={concept.get('id')}
+                                                />
+                                            }
+                                        </GetConcept>
                                 }
                             </div>
                         </div>

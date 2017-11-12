@@ -101,7 +101,6 @@ const buildResultsFromById = (snomed_ct_state, query) => {
     // and return that conceptId as an array
     const concept = getConcept(snomed_ct_state, query);
     if (concept) {
-        console.log('concept', concept.toJS());
         return Map({
             results: OrderedMap({
                 [query]: Map({

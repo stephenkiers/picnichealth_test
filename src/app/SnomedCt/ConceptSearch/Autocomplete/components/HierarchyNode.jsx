@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import GetConcept from "../../getters/GetConcept";
-import GetChildren from "../../getters/GetChildren";
 
 class HierarchyNode extends Component {
     render () {
@@ -31,7 +30,6 @@ class HierarchyNode extends Component {
                                     ({concept.get('childrenCount') || 0} children)
                                 </span>
                             </div>
-                            {this.props.current && <GetChildren concept={concept} />}
                         </div>
                     )
                 }}
