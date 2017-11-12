@@ -94,5 +94,29 @@ export default snomed_ct_concepts;
 
 export const getConcept = (snomed_ct_state, id) =>
     immutableNestedGetIn(snomed_ct_state, ['byId', id], undefined);
-export const getSearchResultIds = (snomed_ct_state, query) =>
-    immutableNestedGetIn(snomed_ct_state, ['searchResults', query], undefined);
+
+
+const buildResultsFromById = (snomed_ct_state, query) => {
+    // check if query is a conceptId that has already been loaded,
+    // and return that conceptId as an array
+    const concept = getConcept(snomed_ct_state, query);
+    if (concept) {
+        console.log('concept', concept.toJS());
+        return Map({
+            results: OrderedMap({
+                [query]: Map({
+                    id: query,
+                    name: concept.get('name'),
+                    score: 1,
+                }),
+            }),
+            totalCount: 1,
+        });
+    }
+    return undefined;
+}
+export const getSearchResultIds = (snomed_ct_state, query) => {
+    // check if query has been cached already
+    const queryResults = immutableNestedGetIn(snomed_ct_state, ['searchResults', query], undefined);
+    return queryResults ? queryResults : buildResultsFromById(snomed_ct_state, parseInt(query));
+}
