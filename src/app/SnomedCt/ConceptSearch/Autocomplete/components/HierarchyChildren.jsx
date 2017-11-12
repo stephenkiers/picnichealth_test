@@ -16,12 +16,11 @@ class HierarchyChildren extends Component {
         }
     }
     checkAndGetChildren(concept) {
-        console.log(concept.get('id'), concept.get('childrenCount'), concept.get('children') && concept.get('children').size);
         if (
             concept.get('childrenCount') > 0
             && !concept.get('children')
         ) {
-            console.log("Save the children!", concept.get('parentTree').toJS(), concept.get('id'));
+            // console.log("Save the children!", concept.get('parentTree').toJS(), concept.get('id'));
             const parentTree = concept.get('parentTree').add(concept.get('id'));
             this.props.snomedGetChildren(parentTree);
         }
