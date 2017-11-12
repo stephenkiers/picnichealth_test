@@ -5,6 +5,19 @@ import {OrderedMap, OrderedSet, Map} from 'immutable';
 import {createSearchKey, stateFetching, stateIdle, updateSearchResults} from "./actions";
 import {snomed_ct_constants} from "./snomed_ct_concepts_reducers";
 
+
+const simplifySemanticType = (semanticTypes) => {
+    return semanticTypes && semanticTypes
+        .map(semanticType => semanticType.name)
+        .filter(function(item, i, ar){ return ar.indexOf(item) === i; })
+        // because there seems to be duplicates here, and I don't want duplicates
+        // would come up with a better solution with more time
+        .map(semanticType => ({
+            label: semanticType,
+            // this way so we can add more keys later if needed
+        }));
+};
+
 const snomedGetNode = id => {
     return dispatch => {
         apiFetch(api(api_endpoint.SNOMED_GET, id), undefined, true)
@@ -13,14 +26,9 @@ const snomedGetNode = id => {
                     type: snomed_ct_constants.BY_ID.UPSERT_DEFAULT,
                     id: id,
                     name: res.name,
-                    semantic_types: res.semanticTypes && res.semanticTypes.map(semanticType => ({
-                        label: semanticType.semanticType,
-                        // this way so we can add more keys later if needed
-                    })),
+                    semantic_types: simplifySemanticType(res.semantic_types),
                     obsolete: res.obsolete,
-                    alternative_terms: res.atoms && res.atoms.map(term => ({
-                        label: term.name,
-                    })),
+                    alternative_terms: simplifySemanticType(res.atoms),
                 });
                 dispatch(stateIdle(id));
             }, (err) => {
