@@ -36,6 +36,15 @@ class AutocompleteResultsList extends Component {
             e.preventDefault();
         };
     }
+    componentWillReceiveProps(nextProps) {
+        if (
+            nextProps.autocompleteResults
+            && (nextProps.currentIndex !== this.props.currentIndex || !nextProps.autocompleteResults.equals(this.props.autocompleteResults))
+            && nextProps.autocompleteResults.get('results').size > 0
+        ) {
+            this.props.setShadowId(nextProps.autocompleteResults.get('results')._list.get(nextProps.currentIndex)[0]);
+        }
+    }
     render () {
         const {autocompleteResults} = this.props;
         if (!autocompleteResults) {
@@ -71,6 +80,7 @@ AutocompleteResultsList.propTypes = {
     autocompleteResults: ImmutablePropTypes.map,
     currentIndex: PropTypes.number.isRequired,
     setNewIndex: PropTypes.func.isRequired,
+    setShadowId: PropTypes.func.isRequired,
 };
 
 export default AutocompleteResultsList;

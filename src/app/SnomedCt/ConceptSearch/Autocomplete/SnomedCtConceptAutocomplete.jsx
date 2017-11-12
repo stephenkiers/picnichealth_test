@@ -32,6 +32,7 @@ class SnomedCtConceptAutocomplete extends Component {
                                             currentIndex={this.props.currentIndex}
                                             autocompleteResults={autocompleteResults}
                                             setNewIndex={this.props.setNewIndex}
+                                            setShadowId={this.props.setShadowId}
                                         />
                                     </div>
                                     <div className="col-heirarchy">
@@ -67,5 +68,6 @@ SnomedCtConceptAutocomplete.propTypes = {
     currentIndex: PropTypes.number,
     setNewIndex: PropTypes.func.isRequired,
     setNewSearchQuery: PropTypes.func.isRequired,
+    setShadowId: PropTypes.func.isRequired,
 };
 export default SnomedCtConceptAutocomplete;

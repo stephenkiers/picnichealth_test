@@ -12,6 +12,7 @@ class SnomedCtConceptSearch extends Component {
             value: '408739003',
             ddOpen: false,
             currentIndex: 0,
+            shadowId: undefined,
         };
         this.onInputChange = e => {
             const value = e.target.value;
@@ -55,7 +56,13 @@ class SnomedCtConceptSearch extends Component {
         this.setNewIndex = i => {
             this.setState(() => ({currentIndex: i}));
         };
+        this.setShadowId = id => {
+            this.setState(() => ({shadowId: id}));
+        };
         this.hideDd = () => {
+            console.log('leaving now, check value is good...');
+            console.log('set to', this.state.shadowId);
+
             this.toggleDropDownState(null, null, false);
         };
         this.showDd = () => this.toggleDropDownState(null, null, true);
@@ -123,6 +130,7 @@ class SnomedCtConceptSearch extends Component {
                         currentIndex={this.state.currentIndex}
                         setNewIndex={this.setNewIndex}
                         setNewSearchQuery={this.setNewSearchQuery}
+                        setShadowId={this.setShadowId}
                     />
                 }
             </div>
