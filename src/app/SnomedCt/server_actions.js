@@ -152,7 +152,7 @@ export const snomedCtAutocompleteSearch = query => {
                     if (concept.terminology === "SNOMEDCT") {
                         ids = ids.set(concept.terminologyId, Map({
                             id: concept.terminologyId,
-                            label: concept.value,
+                            name: concept.value,
                             score: concept.score,
                         }));
                     }

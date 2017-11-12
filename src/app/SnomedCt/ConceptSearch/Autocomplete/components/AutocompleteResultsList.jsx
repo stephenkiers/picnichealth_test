@@ -20,7 +20,7 @@ class AutocompleteResultsListItem extends Component {
                 onClick={this.onClick}
             >
                 <div className="label">
-                    {result.get('label')}
+                    {result.get('name')}
                 </div>
                 <div className="item-id">
                     {result.get('id')}
