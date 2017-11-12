@@ -22,6 +22,9 @@ class SnomedCtConceptSearch extends Component {
         };
         this.onInputFocus = e => {
             this.showDd();
+            if (this.props.onFocus) {
+                this.props.onFocus(e);
+            }
         };
         this.onInputKeyDown = e => {
             switch(e.key) {
@@ -42,11 +45,6 @@ class SnomedCtConceptSearch extends Component {
                 //     break;
             }
             // console.log(e.key);
-        };
-        this.onInputBlur = e => {
-            if (this.state.value.length === 0) {
-                this.hideDd()
-            }
         };
         this.setNewSearchQuery = query => {
             this.setState(() => ({
@@ -76,12 +74,21 @@ class SnomedCtConceptSearch extends Component {
         this.hideDd = () => this.toggleDropDownState(null, null, false);
         this.showDd = () => this.toggleDropDownState(null, null, true);
         this.handleWindowClick = (e) => {
+            console.log(this);
+            this._input._input.focus();
             if (
                 this._snomedInput !== e.target // not the container
                 && !this._snomedInput.contains(e.target) // not a child of the container
                 && document.body.contains(e.target) // fix for weird issue where item is removed from document.
                 // anything clicked should be a part of the document or else we cannot tell if it is inside or not
-            ) {this.hideDd();}
+            ) {
+                this.hideDd();
+            }
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.currentInputId !== nextProps.id) {
+            this.hideDd();
         }
     }
     componentWillUnmount() {
@@ -102,15 +109,15 @@ class SnomedCtConceptSearch extends Component {
                 ref={snomedInput => this._snomedInput = snomedInput}
             >
                 <Input
-                    id="SnomedCtConceptInput"
+                    id={this.props.id}
                     tabIndex={this.props.tabIndex}
                     label="SNOMED CT Code"
                     className="snomed-concept-search-input"
                     value={this.state.value}
                     onChange={this.onInputChange}
-                    onBlur={this.onInputBlur}
                     onFocus={this.onInputFocus}
                     onKeyDown={this.onInputKeyDown}
+                    ref={input => this._input = input}
                 />
                 {
                     this.state.ddOpen &&
@@ -129,9 +136,12 @@ class SnomedCtConceptSearch extends Component {
 SnomedCtConceptSearch.defaultProps = {
 };
 SnomedCtConceptSearch.propTypes = {
+    id: PropTypes.string.isRequired,
     tabIndex: PropTypes.number.isRequired,
     value: PropTypes.number,
     onChange: PropTypes.func.isRequired,
+    onFocus: PropTypes.func,
+    currentInputId: PropTypes.string,
 };
 const mapStateToProps = (state, ownProps) => ({
 });

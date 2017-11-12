@@ -25,13 +25,13 @@ class Input extends Component {
         this.onBlur = e => {
             // this.setState(() => ({focus: false}));
             if (typeof this.props.onBlur === "function") {
-                this.props.onBlur();
+                this.props.onBlur(e);
             }
         };
         this.onFocus = e => {
             this.setState(() => ({focus: true}));
             if (typeof this.props.onFocus === "function") {
-                this.props.onFocus();
+                this.props.onFocus(e);
             }
         };
     }
@@ -55,7 +55,7 @@ class Input extends Component {
                        tabIndex={this.props.tabIndex}
                        autoComplete={ this.props.autocomplete }
                        autoFocus={this.props.autoFocus}
-                       /*ref={(input) => {this.input = input}}*/
+                       ref={input => this._input = input}
                 />
             </div>
         )
