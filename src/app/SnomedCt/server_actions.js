@@ -150,8 +150,9 @@ export const snomedCtAutocompleteSearch = query => {
                 let ids = OrderedMap();
                 res.results.forEach(concept => {
                     if (concept.terminology === "SNOMEDCT") {
-                        ids = ids.set(concept.terminologyId, Map({
-                            id: concept.terminologyId,
+                        const id = parseInt(concept.terminologyId);
+                        ids = ids.set(id, Map({
+                            id,
                             name: concept.value,
                             score: concept.score,
                         }));
