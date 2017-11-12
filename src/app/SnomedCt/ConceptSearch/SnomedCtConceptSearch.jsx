@@ -9,15 +9,14 @@ class SnomedCtConceptSearch extends Component {
     constructor() {
         super();
         this.state = {
-            value: '408739003',
             ddOpen: false,
             currentIndex: 0,
             shadowId: undefined,
         };
         this.onInputChange = e => {
             const value = e.target.value;
+            this.props.onChange(value);
             this.setState(() => ({
-                value,
                 currentIndex: 0,
             }));
         };
@@ -48,8 +47,8 @@ class SnomedCtConceptSearch extends Component {
             // console.log(e.key);
         };
         this.setNewSearchQuery = query => {
+            this.props.onChange(query);
             this.setState(() => ({
-                value: query,
                 currentIndex: 0,
             }))
         };
@@ -60,9 +59,7 @@ class SnomedCtConceptSearch extends Component {
             this.setState(() => ({shadowId: id}));
         };
         this.hideDd = () => {
-            console.log('leaving now, check value is good...');
-            console.log('set to', this.state.shadowId);
-
+            this.props.onChange(this.state.shadowId); // set value to current selection on leave
             this.toggleDropDownState(null, null, false);
         };
         this.showDd = () => this.toggleDropDownState(null, null, true);
@@ -117,7 +114,7 @@ class SnomedCtConceptSearch extends Component {
                     tabIndex={this.props.tabIndex}
                     label="SNOMED CT Code"
                     className="snomed-concept-search-input"
-                    value={this.state.value}
+                    value={this.props.value.toString()}
                     onChange={this.onInputChange}
                     onFocus={this.onInputFocus}
                     onKeyDown={this.onInputKeyDown}
@@ -126,7 +123,7 @@ class SnomedCtConceptSearch extends Component {
                 {
                     this.state.ddOpen &&
                     <SnomedCtConceptAutocomplete
-                        query={this.state.value}
+                        query={this.props.value.toString()}
                         currentIndex={this.state.currentIndex}
                         setNewIndex={this.setNewIndex}
                         setNewSearchQuery={this.setNewSearchQuery}
@@ -143,7 +140,7 @@ SnomedCtConceptSearch.defaultProps = {
 SnomedCtConceptSearch.propTypes = {
     id: PropTypes.string.isRequired,
     tabIndex: PropTypes.number.isRequired,
-    value: PropTypes.number,
+    value: PropTypes.any,
     onChange: PropTypes.func.isRequired,
     onFocus: PropTypes.func,
     currentInputId: PropTypes.string,
