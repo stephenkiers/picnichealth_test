@@ -55,6 +55,10 @@ class SnomedCtConceptSearch extends Component {
         this.setNewIndex = i => {
             this.setState(() => ({currentIndex: i}));
         };
+        this.hideDd = () => {
+            this.toggleDropDownState(null, null, false);
+        };
+        this.showDd = () => this.toggleDropDownState(null, null, true);
         this.toggleDropDownState = (proxy=null, event=null, new_state = !this.state.ddOpen) => {
             if (event) {
                 event.preventDefault()
@@ -71,8 +75,6 @@ class SnomedCtConceptSearch extends Component {
                 this.setState(() => ({ddOpen: false}));
             }
         };
-        this.hideDd = () => this.toggleDropDownState(null, null, false);
-        this.showDd = () => this.toggleDropDownState(null, null, true);
         this.handleWindowClick = (e) => {
             if (
                 this._snomedInput !== e.target // not the container
