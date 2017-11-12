@@ -104,6 +104,7 @@ class SnomedCtConceptSearch extends Component {
         }
     }
     render () {
+        const value = this.props.value ? this.props.value.toString() : undefined;
         return (
             <div
                 className="snomed-concept-search"
@@ -114,16 +115,17 @@ class SnomedCtConceptSearch extends Component {
                     tabIndex={this.props.tabIndex}
                     label="SNOMED CT Code"
                     className="snomed-concept-search-input"
-                    value={this.props.value.toString()}
+                    value={value}
                     onChange={this.onInputChange}
                     onFocus={this.onInputFocus}
                     onKeyDown={this.onInputKeyDown}
                     ref={input => this._input = input}
                 />
                 {
-                    this.state.ddOpen &&
-                    <SnomedCtConceptAutocomplete
-                        query={this.props.value.toString()}
+                    this.props.value
+                    && this.state.ddOpen
+                    && <SnomedCtConceptAutocomplete
+                        query={value}
                         currentIndex={this.state.currentIndex}
                         setNewIndex={this.setNewIndex}
                         setNewSearchQuery={this.setNewSearchQuery}
