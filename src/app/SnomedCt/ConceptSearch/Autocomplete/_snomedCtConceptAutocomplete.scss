@@ -1,0 +1,43 @@
+.snomed-autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left:0;
+  right:0;
+
+  border:5px solid #fff;
+  border-left-width: 0;
+  border-right-width: 0;
+  .internal-container {
+    background: #eee;
+    border: 1px solid #222;
+    min-height:200px;
+
+    .snomed-state-searching {
+      padding:10px;
+      color: #777;
+    }
+    .snomed-state-no-results {
+      padding:10px;
+      color: red;
+    }
+
+    .col-autocomplete {
+      width:25%;
+      background: #fff;
+      border-right:1px solid #ccc;
+    }
+    .col-heirarchy {
+      width:50%;
+      background: #ccc;
+    }
+    .col-definition {
+      width:25%;
+      padding:10px;
+      background: #fff;
+      border-left: 3px double #ccc;
+    }
+  }
+}
+@import "components/autocompleteResultsList";
+@import "components/conceptInformation";
+@import "components/hierarchy";

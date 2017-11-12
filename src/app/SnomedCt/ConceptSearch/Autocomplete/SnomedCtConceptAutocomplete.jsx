@@ -25,10 +25,10 @@ class SnomedCtConceptAutocomplete extends Component {
                         {autocompleteResults => {
                             const current_id = getCurrentNodeId(autocompleteResults, this.props.currentIndex);
                             if (!autocompleteResults || autocompleteResults.get('state') === "init") {
-                                return <div>Searching</div>
+                                return <div className="snomed-state-searching">Searching...</div>
                             }
                             if (autocompleteResults.get('totalCount') === 0) {
-                                return <div>No results.</div>
+                                return <div className="snomed-state-no-results">No results.</div>
                             }
                             return (
                                 <div className="d-flex align-items-stretch">
