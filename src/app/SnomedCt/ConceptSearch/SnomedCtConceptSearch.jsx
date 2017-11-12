@@ -60,7 +60,12 @@ class SnomedCtConceptSearch extends Component {
             this.setState(() => ({shadowId: id}));
         };
         this.hideDd = () => {
-            this.props.onChange(this.state.shadowId); // set value to current selection on leave
+            const {shadowId} = this.state;
+            this.setState(() => ({
+                currentIndex: 0,
+                shadowId: undefined,
+            }));
+            this.props.onChange(shadowId); // set value to current selection on leave
             this.toggleDropDownState(null, null, false);
         };
         this.showDd = () => this.toggleDropDownState(null, null, true);
