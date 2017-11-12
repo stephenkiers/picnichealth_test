@@ -74,8 +74,6 @@ class SnomedCtConceptSearch extends Component {
         this.hideDd = () => this.toggleDropDownState(null, null, false);
         this.showDd = () => this.toggleDropDownState(null, null, true);
         this.handleWindowClick = (e) => {
-            console.log(this);
-            this._input._input.focus();
             if (
                 this._snomedInput !== e.target // not the container
                 && !this._snomedInput.contains(e.target) // not a child of the container
@@ -83,6 +81,8 @@ class SnomedCtConceptSearch extends Component {
                 // anything clicked should be a part of the document or else we cannot tell if it is inside or not
             ) {
                 this.hideDd();
+            } else {
+                this._input._input.focus();
             }
         }
     }
