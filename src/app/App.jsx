@@ -15,7 +15,6 @@ class App extends Component {
         this.onFocus = e => {
             // I really don't like this, but cannot think of a better solution at the moment
             const currentInputId = e.target.id;
-            console.log(currentInputId);
             this.setState(() => ({currentInputId}))
         }
     }
