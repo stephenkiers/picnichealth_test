@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import { api_method } from '../config/constants';
+import {api_method, config} from '../config/constants';
 import Cookies from 'cookies-js';
 import FormData from 'form-data';
 
@@ -37,7 +37,7 @@ const handleResponse = (response) => {
 
 const apiFetchPromise = (api_constant, body = {}, json_body = false) => {
     return new Promise((resolve, reject) => {
-        let url = `http://localhost:8080${api_constant.path}`;
+        let url = `${config.basePath}${api_constant.path}`;
         // const form_headers = new Headers();
         let form_body;
         if (body !== {} || body.length > 0) {
