@@ -21,7 +21,7 @@ class SnomedCtConceptSearch extends Component {
             }));
         };
         this.onInputFocus = e => {
-            this.setState(() => ({ddOpen: true}));
+            this.showDd();
         };
         this.onInputKeyDown = e => {
             switch(e.key) {
@@ -45,7 +45,7 @@ class SnomedCtConceptSearch extends Component {
         };
         this.onInputBlur = e => {
             if (this.state.value.length === 0) {
-                this.setState(() => ({ddOpen: false}));
+                this.hideDd()
             }
         };
         this.setNewSearchQuery = query => {
@@ -57,6 +57,38 @@ class SnomedCtConceptSearch extends Component {
         this.setNewIndex = i => {
             this.setState(() => ({currentIndex: i}));
         };
+        this.toggleDropDownState = (proxy=null, event=null, new_state = !this.state.ddOpen) => {
+            if (event) {
+                event.preventDefault()
+            }
+            if (new_state === true) {
+                // Hide dropdown block on click outside the block
+                window.addEventListener('click', this.handleWindowClick);
+                // console.log('added listener')
+                this.setState(() => ({ddOpen: true}));
+            } else {
+                // Remove click event listener on component unmount
+                window.removeEventListener('click', this.handleWindowClick);
+                // console.log('removed listener')
+                this.setState(() => ({ddOpen: false}));
+            }
+        };
+        this.hideDd = () => this.toggleDropDownState(null, null, false);
+        this.showDd = () => this.toggleDropDownState(null, null, true);
+        this.handleWindowClick = (e) => {
+            if (
+                this._snomedInput !== e.target // not the container
+                && !this._snomedInput.contains(e.target) // not a child of the container
+                && document.body.contains(e.target) // fix for weird issue where item is removed from document.
+                // anything clicked should be a part of the document or else we cannot tell if it is inside or not
+            ) {this.hideDd();}
+        }
+    }
+    componentWillUnmount() {
+        if (this.state.open) {
+            // console.log('removed listener')
+            window.removeEventListener('click', this.handleWindowClick);
+        }
     }
     // componentDidUpdate(prevProps, prevState) {
     //     if (prevState.value !== this.state.value) {
@@ -65,7 +97,10 @@ class SnomedCtConceptSearch extends Component {
     // }
     render () {
         return (
-            <div className="snomed-concept-search">
+            <div
+                className="snomed-concept-search"
+                ref={snomedInput => this._snomedInput = snomedInput}
+            >
                 <Input
                     id="SnomedCtConceptInput"
                     tabIndex={this.props.tabIndex}
@@ -76,7 +111,6 @@ class SnomedCtConceptSearch extends Component {
                     onBlur={this.onInputBlur}
                     onFocus={this.onInputFocus}
                     onKeyDown={this.onInputKeyDown}
-                    /* ref={(input) => {this.input = input}} */
                 />
                 {
                     this.state.ddOpen &&
@@ -96,6 +130,8 @@ SnomedCtConceptSearch.defaultProps = {
 };
 SnomedCtConceptSearch.propTypes = {
     tabIndex: PropTypes.number.isRequired,
+    value: PropTypes.number,
+    onChange: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state, ownProps) => ({
 });
