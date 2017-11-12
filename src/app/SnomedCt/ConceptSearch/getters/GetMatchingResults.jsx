@@ -17,6 +17,9 @@ class GetMatchingResults extends Component {
             maxWait: 1500,
         });
     }
+    componentDidMount() {
+        this.triggerLookupDebounced(this.props.query);
+    }
     componentWillReceiveProps(nextProps) {
         if (
             !nextProps.autocompleteResults
