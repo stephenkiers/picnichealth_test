@@ -23,7 +23,26 @@ class App extends Component {
             <ApplicationLayout>
                 <div className="row">
                     <div className="col-4">
-                        Sidebar for instructions later
+                        <div className="sidebar">
+                            <h2>
+                                Overview Video
+                            </h2>
+                            <a href="https://www.youtube.com/watch?v=6ihjPKkckd0" target="_blank" className="youtube-video">
+                                <span className="glyphicons glyphicons-play-button" />
+                                <img src="http://img.youtube.com/vi/6ihjPKkckd0/mqdefault.jpg" className="sidebar-image" />
+                            </a>
+                            <h2>Github Link</h2>
+                            <p>
+                                <a href="https://github.com/stephenkiers/picnichealth_test" target="_blank">
+                                    View source here
+                                </a>
+                            </p>
+
+                            <h2>Special Thanks</h2>
+                            <p>
+                                Data lookups provided by the <a href="https://snomed.terminology.tools/#/content#top">SNOMED Terminology Server</a>
+                            </p>
+                        </div>
                     </div>
                     <div className="col-8">
                         <form>
