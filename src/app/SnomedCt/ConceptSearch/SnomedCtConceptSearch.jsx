@@ -65,7 +65,9 @@ class SnomedCtConceptSearch extends Component {
                 currentIndex: 0,
                 shadowId: undefined,
             }));
-            this.props.onChange(shadowId); // set value to current selection on leave
+            if (shadowId) {
+                this.props.onChange(shadowId); // set value to current selection on leave
+            }
             this.toggleDropDownState(null, null, false);
         };
         this.showDd = () => this.toggleDropDownState(null, null, true);
@@ -99,7 +101,10 @@ class SnomedCtConceptSearch extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.currentInputId !== nextProps.id) {
+        if (
+            this.props.currentInputId !== nextProps.currentInputId
+            && nextProps.currentInputId !== nextProps.id
+        ) {
             this.hideDd();
         }
     }
