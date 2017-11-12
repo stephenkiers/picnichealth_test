@@ -18,6 +18,7 @@ class SnomedCtConceptSearch extends Component {
             this.props.onChange(value);
             this.setState(() => ({
                 currentIndex: 0,
+                shadowId: undefined,
             }));
         };
         this.onInputFocus = e => {
