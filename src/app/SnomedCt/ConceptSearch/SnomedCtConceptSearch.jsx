@@ -97,11 +97,6 @@ class SnomedCtConceptSearch extends Component {
             window.removeEventListener('click', this.handleWindowClick);
         }
     }
-    // componentDidUpdate(prevProps, prevState) {
-    //     if (prevState.value !== this.state.value) {
-    //         this.input.input.focus();
-    //     }
-    // }
     render () {
         return (
             <div
