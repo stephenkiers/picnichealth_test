@@ -29,7 +29,7 @@ class App extends Component {
                             </h2>
                             <a href="https://www.youtube.com/v/bU2esIZHMGg?version=3&vq=hd1080" target="_blank" className="youtube-video">
                                 <span className="glyphicons glyphicons-play-button" />
-                                <img src="http://img.youtube.com/vi/bU2esIZHMGg/mqdefault.jpg" className="sidebar-image" />
+                                <img src="https://img.youtube.com/vi/bU2esIZHMGg/mqdefault.jpg" className="sidebar-image" />
                             </a>
                             <h2>Github Link</h2>
                             <p>
