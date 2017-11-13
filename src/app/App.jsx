@@ -27,7 +27,7 @@ class App extends Component {
                             <h2>
                                 Overview Video
                             </h2>
-                            <a href="https://www.youtube.com/watch?v=bU2esIZHMGg" target="_blank" className="youtube-video">
+                            <a href="https://www.youtube.com/v/bU2esIZHMGg?version=3&vq=hd1080" target="_blank" className="youtube-video">
                                 <span className="glyphicons glyphicons-play-button" />
                                 <img src="http://img.youtube.com/vi/bU2esIZHMGg/mqdefault.jpg" className="sidebar-image" />
                             </a>
@@ -40,7 +40,7 @@ class App extends Component {
 
                             <h2>Special Thanks</h2>
                             <p>
-                                Data lookups provided by the <a href="https://snomed.terminology.tools/#/content#top">SNOMED Terminology Server</a>
+                                Data lookups provided by the <a href="https://snomed.terminology.tools/#/content#top" target="_blank">SNOMED Terminology Server</a>
                             </p>
                         </div>
                     </div>
