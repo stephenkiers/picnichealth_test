@@ -47,7 +47,7 @@ const buildOrderedMapFromBook = (res, resKey) => {
     let runningPriceAverage = 0;
     res[resKey].forEach(current => {
         const currentPrice = convertToCurrencyInt(current[0], config.PRICE_PRECISION);
-        const currentAmount = convertToCurrencyInt(current[0], config.AMOUNT_PRECISION);
+        const currentAmount = convertToCurrencyInt(current[1], config.AMOUNT_PRECISION);
         const currentTotalValue = currentPrice * currentAmount;
         const runningTotalValue = runningPriceAverage * runningTotalAmount;
         const newTotalAmount = runningTotalAmount + currentAmount;
@@ -71,26 +71,15 @@ export const apiGetOrderBook = (orderBookId) => {
                 const orderBook = Map({
                     asks: buildOrderedMapFromBook(res, 'asks'),
                     bids: buildOrderedMapFromBook(res, 'bids'),
+                    sequence: res.sequence,
+                    updatedAt: (new Date).getTime()
                 });
-                console.log(orderBook, orderBook.toJS());
-
-                // let currencies = Map();
-                // for (let i = 0; i < res.length; i++) {
-                //     const current = res[i];
-                //     const {id, base_currency, quote_currency, base_min_size, base_max_size, quote_increment} = current;
-                //     const value = Map({
-                //         id,
-                //         baseMinSize: convertToCurrencyInt(parseInt(base_min_size)),
-                //         baseMaxSize: convertToCurrencyInt(parseInt(base_max_size)),
-                //         quoteIncrement: quote_increment
-                //     });
-                //     currencies = setCurrency(currencies, base_currency, quote_currency, value);
-                //     currencies = setCurrency(currencies, quote_currency, base_currency, value);
-                // }
-                // dispatch({
-                //     type: gdax_constants.REPLACE_CURRENCIES,
-                //     currencies
-                // });
+                // console.log(orderBook.toJS());
+                dispatch({
+                    type: gdax_constants.REPLACE_ORDER_BOOK,
+                    orderBookId,
+                    orderBook
+                });
             }, (err) => {
                 console.log(err)
                 // dispatch(handleApiErrors(err))
