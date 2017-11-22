@@ -5,34 +5,43 @@ import { connect } from 'react-redux';
 import {apiGetOrderBook} from "../actions";
 import Loading from "../../universal/Loading";
 import {getOrderBook} from "../../reducers";
-import {convertBackToCurrencyFloat, getHighestValueWithoutGoingOver} from "../../utils";
+import {convertBackToCurrencyFloat, convertToCurrencyInt, getIndexOfHighestValueWithoutGoingOver} from "../../utils";
 import {config} from "../../constants";
 
 class GetOrderBookResult extends Component {
     componentWillMount() {
-        this.getOrderBook();
+        this.getOrderBook(this.props);
     }
-    componentWillUpdate() {
-        this.getOrderBook();
+    componentWillUpdate(nextProps, nextState) {
+        this.getOrderBook(nextProps);
     }
     calculateResult() {
         let type;
+        let {amount} = this.props;
         if (this.props.isBase) {
             type = this.props.action === "buy" ? "bids" : "asks";
         } else {
             type = this.props.action === "buy" ? "asks" : "bids";
         }
-        const array = this.props.orderBook.get(type).keySeq().toArray();
-        const id = getHighestValueWithoutGoingOver(array, this.props.amount);
-        const avgPrice = this.props.orderBook.getIn([type, id, "price"]);
-        if (this.props.orderBook) {
-            console.log("calculateResult()", type, this.props.orderBook.toJS(), this.props.amount, id, avgPrice, this.props.amount * avgPrice, convertBackToCurrencyFloat(this.props.amount * avgPrice, Math.pow(config.DEFAULT_PRECISION, 2)));
+        const arrayOfBreakpoints = this.props.orderBook.get(type).keySeq().toArray();
+        const index = getIndexOfHighestValueWithoutGoingOver(arrayOfBreakpoints, amount);
+        const firstGroup = this.props.orderBook.getIn([type, arrayOfBreakpoints[index-1]]);
+        const lastGroup = this.props.orderBook.getIn([type, arrayOfBreakpoints[index]]);
+
+        let totalCost = 0;
+        if (firstGroup) {
+            totalCost = convertToCurrencyInt(convertBackToCurrencyFloat(firstGroup.get('avgPrice')) * convertBackToCurrencyFloat(firstGroup.get('amountAtPrice')));
+            amount -= firstGroup.get('amountAtPrice');
         }
-        return convertBackToCurrencyFloat(this.props.amount) * convertBackToCurrencyFloat(avgPrice);
+        totalCost += convertToCurrencyInt(convertBackToCurrencyFloat(lastGroup.get('price')) * convertBackToCurrencyFloat(amount));
+
+        console.log("calculateResult()", type, this.props.orderBook.toJS(), firstGroup && firstGroup.toJS(), lastGroup && lastGroup.toJS(), totalCost);
+
+        return convertBackToCurrencyFloat(totalCost);
     }
-    getOrderBook() {
-        if (!this.props.orderBook) {
-            this.props.apiGetOrderBook();
+    getOrderBook(props) {
+        if (!props.orderBook) {
+            props.apiGetOrderBook();
         }
     }
     render () {

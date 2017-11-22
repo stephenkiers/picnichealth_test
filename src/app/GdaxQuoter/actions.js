@@ -54,7 +54,8 @@ const buildOrderedMapFromBook = (res, resKey) => {
         const newPriceAverage = (runningTotalValue + currentTotalValue) / newTotalAmount;
         aggregated = aggregated.set(newTotalAmount, Map({
             amountAtPrice: newTotalAmount,
-            price: newPriceAverage,
+            avgPrice: newPriceAverage,
+            price: currentPrice
         }));
         runningTotalAmount = newTotalAmount;
         runningPriceAverage = newPriceAverage

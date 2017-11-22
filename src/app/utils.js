@@ -102,23 +102,20 @@ export const convertBackToCurrencyFloat = (currency, precision = Math.pow(10, co
     return parseInt(currency) / precision;
 };
 
-export const getHighestValueWithoutGoingOver = (array, value) => {
-    if (!array || array.length === 0 || !value) {
-        return null;
-    }
-    if (array.length === 1) {
-        if (array[0] > value) {
-            return array[0];
-        }
-        return null;
-    }
-    if (value < array[0]) {
-        return array[0];
-    }
-    if (value > array[array.length - 1]) {
+export const getIndexOfHighestValueWithoutGoingOver = (array, count) => {
+    if (!array || array.length === 0 || !count) {
         return -1;
     }
-    return arraySearch(array, value);
+    if (array[0] > count) {
+        return 0;
+    }
+    if (array.length === 1) {
+        return -1;
+    }
+    if (count > array[array.length - 1]) {
+        return -1;
+    }
+    return arraySearch(array, count);
 };
 
 // [1,2,3,4,5,6,7,8,9,10], 8
@@ -137,7 +134,7 @@ const arraySearch = (array, target) => {
         }
     }
     if (array[startI] > target) {
-        return array[startI]
+        return startI
     }
     debugger;
 };
