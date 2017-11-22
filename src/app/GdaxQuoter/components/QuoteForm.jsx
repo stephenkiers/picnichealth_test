@@ -5,6 +5,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import Loading from "../../universal/Loading";
 import Input from "./Input";
 import {convertToCurrencyInt} from "../../utils";
+import GetOrderBook from "../smartComponents/GetOrderBook";
+import {config} from "../../constants";
 
 const validPair = (currencies, base, quote) => {
     return currencies.get(base).has(quote)
@@ -15,9 +17,9 @@ class QuoteForm extends Component {
         super(props, context);
         this.state = {
             action: "buy",
-            baseAmount: convertToCurrencyInt(1),
+            baseAmount: convertToCurrencyInt(1, config.PRICE_PRECISION),
             baseCurrencyKey: "",
-            quoteAmount: convertToCurrencyInt(1),
+            quoteAmount: convertToCurrencyInt(1, config.PRICE_PRECISION),
             quoteCurrencyKey: ""
         };
         this.setBaseAmount = (baseAmount) => {
@@ -145,7 +147,7 @@ class QuoteForm extends Component {
                             equals
                         </div>
                         <GetOrderBook
-                            bookId={currentExchange.get('id')}
+                            orderBookId={currentExchange.get('id')}
                         >
                             {(orderBook) => (
                                 <div className="quoter-currency-group">

@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import {api_method} from './constants';
+import {api_method, config} from './constants';
 
 const handleResponse = (response) => {
     return new Promise((resolve, reject) => {
@@ -95,9 +95,9 @@ export const immutableFindOrCreate = (map, key, value) => {
     return map.has(key) ? map : map.set(key, value);
 };
 
-export const convertToCurrencyInt = (currency, digitsOfPrecision = 5) => {
+export const convertToCurrencyInt = (currency, digitsOfPrecision = config.DEFAULT_PRECISION) => {
     return parseInt(parseFloat(currency) * (Math.pow(10, (digitsOfPrecision))));
 };
-export const convertToCurrencyFloat = (currency, digitsOfPrecision = 5) => {
+export const convertToCurrencyFloat = (currency, digitsOfPrecision = config.DEFAULT_PRECISION) => {
     return parseInt(currency) / (Math.pow(10, (digitsOfPrecision)));
 }

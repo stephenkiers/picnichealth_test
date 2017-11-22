@@ -23,5 +23,5 @@ export default gdax;
 export const getCurrencies = state =>
     state.get('currencies');
 
-// export const getThing = (state, id) =>
-//     state.getIn(['byId', id]);
+export const getOrderBook = (state, id) =>
+    undefined;

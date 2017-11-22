@@ -9,3 +9,5 @@ export default rootReducer;
 
 export const getCurrencies = (state) =>
     fromGdax.getCurrencies(state.get('gdax'));
+export const getOrderBook = (state, id) =>
+    fromGdax.getOrderBook(state.get('gdax'), id);
