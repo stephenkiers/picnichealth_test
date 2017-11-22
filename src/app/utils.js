@@ -94,3 +94,10 @@ export const immutableNestedGetIn = (immutable_object, getInPath, fallbackRespon
 export const immutableFindOrCreate = (map, key, value) => {
     return map.has(key) ? map : map.set(key, value);
 };
+
+export const convertToCurrencyInt = (currency, digitsOfPrecision = 5) => {
+    return parseInt(parseFloat(currency) * (Math.pow(10, (digitsOfPrecision))));
+};
+export const convertToCurrencyFloat = (currency, digitsOfPrecision = 5) => {
+    return parseInt(currency) / (Math.pow(10, (digitsOfPrecision)));
+}

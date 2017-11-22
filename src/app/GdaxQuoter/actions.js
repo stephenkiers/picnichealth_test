@@ -1,6 +1,6 @@
 import {gdax_constants} from './gdax_reducers'
 import {api, endpoints} from "../constants";
-import {apiFetchPromise, immutableFindOrCreate} from "../utils";
+import {apiFetchPromise, convertToCurrencyInt, immutableFindOrCreate} from "../utils";
 import {Map} from 'immutable';
 
 
@@ -21,8 +21,8 @@ export const apiGetCurrencies = () => {
                     const {id, base_currency, quote_currency, base_min_size, base_max_size, quote_increment} = current;
                     const value = Map({
                         id,
-                        baseMinSize: base_min_size,
-                        baseMaxSize: base_max_size,
+                        baseMinSize: convertToCurrencyInt(parseInt(base_min_size)),
+                        baseMaxSize: convertToCurrencyInt(parseInt(base_max_size)),
                         quoteIncrement: quote_increment
                     });
                     currencies = setCurrency(currencies, base_currency, quote_currency, value);

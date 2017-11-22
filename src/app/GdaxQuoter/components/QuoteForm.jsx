@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Loading from "../../universal/Loading";
 import Input from "./Input";
+import {convertToCurrencyInt} from "../../utils";
 
 const validPair = (currencies, base, quote) => {
     return currencies.get(base).has(quote)
@@ -14,22 +15,16 @@ class QuoteForm extends Component {
         super(props, context);
         this.state = {
             action: "buy",
-            baseAmount: 1,
+            baseAmount: convertToCurrencyInt(1),
             baseCurrencyKey: "",
-            quoteAmount: 1,
+            quoteAmount: convertToCurrencyInt(1),
             quoteCurrencyKey: ""
         };
-        this.setBaseAmount = (e) => {
-            const baseAmount =  e.target.value;
-            if (baseAmount > 0) {
-                this.setState(() => ({baseAmount}));
-            }
+        this.setBaseAmount = (baseAmount) => {
+            this.setState(() => ({baseAmount}));
         };
-        this.setQuoteAmount = (e) => {
-            const quoteAmount =  e.target.value;
-            if (quoteAmount > 0) {
-                this.setState(() => ({quoteAmount}));
-            }
+        this.setQuoteAmount = (quoteAmount) => {
+            this.setState(() => ({quoteAmount}));
         };
         this.setBaseCurrencyKey = (e) => {
             const baseCurrencyKey = e.target.value;
@@ -50,6 +45,9 @@ class QuoteForm extends Component {
         this.onSubmit = e => {
             e.preventDefault();
         }
+    }
+    componentDidUpdate() {
+        this.validateAmounts();
     }
     componentWillMount() {
         if (!this.state.baseCurrencyKey) {
@@ -80,6 +78,10 @@ class QuoteForm extends Component {
             </select>
         )
     }
+    currentExchangeValues() {
+        return this.props.currencies
+            .getIn([this.state.baseCurrencyKey, this.state.quoteCurrencyKey]);
+    }
     quoteCurrenciesList() {
         if (!this.state.quoteCurrencyKey) {
             return <Loading />;
@@ -104,10 +106,20 @@ class QuoteForm extends Component {
             </select>
         )
     }
-
+    validateAmounts() {
+        const currentExchange = this.currentExchangeValues();
+        const baseMaxSize = currentExchange.get('baseMaxSize');
+        const baseMinSize = currentExchange.get('baseMinSize');
+        ['baseAmount','quoteAmount'].forEach(amount => {
+            if (this.state[amount] > baseMaxSize) {
+                this.setState(() => ({[amount]: baseMaxSize}));
+            } else if (this.state[amount] < baseMinSize) {
+                this.setState(() => ({[amount]: baseMinSize}));
+            }
+        });
+    }
     render () {
-        const currentExchange = this.props.currencies
-            .getIn([this.state.baseCurrencyKey, this.state.quoteCurrencyKey]);
+        // console.log(this.state);
         return (
             <div>
                 <form
@@ -119,7 +131,7 @@ class QuoteForm extends Component {
                                 <div className="quoter-input">
                                     <Input
                                         id="baseAmount"
-                                        step={currentExchange.get('quoteIncrement')}
+                                        step={this.currentExchangeValues().get('quoteIncrement')}
                                         value={this.state.baseAmount}
                                         onChange={this.setBaseAmount}
                                     />
@@ -137,7 +149,7 @@ class QuoteForm extends Component {
                                 <div className="quoter-input">
                                     <Input
                                         id="quoteAmount"
-                                        step={currentExchange.get('quoteIncrement')}
+                                        step={this.currentExchangeValues().get('quoteIncrement')}
                                         value={this.state.quoteAmount}
                                         onChange={this.setQuoteAmount}
                                     />

@@ -1,8 +1,18 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import {convertToCurrencyFloat, convertToCurrencyInt} from "../../utils";
 
 class Input extends Component {
+    constructor(props) {
+        super();
+        this.onChange = e => {
+            const newAmount = parseFloat(e.target.value);
+            if (newAmount > 0) {
+                this.props.onChange(convertToCurrencyInt(newAmount));
+            }
+        };
+    }
     render () {
         return (
             <input
@@ -10,8 +20,8 @@ class Input extends Component {
                 className="form-control"
                 id={this.props.id}
                 step={this.props.step}
-                value={this.props.value}
-                onChange={this.props.onChange}
+                value={convertToCurrencyFloat(this.props.value)}
+                onChange={this.onChange}
             />
         );
     }
