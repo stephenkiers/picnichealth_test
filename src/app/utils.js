@@ -82,3 +82,15 @@ export const apiFetchPromise = (api_constant, body = {}, json_body = false) => {
             })
     })
 };
+
+export const immutableNestedGetIn = (immutable_object, getInPath, fallbackResponse) =>{
+    try {
+        return immutable_object.getIn(getInPath);
+    }
+    catch (err) {
+        return fallbackResponse;
+    }
+};
+export const immutableFindOrCreate = (map, key, value) => {
+    return map.has(key) ? map : map.set(key, value);
+};

@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import {getCurrencies} from "./actions";
+import {apiGetCurrencies} from "../actions";
+import {getCurrencies} from "../../reducers";
 
 class GdaxQuoter extends Component {
     constructor(props, context) {
@@ -42,7 +43,30 @@ class GdaxQuoter extends Component {
     componentWillMount() {
         this.props.getCurrencies()
     }
+    baseCurrenciesList() {
+        return (
+            <select className="form-control" id="baseCurrenciesList">
+                <option>USD</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        )
+    }
+    quoteCurrenciesList() {
+        return (
+            <select className="form-control" id="quoteCurrenciesList">
+                <option>BTC</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        )
+    }
     render () {
+        console.log(this.props.currencies);
         return (
             <div>
                 <form
@@ -61,13 +85,7 @@ class GdaxQuoter extends Component {
                                     />
                                 </div>
                                 <div className="quoter-currency">
-                                    <select className="form-control" id="exampleFormControlSelect1">
-                                        <option>USD</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
+                                    {this.baseCurrenciesList()}
                                 </div>
                             </div>
                         </div>
@@ -86,13 +104,7 @@ class GdaxQuoter extends Component {
                                     />
                                 </div>
                                 <div className="quoter-currency">
-                                    <select className="form-control" id="exampleFormControlSelect1">
-                                        <option>BTC</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
+                                    {this.quoteCurrenciesList()}
                                 </div>
                             </div>
                         </div>
@@ -108,10 +120,11 @@ GdaxQuoter.defaultProps = {
 GdaxQuoter.propTypes = {
 };
 const mapStateToProps = (state, ownProps) => ({
+    currencies: getCurrencies(state),
 });
 const mapDispatchToProps = (dispatch, ownProps) => ({
     getCurrencies() {
-        dispatch(getCurrencies())
+        dispatch(apiGetCurrencies())
     }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(GdaxQuoter);
