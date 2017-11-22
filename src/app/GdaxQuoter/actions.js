@@ -19,7 +19,12 @@ export const apiGetCurrencies = () => {
                 for (let i = 0; i < res.length; i++) {
                     const current = res[i];
                     const {id, base_currency, quote_currency, base_min_size, base_max_size, quote_increment} = current;
-                    const value = Map({id, base_min_size, base_max_size, quote_increment});
+                    const value = Map({
+                        id,
+                        baseMinSize: base_min_size,
+                        baseMaxSize: base_max_size,
+                        quoteIncrement: quote_increment
+                    });
                     currencies = setCurrency(currencies, base_currency, quote_currency, value);
                     currencies = setCurrency(currencies, quote_currency, base_currency, value);
                 }

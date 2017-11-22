@@ -3,6 +3,11 @@ import {Map} from 'immutable';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Loading from "../../universal/Loading";
+import Input from "./Input";
+
+const validPair = (currencies, base, quote) => {
+    return currencies.get(base).has(quote)
+};
 
 class QuoteForm extends Component {
     constructor(props, context) {
@@ -10,9 +15,9 @@ class QuoteForm extends Component {
         this.state = {
             action: "buy",
             baseAmount: 1,
-            baseCurrency: "",
+            baseCurrencyKey: "",
             quoteAmount: 1,
-            quoteCurrency: ""
+            quoteCurrencyKey: ""
         };
         this.setBaseAmount = (e) => {
             const baseAmount =  e.target.value;
@@ -26,36 +31,41 @@ class QuoteForm extends Component {
                 this.setState(() => ({quoteAmount}));
             }
         };
-        this.setBaseCurrency = (baseCurrency) => {
-            this.setState({baseCurrency});
+        this.setBaseCurrencyKey = (e) => {
+            const baseCurrencyKey = e.target.value;
+            this.setState((state) => {
+                let {quoteCurrencyKey} = state;
+                if (!validPair(this.props.currencies, baseCurrencyKey, quoteCurrencyKey)) {
+                    quoteCurrencyKey = this.props.currencies.get(baseCurrencyKey).keySeq().first()
+                }
+                return {
+                    baseCurrencyKey,
+                    quoteCurrencyKey
+                }
+            });
         };
-        this.setQuoteCurrency = (newCurrency) => {
-            this.setState({newCurrency});
-        };
-        this.switchAction = () => {
-            this.setState((state) => ({action: state.action === "buy" ? "sell" : "buy"}));
+        this.setQuoteCurrencyKey = (e) => {
+            this.setState({quoteCurrencyKey: e.target.value});
         };
         this.onSubmit = e => {
             e.preventDefault();
         }
     }
     componentWillMount() {
-        if (!this.state.baseCurrency) {
+        if (!this.state.baseCurrencyKey) {
             this.setState((state) => ({
-                baseCurrency: this.props.currencies.keySeq().first(),
-                quoteCurrency: this.props.currencies.first().keySeq().first(),
+                baseCurrencyKey: this.props.currencies.keySeq().first(),
+                quoteCurrencyKey: this.props.currencies.first().keySeq().first(),
             }))
         }
     }
     baseCurrenciesList() {
-        if (this.props.currencies.size === 0) {
-            return <Loading />;
-        }
         return (
             <select
                 className="form-control"
                 id="baseCurrenciesList"
-                value={this.state.baseCurrency}
+                value={this.state.baseCurrencyKey}
+                onChange={this.setBaseCurrencyKey}
             >
                 {this.props.currencies.keySeq().map(currency => {
                     return (
@@ -71,16 +81,17 @@ class QuoteForm extends Component {
         )
     }
     quoteCurrenciesList() {
-        if (this.props.currencies.size === 0 || !this.state.baseCurrency) {
+        if (!this.state.quoteCurrencyKey) {
             return <Loading />;
         }
         return (
             <select
                 className="form-control"
                 id="quoteCurrenciesList"
-                value={this.state.quoteCurrency}
+                value={this.state.quoteCurrencyKey}
+                onChange={this.setQuoteCurrencyKey}
             >
-                {this.props.currencies.get(this.state.baseCurrency).keySeq().map(currency => {
+                {this.props.currencies.get(this.state.baseCurrencyKey).keySeq().map(currency => {
                     return (
                         <option
                             key={currency}
@@ -93,7 +104,10 @@ class QuoteForm extends Component {
             </select>
         )
     }
+
     render () {
+        const currentExchange = this.props.currencies
+            .getIn([this.state.baseCurrencyKey, this.state.quoteCurrencyKey]);
         return (
             <div>
                 <form
@@ -103,10 +117,9 @@ class QuoteForm extends Component {
                         <div className="quoter-currency-group">
                             <div className="d-flex">
                                 <div className="quoter-input">
-                                    <input
-                                        type="number"
-                                        className="form-control"
+                                    <Input
                                         id="baseAmount"
+                                        step={currentExchange.get('quoteIncrement')}
                                         value={this.state.baseAmount}
                                         onChange={this.setBaseAmount}
                                     />
@@ -122,10 +135,9 @@ class QuoteForm extends Component {
                         <div className="quoter-currency-group">
                             <div className="d-flex">
                                 <div className="quoter-input">
-                                    <input
-                                        type="number"
-                                        className="form-control"
+                                    <Input
                                         id="quoteAmount"
+                                        step={currentExchange.get('quoteIncrement')}
                                         value={this.state.quoteAmount}
                                         onChange={this.setQuoteAmount}
                                     />
