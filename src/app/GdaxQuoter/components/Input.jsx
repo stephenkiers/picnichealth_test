@@ -10,7 +10,7 @@ class Input extends Component {
         this.onChange = e => {
             const newAmount = parseFloat(e.target.value);
             if (newAmount > 0) {
-                this.props.onChange(convertToCurrencyInt(newAmount, config.PRICE_PRECISION));
+                this.props.onChange(convertToCurrencyInt(newAmount));
             }
         };
     }
@@ -21,7 +21,7 @@ class Input extends Component {
                 className="form-control"
                 id={this.props.id}
                 step={this.props.step}
-                value={convertToCurrencyFloat(this.props.value, config.PRICE_PRECISION)}
+                value={convertToCurrencyFloat(this.props.value)}
                 onChange={this.onChange}
             />
         );

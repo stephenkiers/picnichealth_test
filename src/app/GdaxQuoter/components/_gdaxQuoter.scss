@@ -4,10 +4,17 @@
     flex: 1;
     margin-right:10px;
   }
+  .quoter-buysell {
+    margin-right:10px;
+  }
   .quoter-currency {
 
   }
 }
-.quoter-equals {
+.quoter-result {
+  font-weight:bold;
+  margin-right:10px;
+}
+.quoter-text {
   margin: 0 10px;
 }

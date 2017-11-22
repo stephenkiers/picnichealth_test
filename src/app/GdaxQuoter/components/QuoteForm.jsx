@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Loading from "../../universal/Loading";
 import Input from "./Input";
-import {convertToCurrencyInt} from "../../utils";
-import GetOrderBook from "../smartComponents/GetOrderBook";
+import {convertToCurrencyFloat, convertToCurrencyInt} from "../../utils";
+import GetOrderBookResult from "../smartComponents/GetOrderBookResult";
 import {config} from "../../constants";
 
 const validPair = (currencies, base, quote) => {
@@ -17,16 +17,11 @@ class QuoteForm extends Component {
         super(props, context);
         this.state = {
             action: "buy",
-            baseAmount: convertToCurrencyInt(1, config.PRICE_PRECISION),
+            baseAmount: convertToCurrencyInt(1),
             baseCurrencyKey: "",
-            quoteAmount: convertToCurrencyInt(1, config.PRICE_PRECISION),
-            quoteCurrencyKey: ""
         };
         this.setBaseAmount = (baseAmount) => {
             this.setState(() => ({baseAmount}));
-        };
-        this.setQuoteAmount = (quoteAmount) => {
-            this.setState(() => ({quoteAmount}));
         };
         this.setBaseCurrencyKey = (e) => {
             const baseCurrencyKey = e.target.value;
@@ -43,6 +38,9 @@ class QuoteForm extends Component {
         };
         this.setQuoteCurrencyKey = (e) => {
             this.setState({quoteCurrencyKey: e.target.value});
+        };
+        this.toggleAction = () => {
+            this.setState((state) => ({action: state.action === "buy" ? "sell" : "buy"}))
         };
         this.onSubmit = e => {
             e.preventDefault();
@@ -80,6 +78,16 @@ class QuoteForm extends Component {
             </select>
         )
     }
+    buySellButton() {
+        return (
+            <button
+                className="btn btn-primary"
+                onClick={this.toggleAction}
+            >
+                {this.state.action === "buy" ? "Buying" : "Selling"}
+            </button>
+        )
+    }
     currentExchangeValues() {
         return this.props.currencies
             .getIn([this.state.baseCurrencyKey, this.state.quoteCurrencyKey]);
@@ -109,17 +117,12 @@ class QuoteForm extends Component {
         )
     }
     validateAmounts() {
-        const currentExchange = this.currentExchangeValues();
-        const baseMaxSize = currentExchange.get('baseMaxSize');
-        const baseMinSize = currentExchange.get('baseMinSize');
-        ['baseAmount','quoteAmount'].forEach(amount => {
-            if (this.state[amount] > baseMaxSize) {
-                this.setState(() => ({[amount]: baseMaxSize}));
-            } else if (this.state[amount] < baseMinSize) {
-                this.setState(() => ({[amount]: baseMinSize}));
-            }
-        });
-    }
+        if (this.state.baseAmount > baseMaxSize) {
+            this.setState(() => ({baseAmount: baseMaxSize}));
+        } else if (this.state.baseAmount < baseMinSize) {
+            this.setState(() => ({baseAmount: baseMinSize}));
+        }
+    };
     render () {
         const currentExchange = this.currentExchangeValues();
         return (
@@ -130,6 +133,9 @@ class QuoteForm extends Component {
                     <div className="d-flex align-items-center">
                         <div className="quoter-currency-group">
                             <div className="d-flex">
+                                <div className="quoter-buysell">
+                                    {this.buySellButton()}
+                                </div>
                                 <div className="quoter-input">
                                     <Input
                                         id="baseAmount"
@@ -143,30 +149,25 @@ class QuoteForm extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="quoter-equals">
-                            equals
+                        <div className="quoter-text">
+                            will give you
                         </div>
-                        <GetOrderBook
+                        <GetOrderBookResult
+                            amount={this.state.baseAmount}
                             orderBookId={currentExchange.get('id')}
+                            type={currentExchange.get('type')}
                         >
-                            {(orderBook) => (
-                                <div className="quoter-currency-group">
-                                    <div className="d-flex">
-                                        <div className="quoter-input">
-                                            <Input
-                                                id="quoteAmount"
-                                                step={currentExchange.get('quoteIncrement')}
-                                                value={this.state.quoteAmount}
-                                                onChange={this.setQuoteAmount}
-                                            />
-                                        </div>
-                                        <div className="quoter-currency">
-                                            {this.quoteCurrenciesList()}
-                                        </div>
+                            {(result) => (
+                                <div className="d-flex align-items-center">
+                                    <div className="quoter-result">
+                                        {result}
+                                    </div>
+                                    <div className="quoter-currency">
+                                        {this.quoteCurrenciesList()}
                                     </div>
                                 </div>
                             )}
-                        </GetOrderBook>
+                        </GetOrderBookResult>
                     </div>
                 </form>
             </div>

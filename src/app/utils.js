@@ -95,9 +95,51 @@ export const immutableFindOrCreate = (map, key, value) => {
     return map.has(key) ? map : map.set(key, value);
 };
 
-export const convertToCurrencyInt = (currency, digitsOfPrecision = config.DEFAULT_PRECISION) => {
-    return parseInt(parseFloat(currency) * (Math.pow(10, (digitsOfPrecision))));
+export const convertToCurrencyInt = (currency) => {
+    return parseInt(parseFloat(currency) * (Math.pow(10, config.DEFAULT_PRECISION)));
 };
-export const convertToCurrencyFloat = (currency, digitsOfPrecision = config.DEFAULT_PRECISION) => {
-    return parseInt(currency) / (Math.pow(10, (digitsOfPrecision)));
-}
+export const convertToCurrencyFloat = (currency) => {
+    return parseInt(currency) / (Math.pow(10, config.DEFAULT_PRECISION));
+};
+
+export const getHighestValueWithoutGoingOver = (array, value) => {
+    if (!array || array.length === 0 || !value) {
+        return null;
+    }
+    if (array.length === 1) {
+        if (array[0] > value) {
+            return array[0];
+        }
+        return null;
+    }
+    if (value < array[0]) {
+        return array[0];
+    }
+    if (value > array[array.length - 1]) {
+        return -1;
+    }
+    return binarySearch(array, value);
+};
+
+
+
+// [1,2,3,4,5,6,7,8,9,10], 8
+
+const binarySearch = (array, target) => {
+    let startI = 0;
+    let endI = array.length - 1;
+    while (startI <= endI) {
+        const centerI = (endI + startI) >> 1;
+        const comparedToTarget = target - array[centerI];
+
+        if (comparedToTarget > 0) {
+            startI = centerI + 1;
+        } else if(comparedToTarget < 0) {
+            endI = centerI - 1;
+        } else {
+            return centerI;
+        }
+    }
+    debugger;
+    return -startI - 1;
+};

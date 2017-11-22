@@ -20,7 +20,5 @@ export const api = (match, param1) => {
 };
 
 export const config = {
-    AMOUNT_PRECISION: 6,
-    DEFAULT_PRECISION: 5,
-    PRICE_PRECISION: 14,
+    DEFAULT_PRECISION: 14,
 };

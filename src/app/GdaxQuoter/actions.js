@@ -5,10 +5,10 @@ import {Map, OrderedMap} from 'immutable';
 
 
 
-const setCurrency = (currencies, currency1, currency2, value) => {
+const setCurrency = (currencies, currency1, currency2, value, type) => {
     currencies = immutableFindOrCreate(currencies, currency1, Map());
     let currency = currencies.get(currency1);
-    currency =  immutableFindOrCreate(currency, currency2, value);
+    currency =  immutableFindOrCreate(currency, currency2, value.set("type", type));
     return currencies.set(currency1, currency);
 };
 export const apiGetCurrencies = () => {
@@ -21,12 +21,12 @@ export const apiGetCurrencies = () => {
                     const {id, base_currency, quote_currency, base_min_size, base_max_size, quote_increment} = current;
                     const value = Map({
                         id,
-                        baseMinSize: convertToCurrencyInt(base_min_size, config.PRICE_PRECISION),
-                        baseMaxSize: convertToCurrencyInt(base_max_size, config.PRICE_PRECISION),
+                        baseMinSize: convertToCurrencyInt(base_min_size),
+                        baseMaxSize: convertToCurrencyInt(base_max_size),
                         quoteIncrement: quote_increment
                     });
-                    currencies = setCurrency(currencies, base_currency, quote_currency, value);
-                    currencies = setCurrency(currencies, quote_currency, base_currency, value);
+                    currencies = setCurrency(currencies, base_currency, quote_currency, value, "bid");
+                    currencies = setCurrency(currencies, quote_currency, base_currency, value, "ask");
                 }
                 dispatch({
                     type: gdax_constants.REPLACE_CURRENCIES,
@@ -46,8 +46,8 @@ const buildOrderedMapFromBook = (res, resKey) => {
     let runningTotalAmount = 0;
     let runningPriceAverage = 0;
     res[resKey].forEach(current => {
-        const currentPrice = convertToCurrencyInt(current[0], config.PRICE_PRECISION);
-        const currentAmount = convertToCurrencyInt(current[1], config.AMOUNT_PRECISION);
+        const currentPrice = convertToCurrencyInt(current[0]);
+        const currentAmount = convertToCurrencyInt(current[1]);
         const currentTotalValue = currentPrice * currentAmount;
         const runningTotalValue = runningPriceAverage * runningTotalAmount;
         const newTotalAmount = runningTotalAmount + currentAmount;
@@ -64,6 +64,10 @@ const buildOrderedMapFromBook = (res, resKey) => {
 
 export const apiGetOrderBook = (orderBookId) => {
     return dispatch => {
+        dispatch({
+            type: gdax_constants.REQUEST_ORDER_BOOK,
+            orderBookId
+        });
         return apiFetchPromise(api(endpoints.ORDER_BOOK, orderBookId), {level:2})
             .then((res) => {
                 // PRICE, AMOUNT, ORDERS
