@@ -119,7 +119,7 @@ class QuoteForm extends Component {
         });
     }
     render () {
-        // console.log(this.state);
+        const currentExchange = this.currentExchangeValues();
         return (
             <div>
                 <form
@@ -131,7 +131,7 @@ class QuoteForm extends Component {
                                 <div className="quoter-input">
                                     <Input
                                         id="baseAmount"
-                                        step={this.currentExchangeValues().get('quoteIncrement')}
+                                        step={currentExchange.get('quoteIncrement')}
                                         value={this.state.baseAmount}
                                         onChange={this.setBaseAmount}
                                     />
@@ -156,6 +156,7 @@ class QuoteForm extends Component {
                                 </div>
                                 <div className="quoter-currency">
                                     {this.quoteCurrenciesList()}
+                                                step={currentExchange.get('quoteIncrement')}
                                 </div>
                             </div>
                         </div>
