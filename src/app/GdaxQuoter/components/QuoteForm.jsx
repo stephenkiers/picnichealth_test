@@ -89,8 +89,7 @@ class QuoteForm extends Component {
         )
     }
     currentExchangeValues() {
-        return this.props.currencies
-            .getIn([this.state.baseCurrencyKey, this.state.quoteCurrencyKey]);
+        return this.props.currencies.getIn([this.state.baseCurrencyKey, this.state.quoteCurrencyKey]);
     }
     quoteCurrenciesList() {
         if (!this.state.quoteCurrencyKey) {
@@ -126,6 +125,7 @@ class QuoteForm extends Component {
     };
     render () {
         const currentExchange = this.currentExchangeValues();
+        console.log(5, this.state.baseCurrencyKey, this.state.quoteCurrencyKey, currentExchange.toJS());
         return (
             <div>
                 <form
@@ -151,12 +151,13 @@ class QuoteForm extends Component {
                             </div>
                         </div>
                         <div className="quoter-text">
-                            will give you
+                            {this.state.action === "buy" ? "will cost you" : "will give you"}
                         </div>
                         <GetOrderBookResult
                             amount={this.state.baseAmount}
                             orderBookId={currentExchange.get('id')}
-                            type={currentExchange.get('type')}
+                            isBase={currentExchange.get('isBase')}
+                            action={this.state.action}
                         >
                             {(result) => (
                                 <div className="d-flex align-items-center">

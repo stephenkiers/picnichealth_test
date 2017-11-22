@@ -20,5 +20,5 @@ export const api = (match, param1) => {
 };
 
 export const config = {
-    DEFAULT_PRECISION: 14,
+    DEFAULT_PRECISION: 10,
 };

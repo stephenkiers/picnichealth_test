@@ -6,6 +6,7 @@ import {apiGetOrderBook} from "../actions";
 import Loading from "../../universal/Loading";
 import {getOrderBook} from "../../reducers";
 import {convertBackToCurrencyFloat, getHighestValueWithoutGoingOver} from "../../utils";
+import {config} from "../../constants";
 
 class GetOrderBookResult extends Component {
     componentWillMount() {
@@ -15,21 +16,19 @@ class GetOrderBookResult extends Component {
         this.getOrderBook();
     }
     calculateResult() {
-        console.log(this.props.orderBookId, this.props.orderBook);
-        if (this.props.orderBook) {
-            console.log("calculateResult()", this.props.orderBook, this.props.type, this.props.amount);
-        }
-        let id, avgPrice;
-        if (this.props.type === "bid") {
-            const array = this.props.orderBook.get("bids").keySeq().toArray();
-            id = getHighestValueWithoutGoingOver(array, this.props.amount);
-            avgPrice = this.props.orderBook.getIn(["bids", id, "price"]);
+        let type;
+        if (this.props.isBase) {
+            type = this.props.action === "buy" ? "bids" : "asks";
         } else {
-            const array = this.props.orderBook.get("asks").keySeq().toArray();
-            id = getHighestValueWithoutGoingOver(array, this.props.amount);
-            avgPrice = this.props.orderBook.getIn(["asks", id, "price"]);
+            type = this.props.action === "buy" ? "asks" : "bids";
         }
-        return convertBackToCurrencyFloat(this.props.amount * avgPrice);
+        const array = this.props.orderBook.get(type).keySeq().toArray();
+        const id = getHighestValueWithoutGoingOver(array, this.props.amount);
+        const avgPrice = this.props.orderBook.getIn([type, id, "price"]);
+        if (this.props.orderBook) {
+            console.log("calculateResult()", type, this.props.orderBook.toJS(), this.props.amount, id, avgPrice, this.props.amount * avgPrice, convertBackToCurrencyFloat(this.props.amount * avgPrice, Math.pow(config.DEFAULT_PRECISION, 2)));
+        }
+        return convertBackToCurrencyFloat(this.props.amount) * convertBackToCurrencyFloat(avgPrice);
     }
     getOrderBook() {
         if (!this.props.orderBook) {
@@ -49,7 +48,8 @@ GetOrderBookResult.defaultProps = {
 GetOrderBookResult.propTypes = {
     orderBookId: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired,
-    type: PropTypes.string.isRequired,
+    isBase: PropTypes.bool.isRequired,
+    action: PropTypes.string.isRequired,
 };
 const mapStateToProps = (state, ownProps) => ({
     orderBook: getOrderBook(state, ownProps.orderBookId),

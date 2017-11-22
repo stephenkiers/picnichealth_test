@@ -5,10 +5,10 @@ import {Map, OrderedMap} from 'immutable';
 
 
 
-const setCurrency = (currencies, currency1, currency2, value, type) => {
+const setCurrency = (currencies, currency1, currency2, value, isBase) => {
     currencies = immutableFindOrCreate(currencies, currency1, Map());
     let currency = currencies.get(currency1);
-    currency =  immutableFindOrCreate(currency, currency2, value.set("type", type));
+    currency =  immutableFindOrCreate(currency, currency2, value.set("isBase", isBase));
     return currencies.set(currency1, currency);
 };
 export const apiGetCurrencies = () => {
@@ -25,8 +25,8 @@ export const apiGetCurrencies = () => {
                         baseMaxSize: convertToCurrencyInt(base_max_size),
                         quoteIncrement: quote_increment
                     });
-                    currencies = setCurrency(currencies, base_currency, quote_currency, value, "bid");
-                    currencies = setCurrency(currencies, quote_currency, base_currency, value, "ask");
+                    currencies = setCurrency(currencies, base_currency, quote_currency, value, true);
+                    currencies = setCurrency(currencies, quote_currency, base_currency, value, false);
                 }
                 dispatch({
                     type: gdax_constants.REPLACE_CURRENCIES,

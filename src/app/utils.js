@@ -83,23 +83,23 @@ export const apiFetchPromise = (api_constant, body = {}, json_body = false) => {
     })
 };
 
-export const immutableNestedGetIn = (immutable_object, getInPath, fallbackResponse) =>{
-    try {
-        return immutable_object.getIn(getInPath);
-    }
-    catch (err) {
-        return fallbackResponse;
-    }
-};
+// export const immutableNestedGetIn = (immutable_object, getInPath, fallbackResponse) =>{
+//     try {
+//         return immutable_object.getIn(getInPath);
+//     }
+//     catch (err) {
+//         return fallbackResponse;
+//     }
+// };
 export const immutableFindOrCreate = (map, key, value) => {
     return map.has(key) ? map : map.set(key, value);
 };
 
-export const convertToCurrencyInt = (currency) => {
-    return parseInt(parseFloat(currency) * (Math.pow(10, config.DEFAULT_PRECISION)));
+export const convertToCurrencyInt = (currency, precision = Math.pow(10, config.DEFAULT_PRECISION)) => {
+    return parseInt(parseFloat(currency) * precision);
 };
-export const convertBackToCurrencyFloat = (currency) => {
-    return parseInt(currency) / (Math.pow(10, config.DEFAULT_PRECISION));
+export const convertBackToCurrencyFloat = (currency, precision = Math.pow(10, config.DEFAULT_PRECISION)) => {
+    return parseInt(currency) / precision;
 };
 
 export const getHighestValueWithoutGoingOver = (array, value) => {
@@ -128,7 +128,6 @@ const arraySearch = (array, target) => {
     while (startI <= endI) {
         const centerI = (endI + startI) >> 1;
         const comparedToTarget = target - array[centerI];
-        debugger
         if (comparedToTarget > 0) {
             startI = centerI + 1;
         } else if(comparedToTarget < 0) {
@@ -137,7 +136,7 @@ const arraySearch = (array, target) => {
             return centerI;
         }
     }
-    if (array[startI] > array) {
+    if (array[startI] > target) {
         return array[startI]
     }
     debugger;
