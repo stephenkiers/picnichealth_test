@@ -16,7 +16,7 @@ class ApplicationLayout extends PureComponent {
                                 />
                             </div>
                             <h1 className="header-h1">
-                                React Test Application
+                                Coinbase Takehome Test App
                             </h1>
                         </div>
                     </div>
