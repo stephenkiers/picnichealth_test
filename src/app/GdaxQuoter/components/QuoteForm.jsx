@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import {Map} from 'immutable';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import {apiGetCurrencies} from "../actions";
-import {getCurrencies} from "../../reducers";
+import Loading from "../../universal/Loading";
 
-class GdaxQuoter extends Component {
+class QuoteForm extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -41,32 +40,60 @@ class GdaxQuoter extends Component {
         }
     }
     componentWillMount() {
-        this.props.getCurrencies()
+        if (!this.state.baseCurrency) {
+            this.setState((state) => ({
+                baseCurrency: this.props.currencies.keySeq().first(),
+                quoteCurrency: this.props.currencies.first().keySeq().first(),
+            }))
+        }
     }
     baseCurrenciesList() {
+        if (this.props.currencies.size === 0) {
+            return <Loading />;
+        }
         return (
-            <select className="form-control" id="baseCurrenciesList">
-                <option>USD</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+            <select
+                className="form-control"
+                id="baseCurrenciesList"
+                value={this.state.baseCurrency}
+            >
+                {this.props.currencies.keySeq().map(currency => {
+                    return (
+                        <option
+                            key={currency}
+                            value={currency}
+                        >
+                            {currency.toUpperCase()}
+                        </option>
+                    )
+                })}
             </select>
         )
     }
     quoteCurrenciesList() {
+        if (this.props.currencies.size === 0 || !this.state.baseCurrency) {
+            return <Loading />;
+        }
         return (
-            <select className="form-control" id="quoteCurrenciesList">
-                <option>BTC</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+            <select
+                className="form-control"
+                id="quoteCurrenciesList"
+                value={this.state.quoteCurrency}
+            >
+                {this.props.currencies.get(this.state.baseCurrency).keySeq().map(currency => {
+                    return (
+                        <option
+                            key={currency}
+                            value={currency}
+                        >
+                            {currency.toUpperCase()}
+                        </option>
+                    )
+                })}
             </select>
         )
     }
     render () {
-        console.log(this.props.currencies);
         return (
             <div>
                 <form
@@ -115,16 +142,10 @@ class GdaxQuoter extends Component {
     }
 }
 
-GdaxQuoter.defaultProps = {
+QuoteForm.defaultProps = {
+    currencies: Map(),
 };
-GdaxQuoter.propTypes = {
+QuoteForm.propTypes = {
+    currencies: ImmutablePropTypes.map.isRequired,
 };
-const mapStateToProps = (state, ownProps) => ({
-    currencies: getCurrencies(state),
-});
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    getCurrencies() {
-        dispatch(apiGetCurrencies())
-    }
-});
-export default connect(mapStateToProps, mapDispatchToProps)(GdaxQuoter);
+export default QuoteForm;

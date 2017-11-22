@@ -15,7 +15,6 @@ export const apiGetCurrencies = () => {
     return dispatch => {
         return apiFetchPromise(api(endpoints.PRODUCTS_LIST), {level:2})
             .then((res) => {
-                console.log(res);
                 let currencies = Map();
                 for (let i = 0; i < res.length; i++) {
                     const current = res[i];
@@ -29,7 +28,7 @@ export const apiGetCurrencies = () => {
                     currencies
                 });
             }, (err) => {
-            console.log(err)
+                console.log(err)
                 // dispatch(handleApiErrors(err))
             });
     }
