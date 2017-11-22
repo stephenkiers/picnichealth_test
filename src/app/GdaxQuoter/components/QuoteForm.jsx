@@ -144,22 +144,27 @@ class QuoteForm extends Component {
                         <div className="quoter-equals">
                             equals
                         </div>
-                        <div className="quoter-currency-group">
-                            <div className="d-flex">
-                                <div className="quoter-input">
-                                    <Input
-                                        id="quoteAmount"
-                                        step={this.currentExchangeValues().get('quoteIncrement')}
-                                        value={this.state.quoteAmount}
-                                        onChange={this.setQuoteAmount}
-                                    />
-                                </div>
-                                <div className="quoter-currency">
-                                    {this.quoteCurrenciesList()}
+                        <GetOrderBook
+                            bookId={currentExchange.get('id')}
+                        >
+                            {(orderBook) => (
+                                <div className="quoter-currency-group">
+                                    <div className="d-flex">
+                                        <div className="quoter-input">
+                                            <Input
+                                                id="quoteAmount"
                                                 step={currentExchange.get('quoteIncrement')}
+                                                value={this.state.quoteAmount}
+                                                onChange={this.setQuoteAmount}
+                                            />
+                                        </div>
+                                        <div className="quoter-currency">
+                                            {this.quoteCurrenciesList()}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            )}
+                        </GetOrderBook>
                     </div>
                 </form>
             </div>
