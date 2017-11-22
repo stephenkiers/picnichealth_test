@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import {apiGetOrderBook} from "../actions";
 import Loading from "../../universal/Loading";
 import {getOrderBook} from "../../reducers";
-import {getHighestValueWithoutGoingOver} from "../../utils";
+import {convertBackToCurrencyFloat, getHighestValueWithoutGoingOver} from "../../utils";
 
 class GetOrderBookResult extends Component {
     componentWillMount() {
@@ -19,17 +19,17 @@ class GetOrderBookResult extends Component {
         if (this.props.orderBook) {
             console.log("calculateResult()", this.props.orderBook, this.props.type, this.props.amount);
         }
-        let id;
+        let id, avgPrice;
         if (this.props.type === "bid") {
-            const array = this.props.orderBook.get('bids').keySeq().toArray();
+            const array = this.props.orderBook.get("bids").keySeq().toArray();
             id = getHighestValueWithoutGoingOver(array, this.props.amount);
+            avgPrice = this.props.orderBook.getIn(["bids", id, "price"]);
         } else {
-            const array = this.props.orderBook.get('asks').keySeq().toArray();
+            const array = this.props.orderBook.get("asks").keySeq().toArray();
             id = getHighestValueWithoutGoingOver(array, this.props.amount);
+            avgPrice = this.props.orderBook.getIn(["asks", id, "price"]);
         }
-        console.log('id', id);
-        // return convertToCurrencyFloat(result, config.PRICE_PRECISION);
-        return 0;
+        return convertBackToCurrencyFloat(this.props.amount * avgPrice);
     }
     getOrderBook() {
         if (!this.props.orderBook) {

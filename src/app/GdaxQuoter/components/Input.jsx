@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import {convertToCurrencyFloat, convertToCurrencyInt} from "../../utils";
+import {convertBackToCurrencyFloat, convertToCurrencyInt} from "../../utils";
 import {config} from "../../constants";
 
 class Input extends Component {
@@ -21,7 +21,7 @@ class Input extends Component {
                 className="form-control"
                 id={this.props.id}
                 step={this.props.step}
-                value={convertToCurrencyFloat(this.props.value)}
+                value={convertBackToCurrencyFloat(this.props.value)}
                 onChange={this.onChange}
             />
         );

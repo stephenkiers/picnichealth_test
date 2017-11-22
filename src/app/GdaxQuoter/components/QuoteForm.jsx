@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Loading from "../../universal/Loading";
 import Input from "./Input";
-import {convertToCurrencyFloat, convertToCurrencyInt} from "../../utils";
+import {convertBackToCurrencyFloat, convertToCurrencyInt} from "../../utils";
 import GetOrderBookResult from "../smartComponents/GetOrderBookResult";
 import {config} from "../../constants";
 
@@ -117,6 +117,7 @@ class QuoteForm extends Component {
         )
     }
     validateAmounts() {
+        const {baseMaxSize, baseMinSize} = this.currentExchangeValues();
         if (this.state.baseAmount > baseMaxSize) {
             this.setState(() => ({baseAmount: baseMaxSize}));
         } else if (this.state.baseAmount < baseMinSize) {
