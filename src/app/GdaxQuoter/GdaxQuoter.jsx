@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import GdaxQuoteInputs from "./GdaxQuoteInputs";
-import GdaxQuoteOutput from "./GdaxQuoteOutput";
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import {getCurrencies} from "./actions";
 
 class GdaxQuoter extends Component {
     constructor(props, context) {
@@ -37,6 +38,9 @@ class GdaxQuoter extends Component {
         this.onSubmit = e => {
             e.preventDefault();
         }
+    }
+    componentWillMount() {
+        this.props.getCurrencies()
     }
     render () {
         return (
@@ -103,5 +107,11 @@ GdaxQuoter.defaultProps = {
 };
 GdaxQuoter.propTypes = {
 };
-
-export default GdaxQuoter;
+const mapStateToProps = (state, ownProps) => ({
+});
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    getCurrencies() {
+        dispatch(getCurrencies())
+    }
+});
+export default connect(mapStateToProps, mapDispatchToProps)(GdaxQuoter);
