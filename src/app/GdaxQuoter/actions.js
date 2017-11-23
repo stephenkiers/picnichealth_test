@@ -25,7 +25,7 @@ const apiGetCurrencyDetails = () => {
         apiFetchPromise(api(endpoints.CURRENCY_DETAILS))
             .then((res) => {
                 dispatch({
-                    type: gdax_constants.CURRENCY_UPDATE_DECIMAL_PLACES,
+                    type: gdax_constants.CURRENCY_UPDATE_SPECS,
                     res
                 });
             }, (err) => {

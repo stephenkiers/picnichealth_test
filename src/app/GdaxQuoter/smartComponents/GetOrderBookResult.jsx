@@ -35,9 +35,7 @@ class GetOrderBookResult extends Component {
         }
         totalCost += convertToCurrencyInt(convertBackToCurrencyFloat(lastGroup.get('price')) * convertBackToCurrencyFloat(amount));
 
-        console.log("calculateResult()", type, this.props.orderBook.toJS(), firstGroup && firstGroup.toJS(), lastGroup && lastGroup.toJS(), totalCost);
-
-        return convertBackToCurrencyFloat(totalCost);
+        return convertBackToCurrencyFloat(totalCost).toFixed(this.props.decimalPlaces || 2);
     }
     getOrderBook(props) {
         if (!props.orderBook) {
@@ -59,6 +57,7 @@ GetOrderBookResult.propTypes = {
     amount: PropTypes.number.isRequired,
     isBase: PropTypes.bool.isRequired,
     action: PropTypes.string.isRequired,
+    decimalPlaces: PropTypes.number,
 };
 const mapStateToProps = (state, ownProps) => ({
     orderBook: getOrderBook(state, ownProps.orderBookId),

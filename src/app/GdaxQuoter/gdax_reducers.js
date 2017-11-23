@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux-immutable'
 import { Map, Set } from 'immutable'
-import {convertToCurrencyInt} from "../utils";
+import {convertToCurrencyInt, getDecimalPlacesFromString} from "../utils";
 
 export const gdax_constants = {
-    CURRENCY_UPDATE_SPECS: "CURRENCY_UPDATE_DECIMAL_PLACES",
+    CURRENCY_UPDATE_SPECS: "CURRENCY_UPDATE_SPECS",
     CURRENCY_REPLACE_ORDER_BOOKS: "CURRENCY_REPLACE_ORDER_BOOKS",
     ORDER_BOOK_REPLACE: "ORDER_BOOK_REPLACE",
     ORDER_BOOK_UPDATE_STATE: "ORDER_BOOK_UPDATE_STATE",
@@ -11,7 +11,8 @@ export const gdax_constants = {
 
 
 const setCurrencyOrderBook = (state, currency1, currency2, value, isBase) => {
-    state = state.has(currency1) ? state : state.set(currency1, Map({orderBooks: Map()}));
+    state = state.has(currency1) ? state : state.set(currency1, Map({id: currency1}));
+    state = state.hasIn([currency1, 'orderBooks']) ? state : state.setIn([currency1, "orderBooks"], Map());
     return state.setIn([currency1, 'orderBooks', currency2], value.set("isBase", isBase));
 };
 
@@ -32,7 +33,10 @@ const currencies = function(state = Map(), action) {
             return state;
 
         case gdax_constants.CURRENCY_UPDATE_SPECS:
-            debugger;
+            action.res.forEach(currency => {
+                state = state.has(currency.id) ? state : state.set(currency.id, Map({id: currency.id}));
+                state = state.setIn([currency.id, 'decimalPlaces'], getDecimalPlacesFromString(currency.min_size));
+            });
 
         default:
             return state;

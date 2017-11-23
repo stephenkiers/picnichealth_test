@@ -28,7 +28,7 @@ class QuoteForm extends Component {
             this.setState((state) => {
                 let {quoteCurrencyKey} = state;
                 if (!validPair(this.props.currencies, baseCurrencyKey, quoteCurrencyKey)) {
-                    quoteCurrencyKey = this.props.currencies.getIn(['orderBooks', baseCurrencyKey]).keySeq().first()
+                    quoteCurrencyKey = this.props.currencies.getIn([baseCurrencyKey, 'orderBooks']).keySeq().first()
                 }
                 return {
                     baseCurrencyKey,
@@ -50,11 +50,20 @@ class QuoteForm extends Component {
         this.validateAmounts();
     }
     componentWillMount() {
+        this.setDefault(this.props);
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setDefault(nextProps);
+    }
+    setDefault(props) {
         if (!this.state.baseCurrencyKey) {
-            this.setState((state) => ({
-                baseCurrencyKey: this.props.currencies.keySeq().first(),
-                quoteCurrencyKey: this.props.currencies.first().get('orderBooks').keySeq().first(),
-            }))
+            const firstCurrency = props.currencies.first();
+            if (firstCurrency.has('orderBooks')) {
+                this.setState((state) => ({
+                    baseCurrencyKey: firstCurrency.get('id'),
+                    quoteCurrencyKey: firstCurrency.get('orderBooks').keySeq().first(),
+                }))
+            }
         }
     }
     baseCurrenciesList() {
@@ -124,6 +133,10 @@ class QuoteForm extends Component {
         }
     };
     render () {
+        if (!this.state.baseCurrencyKey) {
+            return <div className="text-center"><Loading /></div>
+        }
+
         const currentExchange = this.currentExchangeValues();
         console.log(5, this.state.baseCurrencyKey, this.state.quoteCurrencyKey, currentExchange.toJS());
         return (
@@ -158,6 +171,7 @@ class QuoteForm extends Component {
                             orderBookId={currentExchange.get('id')}
                             isBase={currentExchange.get('isBase')}
                             action={this.state.action}
+                            decimalPlaces={this.props.currencies.getIn([this.state.quoteCurrencyKey, "decimalPlaces"])}
                         >
                             {(result) => (
                                 <div className="d-flex align-items-center">

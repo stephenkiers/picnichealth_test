@@ -99,6 +99,17 @@ export const convertBackToCurrencyFloat = (currency, precision = Math.pow(10, co
     return parseFloat(currency) / precision;
 };
 
+export const getDecimalPlacesFromString = (string) => {
+    let decimalPlaces = string.length;
+    for (let i = string.length - 1; i >= 0; i--) {
+        if (string[i] === "1") {
+            decimalPlaces = i - 1; // -1 is for '0.' in string (and it is 0 based, so only -1)
+            break;
+        }
+    }
+    return decimalPlaces
+};
+
 // [1,2,3,4,5,6,7,8,9,10], 8
 export const getIndexOfHighestValueWithoutGoingOver = (array, count) => {
     if (!array || array.length === 0 || !count) {
