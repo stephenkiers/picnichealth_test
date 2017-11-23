@@ -19,21 +19,21 @@ class GetOrderBookResult extends Component {
         let type;
         let {amount} = this.props;
         if (this.props.isBase) {
-            type = this.props.action === "buy" ? "bids" : "asks";
-        } else {
             type = this.props.action === "buy" ? "asks" : "bids";
+        } else {
+            type = this.props.action === "buy" ? "bids" : "asks";
         }
         const arrayOfBreakpoints = this.props.orderBook.get(type).keySeq().toArray();
         const index = getIndexOfHighestValueWithoutGoingOver(arrayOfBreakpoints, amount);
-        const firstGroup = this.props.orderBook.getIn([type, arrayOfBreakpoints[index-1]]);
-        const lastGroup = this.props.orderBook.getIn([type, arrayOfBreakpoints[index]]);
+        const firstPriceGroup = this.props.orderBook.getIn([type, arrayOfBreakpoints[index-1]]);
+        const remainingPriceGroup = this.props.orderBook.getIn([type, arrayOfBreakpoints[index]]);
 
         let totalCost = 0;
-        if (firstGroup) {
-            totalCost = convertToCurrencyInt(convertBackToCurrencyFloat(firstGroup.get('avgPrice')) * convertBackToCurrencyFloat(firstGroup.get('amountAtPrice')));
-            amount -= firstGroup.get('amountAtPrice');
+        if (firstPriceGroup) {
+            totalCost = convertToCurrencyInt(convertBackToCurrencyFloat(firstPriceGroup.get('avgPrice')) * convertBackToCurrencyFloat(firstPriceGroup.get('amountAtPrice')));
+            amount -= firstPriceGroup.get('amountAtPrice');
         }
-        totalCost += convertToCurrencyInt(convertBackToCurrencyFloat(lastGroup.get('price')) * convertBackToCurrencyFloat(amount));
+        totalCost += convertToCurrencyInt(convertBackToCurrencyFloat(remainingPriceGroup.get('price')) * convertBackToCurrencyFloat(amount));
 
         return convertBackToCurrencyFloat(totalCost).toFixed(this.props.decimalPlaces);
     }
