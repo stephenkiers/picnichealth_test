@@ -75,7 +75,7 @@ export const apiGetOrderBook = (orderBookId) => {
         return apiFetchPromise(api(endpoints.ORDER_BOOK, orderBookId), {level:2})
             .then((res) => {
                 // PRICE, AMOUNT, ORDERS
-                console.log(res);
+                // console.log(res);
                 const orderBook = Map({
                     asks: buildOrderedMapFromBook(res, 'asks'),
                     bids: buildOrderedMapFromBook(res, 'bids'),

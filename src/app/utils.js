@@ -158,3 +158,18 @@ export const getIndexOfHighestValueWithoutGoingOver = (array, count) => {
     // console.log("This shouldn't ever happen...");
     return -1;
 };
+
+export const timeRemaining = (originalEpocheTime, secondsUntilExpires = config.SECONDS_UNTIL_ORDERBOOK_EXPIRES) => {
+    const millisecondsUntilExpires = secondsUntilExpires * 1000;
+    const millisecondsElapsed = (new Date).getTime() - originalEpocheTime;
+    const millisecondsRemaining = millisecondsUntilExpires - millisecondsElapsed;
+    if (millisecondsRemaining <= 0) {
+        return "0:00";
+    }
+
+    const minutesRemaining = Math.floor(millisecondsRemaining / 1000 / 60);
+    let secondsRemaining = Math.floor((millisecondsRemaining - (minutesRemaining * 1000 * 60)) / 1000);
+    secondsRemaining = ("0" + secondsRemaining).slice(-2); // leftpadding to 2 digits
+
+    return `${minutesRemaining}:${secondsRemaining}`;
+};

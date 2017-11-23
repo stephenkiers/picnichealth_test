@@ -6,6 +6,7 @@ import Input from "./Input";
 import {convertToCurrencyInt} from "../../utils";
 import GetOrderBookResult from "../smartComponents/GetOrderBookResult";
 import ChooseCurrencySelect from "./ChooseCurrencySelect";
+import OrderBookTimer from "./OrderBookTimer";
 
 const validPair = (currencies, base, quote) => {
     return currencies.get(base).hasIn(['orderBooks', quote])
@@ -165,6 +166,11 @@ class QuoteForm extends PureComponent {
                         </div>
                     </div>
                 </div>
+                {currentExchange && currentExchange.has('id') && (
+                    <OrderBookTimer
+                        orderBookId={currentExchange.get('id')}
+                    />
+                )}
             </form>
         );
     }
