@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import {Map} from 'immutable';
-import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Loading from "../../universal/Loading";
 import Input from "./Input";
 import {convertToCurrencyInt} from "../../utils";
 import GetOrderBookResult from "../smartComponents/GetOrderBookResult";
 import ChooseCurrencySelect from "./ChooseCurrencySelect";
-import BuySellButton from "./BuySellButton";
 
 const validPair = (currencies, base, quote) => {
     return currencies.get(base).hasIn(['orderBooks', quote])
@@ -46,6 +44,13 @@ class QuoteForm extends Component {
         };
         this.preventSubmit = e => {
             e.preventDefault();
+        }
+        this.switchCurrencies = e => {
+            e.preventDefault();
+            this.setState((state) => ({
+                baseCurrencyKey: state.quoteCurrencyKey,
+                quoteCurrencyKey: state.baseCurrencyKey
+            }));
         }
     }
     componentDidUpdate() {
@@ -90,12 +95,14 @@ class QuoteForm extends Component {
             <form onSubmit={this.preventSubmit}>
                 <div className="d-flex align-items-center">
                     <div className="quoter-currency-group">
-                        <div className="d-flex">
+                        <div className="d-flex align-items-center">
                             <div className="quoter-buysell">
-                                <BuySellButton
-                                    action={action}
+                                <button
+                                    className={`btn btn-${action === "buy" ? "success" : "danger"}`}
                                     onClick={this.toggleAction}
-                                />
+                                >
+                                    {action === "buy" ? "Buying" : "Selling"}
+                                </button>
                             </div>
                             <div className="quoter-input">
                                 <Input
@@ -145,6 +152,18 @@ class QuoteForm extends Component {
                             )
                         }}
                     </GetOrderBookResult>
+                    <div className="additional-options">
+                        <div className="d-flex">
+                            <div className="switch">
+                                <button
+                                    className="btn btn-secondary"
+                                    onClick={this.switchCurrencies}
+                                >
+                                    Switch currencies
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         );
