@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import { connect } from 'react-redux';
 import {apiGetOrderBook} from "../actions";
 import Loading from "../../universal/Loading";
@@ -16,10 +15,10 @@ const getTransactionType = (isBase, action) => {
     // asks = offers to sell
     if (isBase) {
         // if isBase, then it is default
-        return action === "buy" ? "bids" : "asks";
+        return action === "buy" ? "asks" : "bids";
     }
     // if not isBase, then it is reversed
-    return action === "buy" ? "asks" : "bids";
+    return action === "buy" ? "bids" : "asks";
 };
 const invertPricePoints = (priceTier) => {
     return priceTier && priceTier
@@ -75,6 +74,7 @@ class GetOrderBookResult extends Component {
         if (!orderBook || orderBook.get('state') === 'fetching') {
             return <div className="text-center"><Loading /></div>
         }
+        console.log(orderBook.toJS());
         return children(this.calculateResult());
     }
 }

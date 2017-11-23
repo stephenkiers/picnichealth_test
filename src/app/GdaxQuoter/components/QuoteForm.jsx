@@ -94,7 +94,7 @@ class QuoteForm extends PureComponent {
         const {currencies} = this.props;
         return (
             <form onSubmit={this.preventSubmit}>
-                <div className="d-flex align-items-center">
+                <div className="d-flex align-items-center d-mobile-column d-mobile-wrap">
                     <div className="quoter-currency-group">
                         <div className="d-flex align-items-center">
                             <div className="quoter-buysell">
@@ -139,26 +139,28 @@ class QuoteForm extends PureComponent {
                                 )
                             }
                             return (
-                                <div className="d-flex align-items-center">
+                                <div className="d-flex align-items-center justify-content-center d-mobile-wrap">
                                     <div className="quoter-text">
                                         {action === "buy" ? "will cost you" : "will give you"}
                                     </div>
-                                    <div className="quoter-result">
-                                        {result}
-                                    </div>
-                                    <div className="quoter-currency">
-                                        <ChooseCurrencySelect
-                                            currencies={currencies.getIn([baseCurrencyKey, 'orderBooks']).keySeq()}
-                                            currentKey={quoteCurrencyKey}
-                                            onChange={this.setQuoteCurrencyKey}
-                                        />
+                                    <div className="d-flex align-items-center justify-content-center">
+                                        <div className="quoter-result">
+                                            {result}
+                                        </div>
+                                        <div className="quoter-currency">
+                                            <ChooseCurrencySelect
+                                                currencies={currencies.getIn([baseCurrencyKey, 'orderBooks']).keySeq()}
+                                                currentKey={quoteCurrencyKey}
+                                                onChange={this.setQuoteCurrencyKey}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             )
                         }}
                     </GetOrderBookResult>
                     <div className="additional-options">
-                        <div className="d-flex">
+                        <div className="d-flex justify-content-center">
                             <div className="switch">
                                 <button
                                     className="btn btn-secondary"

@@ -1,4 +1,24 @@
+$maxBreakpoint: 900px;
+$minBreakpoint: 901px;
+
+.d-mobile-column {
+  @media screen and (max-width: $maxBreakpoint) {
+    flex-direction: column !important;
+    > div {
+      width: 100%;
+    }
+  }
+}
+.d-mobile-wrap {
+  @media screen and (max-width: $maxBreakpoint) {
+    flex-wrap: wrap !important;
+  }
+}
 .quoter-currency-group {
+  @media screen and (max-width: $maxBreakpoint) {
+    width: 100%;
+    margin-bottom: 10px;
+  }
   .quoter-input {
     position:relative;
     margin-right:10px;
@@ -12,6 +32,9 @@
       color: red;
       font-size: 0.8rem;
       white-space: nowrap;
+    }
+    @media screen and (max-width: $maxBreakpoint) {
+      flex: 1;
     }
   }
   .quoter-buysell {
@@ -27,11 +50,19 @@
 }
 .quoter-text {
   margin: 0 10px;
+  text-align:center;
 }
 .additional-options {
-  margin-left:10px;
-  padding-left:10px;
-  border-left: 1px solid #ccc;
+  @media screen and (max-width: $maxBreakpoint) {
+    margin-top:10px;
+    padding-top:10px;
+    border-top: 1px solid #ccc;
+  }
+  @media screen and (min-width: $minBreakpoint) {
+    margin-left:10px;
+    padding-left:10px;
+    border-left: 1px solid #ccc;
+  }
 }
 
 .reset-timer {
