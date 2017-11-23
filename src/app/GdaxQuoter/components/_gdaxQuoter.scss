@@ -3,6 +3,9 @@
   .quoter-input {
     //flex: 1;
     margin-right:10px;
+    input.warning {
+      border: 1px solid red;
+    }
   }
   .quoter-buysell {
     margin-right:10px;

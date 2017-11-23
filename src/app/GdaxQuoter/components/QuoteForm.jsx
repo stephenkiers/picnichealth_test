@@ -111,6 +111,8 @@ class QuoteForm extends PureComponent {
                                     step={currentExchange.get('quoteIncrement')}
                                     value={baseAmount}
                                     onChange={this.setBaseAmount}
+                                    min={currentExchange.get("baseMinSize")}
+                                    max={currentExchange.get("baseMaxSize")}
                                     decimalPlaces={currencies.getIn([baseCurrencyKey, "decimalPlaces"])}
                                 />
                             </div>
@@ -123,9 +125,6 @@ class QuoteForm extends PureComponent {
                             </div>
                         </div>
                     </div>
-                    <div className="quoter-text">
-                        {action === "buy" ? "will cost you" : "will give you"}
-                    </div>
                     <GetOrderBookResult
                         amount={baseAmount}
                         orderBookId={currentExchange.get('id')}
@@ -135,10 +134,15 @@ class QuoteForm extends PureComponent {
                     >
                         {(result) => {
                             if (result === -1) {
-                                return <div>Unable to calculate</div>
+                                return (
+                                    <div className="quoter-text">is more than can be quoted at this time.</div>
+                                )
                             }
                             return (
                                 <div className="d-flex align-items-center">
+                                    <div className="quoter-text">
+                                        {action === "buy" ? "will cost you" : "will give you"}
+                                    </div>
                                     <div className="quoter-result">
                                         {result}
                                     </div>
@@ -160,7 +164,7 @@ class QuoteForm extends PureComponent {
                                     className="btn btn-secondary"
                                     onClick={this.switchCurrencies}
                                 >
-                                    Reverse currencies
+                                    Reverse
                                 </button>
                             </div>
                         </div>
