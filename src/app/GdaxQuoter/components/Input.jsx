@@ -5,12 +5,26 @@ import {convertBackToCurrencyFloat, convertToCurrencyInt, formatCurrency} from "
 class Input extends PureComponent {
     constructor(props) {
         super();
+        this.state = {
+            value: props.value,
+        };
         this.onChange = e => {
-            const newAmount = parseFloat(e.target.value);
+            const newAmount = e.target.value ? parseFloat(e.target.value) : '';
+            this.setState(() => ({value: newAmount}));
             if (newAmount > 0) {
                 this.props.onChange(convertToCurrencyInt(e.target.value));
             }
         };
+        this.onBlur = () => {
+            if (this.state.value !== this.props.value) {
+                this.setState(() => ({value: this.props.value}));
+            }
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.value !== this.state.value) {
+            this.setState(() => ({value: nextProps.value}));
+        }
     }
     render () {
         return (
@@ -19,8 +33,9 @@ class Input extends PureComponent {
                 className="form-control"
                 id={this.props.id}
                 step={this.props.step}
-                value={formatCurrency(convertBackToCurrencyFloat(this.props.value), this.props.decimalPlaces)}
+                value={formatCurrency(convertBackToCurrencyFloat(this.state.value), this.props.decimalPlaces)}
                 onChange={this.onChange}
+                onBlur={this.onBlur}
             />
         );
     }
