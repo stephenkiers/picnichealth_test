@@ -46,7 +46,8 @@ const currencies = function(state = Map(), action) {
 const orderBooks = function(state = Map(), action) {
     switch (action.type) {
         case gdax_constants.ORDER_BOOK_UPDATE_STATE:
-            return state.set(action.orderBookId, Map({state: action.state}));
+            state = state.has(action.orderBookId) ? state : state.set(action.orderBookId, Map());
+            return state.setIn([action.orderBookId, 'state'], action.state);
         case gdax_constants.ORDER_BOOK_REPLACE:
             return state.set(action.orderBookId, action.orderBook);
         default:

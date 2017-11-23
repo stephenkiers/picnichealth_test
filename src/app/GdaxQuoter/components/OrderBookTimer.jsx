@@ -1,18 +1,18 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import {apiGetOrderBook} from "../actions";
 import {getOrderBook} from "../../reducers";
 import {timeRemaining} from "../../utils";
 
-class OrderBookTimer extends Component {
+class OrderBookTimer extends PureComponent {
     constructor(props, context) {
         super(props, context);
         this.state = {
             timeRemaining: "",
             refreshPending: false
         };
+        this.refreshPending = false;
         this.tick = () => {
             this.setState(() => ({
                 timeRemaining: timeRemaining(this.props.orderBook.get('updatedAt'))
@@ -22,13 +22,20 @@ class OrderBookTimer extends Component {
     componentWillReceiveProps(nextProps) {
         if (
             this.state.refreshPending &&
+            nextProps.orderBook.get('updatedAt') && this.props.orderBook.get('updatedAt') &&
             nextProps.orderBook.get('updatedAt') !== this.props.orderBook.get('updatedAt')
         ) {
-           this.setState(() => ({refreshPending: false}));
+            this.setState(() => ({
+                refreshPending: false,
+                timeRemaining: timeRemaining(nextProps.orderBook.get('updatedAt'))
+            }));
         }
     }
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.timeRemaining === "0:00" && !this.state.refreshPending) {
+        if (
+            !this.state.refreshPending &&
+            this.state.timeRemaining === "0:00"
+        ) {
             this.setState(() => ({refreshPending: true}));
             this.props.apiGetOrderBook();
         }
@@ -44,7 +51,7 @@ class OrderBookTimer extends Component {
             return null;
         }
         if (this.state.refreshPending) {
-            return <div>refreshing order book....</div>;
+            return <div className="reset-timer">getting new prices....</div>;
         }
         return (
             <div className="reset-timer">

@@ -33,6 +33,9 @@ class Input extends PureComponent {
         }
     }
     componentWillReceiveProps(nextProps) {
+        if (this.props.step !==  nextProps.step) {
+
+        }
         if (nextProps.value !== this.state.value) {
             this.setState(() => ({value: nextProps.value}));
         }

@@ -80,7 +80,8 @@ export const apiGetOrderBook = (orderBookId) => {
                     asks: buildOrderedMapFromBook(res, 'asks'),
                     bids: buildOrderedMapFromBook(res, 'bids'),
                     sequence: res.sequence,
-                    updatedAt: (new Date).getTime()
+                    updatedAt: (new Date).getTime(),
+                    state: 'idle',
                 });
                 // console.log(orderBook.toJS());
                 dispatch({
