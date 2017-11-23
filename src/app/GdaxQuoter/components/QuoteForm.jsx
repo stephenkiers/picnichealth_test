@@ -19,25 +19,30 @@ const BuySellButton = ({action, onClick}) => (
         {action === "buy" ? "Buying" : "Selling"}
     </button>
 );
-const BaseCurrenciesList = ({baseCurrencyKey, currencies, setBaseCurrencyKey}) => (
-    <select
-        className="form-control"
-        id="baseCurrenciesList"
-        value={baseCurrencyKey}
-        onChange={setBaseCurrencyKey}
-    >
-        {currencies.map(currency => {
-            return (
-                <option
-                    key={currency}
-                    value={currency}
-                >
-                    {currency.toUpperCase()}
-                </option>
-            )
-        })}
-    </select>
-);
+const ChooseCurrencySelect = ({currencies, currentKey, onChange})=> {
+    if (!currentKey) {
+        return <Loading />;
+    }
+    return (
+        <select
+            className="form-control"
+            id="quoteCurrenciesList"
+            value={currentKey}
+            onChange={onChange}
+        >
+            {currencies.map(currency => {
+                return (
+                    <option
+                        key={currency}
+                        value={currency}
+                    >
+                        {currency.toUpperCase()}
+                    </option>
+                )
+            })}
+        </select>
+    )
+};
 
 class QuoteForm extends Component {
     constructor(props, context) {
@@ -96,30 +101,6 @@ class QuoteForm extends Component {
     currentExchangeValues() {
         return this.props.currencies.getIn([this.state.baseCurrencyKey, 'orderBooks', this.state.quoteCurrencyKey]);
     }
-    quoteCurrenciesList() {
-        if (!this.state.quoteCurrencyKey) {
-            return <Loading />;
-        }
-        return (
-            <select
-                className="form-control"
-                id="quoteCurrenciesList"
-                value={this.state.quoteCurrencyKey}
-                onChange={this.setQuoteCurrencyKey}
-            >
-                {this.props.currencies.getIn([this.state.baseCurrencyKey, 'orderBooks']).keySeq().map(currency => {
-                    return (
-                        <option
-                            key={currency}
-                            value={currency}
-                        >
-                            {currency.toUpperCase()}
-                        </option>
-                    )
-                })}
-            </select>
-        )
-    }
     validateAmounts() {
         const {baseMaxSize, baseMinSize} = this.currentExchangeValues();
         if (this.state.baseAmount > baseMaxSize) {
@@ -154,10 +135,10 @@ class QuoteForm extends Component {
                                 />
                             </div>
                             <div className="quoter-currency">
-                                <BaseCurrenciesList
-                                    baseCurrencyKey={this.state.baseCurrencyKey}
+                                <ChooseCurrencySelect
                                     currencies={this.props.currencies.keySeq()}
-                                    setBaseCurrencyKey={this.setBaseCurrencyKey}
+                                    currentKey={this.state.baseCurrencyKey}
+                                    onChange={this.setBaseCurrencyKey}
                                 />
                             </div>
                         </div>
@@ -182,7 +163,11 @@ class QuoteForm extends Component {
                                         {result}
                                     </div>
                                     <div className="quoter-currency">
-                                        {this.quoteCurrenciesList()}
+                                        <ChooseCurrencySelect
+                                            currencies={this.props.currencies.getIn([this.state.baseCurrencyKey, 'orderBooks']).keySeq()}
+                                            currentKey={this.state.quoteCurrencyKey}
+                                            onChange={this.setQuoteCurrencyKey}
+                                        />
                                     </div>
                                 </div>
                             )
