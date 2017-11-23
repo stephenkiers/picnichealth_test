@@ -166,7 +166,7 @@ class QuoteForm extends PureComponent {
                                     className="btn btn-secondary"
                                     onClick={this.switchCurrencies}
                                 >
-                                    Reverse
+                                    Flip currencies
                                 </button>
                             </div>
                         </div>
