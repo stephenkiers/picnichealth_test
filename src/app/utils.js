@@ -131,6 +131,10 @@ export const countDecimalPlaces = (number) => {
         - (match[2] ? +match[2] : 0));
 };
 
+export const invertCurrencyValue = (price) => {
+    return convertToCurrencyInt(1 / convertBackToCurrencyFloat(price))
+};
+
 // [1,2,3,4,5,6,7,8,9,10], 8
 export const getIndexOfHighestValueWithoutGoingOver = (array, count) => {
     if (!array || array.length === 0 || !count) {

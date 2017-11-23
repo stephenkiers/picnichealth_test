@@ -5,16 +5,28 @@ import { connect } from 'react-redux';
 import {apiGetOrderBook} from "../actions";
 import Loading from "../../universal/Loading";
 import {getOrderBook} from "../../reducers";
-import {convertBackToCurrencyFloat, convertToCurrencyInt, getIndexOfHighestValueWithoutGoingOver} from "../../utils";
+import {
+    convertBackToCurrencyFloat, convertToCurrencyInt, getIndexOfHighestValueWithoutGoingOver,
+    invertCurrencyValue
+} from "../../utils";
 
 
 const getTransactionType = (isBase, action) => {
+    // bids = offers to buy
+    // asks = offers to sell
     if (isBase) {
-        return action === "buy" ? "asks" : "bids";
-    } else {
+        // if isBase, then it is default
         return action === "buy" ? "bids" : "asks";
     }
+    // if not isBase, then it is reversed
+    return action === "buy" ? "asks" : "bids";
 };
+const invertPricePoints = (priceTier) => {
+    return priceTier && priceTier
+        .set('avgPrice', invertCurrencyValue(priceTier.get('avgPrice')))
+        .set('price', invertCurrencyValue(priceTier.get('price')));
+};
+
 class GetOrderBookResult extends Component {
     componentWillMount() {
         this.getOrderBook(this.props);
@@ -31,15 +43,19 @@ class GetOrderBookResult extends Component {
         let {action, amount, decimalPlaces, isBase, orderBook} = this.props;
         const transactionType = getTransactionType(isBase, action);
         const arrayOfBreakpoints = orderBook.get(transactionType).keySeq().toArray();
-        const currentTierIndex = getIndexOfHighestValueWithoutGoingOver(arrayOfBreakpoints, amount);
+        const currentTierIndex = getIndexOfHighestValueWithoutGoingOver(arrayOfBreakpoints, amount, !isBase);
         if (currentTierIndex === -1) {
             return -1;
         }
         // set price tier that amount BEFORE current tier gets calculated at
-        const averagePriceTier = orderBook.getIn([transactionType, arrayOfBreakpoints[currentTierIndex-1]]);
+        let averagePriceTier = orderBook.getIn([transactionType, arrayOfBreakpoints[currentTierIndex-1]]);
         // set current price tier that is used to calculate value of amount within current tier
-        const currentPriceTier = orderBook.getIn([transactionType, arrayOfBreakpoints[currentTierIndex]]);
-
+        let currentPriceTier = orderBook.getIn([transactionType, arrayOfBreakpoints[currentTierIndex]]);
+        // if not base, then invert the price tiers so that we get proper values
+        if (!isBase) {
+            averagePriceTier = invertPricePoints(averagePriceTier);
+            currentPriceTier = invertPricePoints(currentPriceTier);
+        }
         let totalCost = 0;
         // if this is not the first price tier
         if (averagePriceTier) {
