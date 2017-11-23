@@ -6,42 +6,11 @@ import Loading from "../../universal/Loading";
 import Input from "./Input";
 import {convertToCurrencyInt} from "../../utils";
 import GetOrderBookResult from "../smartComponents/GetOrderBookResult";
+import ChooseCurrencySelect from "./ChooseCurrencySelect";
+import BuySellButton from "./BuySellButton";
 
 const validPair = (currencies, base, quote) => {
     return currencies.get(base).hasIn(['orderBooks', quote])
-};
-
-const BuySellButton = ({action, onClick}) => (
-    <button
-        className={`btn btn-${action === "buy" ? "success" : "danger"}`}
-        onClick={onClick}
-    >
-        {action === "buy" ? "Buying" : "Selling"}
-    </button>
-);
-const ChooseCurrencySelect = ({currencies, currentKey, onChange})=> {
-    if (!currentKey) {
-        return <Loading />;
-    }
-    return (
-        <select
-            className="form-control"
-            id="quoteCurrenciesList"
-            value={currentKey}
-            onChange={onChange}
-        >
-            {currencies.map(currency => {
-                return (
-                    <option
-                        key={currency}
-                        value={currency}
-                    >
-                        {currency.toUpperCase()}
-                    </option>
-                )
-            })}
-        </select>
-    )
 };
 
 class QuoteForm extends Component {
@@ -51,6 +20,7 @@ class QuoteForm extends Component {
             action: "buy",
             baseAmount: convertToCurrencyInt(1),
             baseCurrencyKey: "",
+            quoteCurrencyKey: "",
         };
         this.setBaseAmount = (baseAmount) => {
             this.setState(() => ({baseAmount}));
@@ -114,6 +84,8 @@ class QuoteForm extends Component {
             return <div className="text-center"><Loading /></div>
         }
         const currentExchange = this.currentExchangeValues();
+        const {action, baseAmount, baseCurrencyKey, quoteCurrencyKey} = this.state;
+        const {currencies} = this.props;
         return (
             <form onSubmit={this.preventSubmit}>
                 <div className="d-flex align-items-center">
@@ -121,7 +93,7 @@ class QuoteForm extends Component {
                         <div className="d-flex">
                             <div className="quoter-buysell">
                                 <BuySellButton
-                                    action={this.state.action}
+                                    action={action}
                                     onClick={this.toggleAction}
                                 />
                             </div>
@@ -129,29 +101,29 @@ class QuoteForm extends Component {
                                 <Input
                                     id="baseAmount"
                                     step={currentExchange.get('quoteIncrement')}
-                                    value={this.state.baseAmount}
+                                    value={baseAmount}
                                     onChange={this.setBaseAmount}
-                                    decimalPlaces={this.props.currencies.getIn([this.state.baseCurrencyKey, "decimalPlaces"])}
+                                    decimalPlaces={currencies.getIn([baseCurrencyKey, "decimalPlaces"])}
                                 />
                             </div>
                             <div className="quoter-currency">
                                 <ChooseCurrencySelect
-                                    currencies={this.props.currencies.keySeq()}
-                                    currentKey={this.state.baseCurrencyKey}
+                                    currencies={currencies.keySeq()}
+                                    currentKey={baseCurrencyKey}
                                     onChange={this.setBaseCurrencyKey}
                                 />
                             </div>
                         </div>
                     </div>
                     <div className="quoter-text">
-                        {this.state.action === "buy" ? "will cost you" : "will give you"}
+                        {action === "buy" ? "will cost you" : "will give you"}
                     </div>
                     <GetOrderBookResult
-                        amount={this.state.baseAmount}
+                        amount={baseAmount}
                         orderBookId={currentExchange.get('id')}
                         isBase={currentExchange.get('isBase')}
-                        action={this.state.action}
-                        decimalPlaces={this.props.currencies.getIn([this.state.quoteCurrencyKey, "decimalPlaces"])}
+                        action={action}
+                        decimalPlaces={currencies.getIn([quoteCurrencyKey, "decimalPlaces"])}
                     >
                         {(result) => {
                             if (result === -1) {
@@ -164,8 +136,8 @@ class QuoteForm extends Component {
                                     </div>
                                     <div className="quoter-currency">
                                         <ChooseCurrencySelect
-                                            currencies={this.props.currencies.getIn([this.state.baseCurrencyKey, 'orderBooks']).keySeq()}
-                                            currentKey={this.state.quoteCurrencyKey}
+                                            currencies={currencies.getIn([baseCurrencyKey, 'orderBooks']).keySeq()}
+                                            currentKey={quoteCurrencyKey}
                                             onChange={this.setQuoteCurrencyKey}
                                         />
                                     </div>
