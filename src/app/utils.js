@@ -91,9 +91,6 @@ export const apiFetchPromise = (api_constant, body = {}, json_body = false) => {
 //         return fallbackResponse;
 //     }
 // };
-export const immutableFindOrCreate = (map, key, value) => {
-    return map.has(key) ? map : map.set(key, value);
-};
 
 export const convertToCurrencyInt = (currency, precision = Math.pow(10, config.DEFAULT_PRECISION)) => {
     return parseInt(parseFloat(currency) * precision);
@@ -102,6 +99,7 @@ export const convertBackToCurrencyFloat = (currency, precision = Math.pow(10, co
     return parseFloat(currency) / precision;
 };
 
+// [1,2,3,4,5,6,7,8,9,10], 8
 export const getIndexOfHighestValueWithoutGoingOver = (array, count) => {
     if (!array || array.length === 0 || !count) {
         return -1;
@@ -115,16 +113,11 @@ export const getIndexOfHighestValueWithoutGoingOver = (array, count) => {
     if (count > array[array.length - 1]) {
         return -1;
     }
-    return arraySearch(array, count);
-};
-
-// [1,2,3,4,5,6,7,8,9,10], 8
-const arraySearch = (array, target) => {
     let startI = 0;
     let endI = array.length - 1;
     while (startI <= endI) {
         const centerI = (endI + startI) >> 1;
-        const comparedToTarget = target - array[centerI];
+        const comparedToTarget = count - array[centerI];
         if (comparedToTarget > 0) {
             startI = centerI + 1;
         } else if(comparedToTarget < 0) {
@@ -133,8 +126,9 @@ const arraySearch = (array, target) => {
             return centerI;
         }
     }
-    if (array[startI] > target) {
-        return startI
+    if (array[startI] > count && array[endI] <= count) {
+        return endI
     }
+    console.log('whoops');
     debugger;
 };

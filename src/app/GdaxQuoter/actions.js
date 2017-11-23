@@ -1,40 +1,18 @@
 import {gdax_constants} from './gdax_reducers'
 import {api, config, endpoints} from "../constants";
-import {apiFetchPromise, convertToCurrencyInt, immutableFindOrCreate} from "../utils";
+import {apiFetchPromise, convertToCurrencyInt} from "../utils";
 import {Map, OrderedMap} from 'immutable';
 
 
 
-const setCurrency = (currencies, currency1, currency2, value, isBase) => {
-    currencies = immutableFindOrCreate(currencies, currency1, Map({
-        orderBooks: Map(),
-        decimalPlaces: 0,
-    }));
-    let currencyOrderBook = currencies.getIn([currency1, 'orderBooks']);
-    currencyOrderBook =  immutableFindOrCreate(currencyOrderBook, currency2, value.set("isBase", isBase));
-    return currencies.setIn([currency1, 'orderBooks'], currencyOrderBook);
-};
 
 const apiGetProducts = () => {
     return dispatch => {
         apiFetchPromise(api(endpoints.PRODUCTS_LIST))
             .then((res) => {
-                let currencies = Map();
-                for (let i = 0; i < res.length; i++) {
-                    const current = res[i];
-                    const {id, base_currency, quote_currency, base_min_size, base_max_size, quote_increment} = current;
-                    const value = Map({
-                        id,
-                        baseMinSize: convertToCurrencyInt(base_min_size),
-                        baseMaxSize: convertToCurrencyInt(base_max_size),
-                        quoteIncrement: quote_increment
-                    });
-                    currencies = setCurrency(currencies, base_currency, quote_currency, value, true);
-                    currencies = setCurrency(currencies, quote_currency, base_currency, value, false);
-                }
                 dispatch({
-                    type: gdax_constants.REPLACE_CURRENCIES,
-                    currencies
+                    type: gdax_constants.CURRENCY_REPLACE_ORDER_BOOKS,
+                    res
                 });
             }, (err) => {
                 console.log(err)
@@ -44,17 +22,16 @@ const apiGetProducts = () => {
 };
 const apiGetCurrencyDetails = () => {
     return dispatch => {
-        console.log('todo');
-        // apiFetchPromise(api(endpoints.CURRENCY_DETAILS))
-        //     .then((res) => {
-        //         dispatch({
-        //             type: gdax_constants.REPLACE_CURRENCIES,
-        //             currencies
-        //         });
-        //     }, (err) => {
-        //         console.log(err)
-        //         // dispatch(handleApiErrors(err))
-        //     });
+        apiFetchPromise(api(endpoints.CURRENCY_DETAILS))
+            .then((res) => {
+                dispatch({
+                    type: gdax_constants.CURRENCY_UPDATE_DECIMAL_PLACES,
+                    res
+                });
+            }, (err) => {
+                console.log(err)
+                // dispatch(handleApiErrors(err))
+            });
     }
 };
 export const apiGetCurrencies = () => {
@@ -91,8 +68,9 @@ const buildOrderedMapFromBook = (res, resKey) => {
 export const apiGetOrderBook = (orderBookId) => {
     return dispatch => {
         dispatch({
-            type: gdax_constants.REQUEST_ORDER_BOOK,
-            orderBookId
+            type: gdax_constants.ORDER_BOOK_UPDATE_STATE,
+            orderBookId,
+            state: "fetching",
         });
         return apiFetchPromise(api(endpoints.ORDER_BOOK, orderBookId), {level:2})
             .then((res) => {
@@ -106,7 +84,7 @@ export const apiGetOrderBook = (orderBookId) => {
                 });
                 // console.log(orderBook.toJS());
                 dispatch({
-                    type: gdax_constants.REPLACE_ORDER_BOOK,
+                    type: gdax_constants.ORDER_BOOK_REPLACE,
                     orderBookId,
                     orderBook
                 });
