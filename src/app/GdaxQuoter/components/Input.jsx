@@ -7,20 +7,20 @@ class Input extends PureComponent {
         super();
         this.state = {
             value: props.value,
-            warning: false,
+            warning: "",
         };
         this.onChange = e => {
-            const newAmount = e.target.value ? parseFloat(e.target.value) : '';
-            this.setState(() => ({value: newAmount}));
-            const convertedValue = convertToCurrencyInt(e.target.value);
-            if (
-                convertedValue >= this.props.min &&
-                convertedValue <= this.props.max
-            ) {
-                this.props.onChange(convertedValue);
-                this.setState(() => ({warning: false}));
+            const newAmount = e.target.value ? parseFloat(e.target.value) : 0;
+            const convertedValue = convertToCurrencyInt(newAmount);
+
+            this.setState(() => ({value: convertedValue}));
+            if (convertedValue < this.props.min) {
+                this.setState(() => ({warning: 'tooLow'}));
+            } else if(convertedValue > this.props.max) {
+                this.setState(() => ({warning: 'tooHigh'}));
             } else {
-                this.setState(() => ({warning: true}));
+                this.props.onChange(convertedValue);
+                this.setState(() => ({warning: ""}));
             }
         };
         this.onBlur = () => {
@@ -46,15 +46,24 @@ class Input extends PureComponent {
     }
     render () {
         return (
-            <input
-                type="number"
-                className={this.inputClass()}
-                id={this.props.id}
-                step={this.props.step}
-                value={formatCurrency(convertBackToCurrencyFloat(this.state.value), this.props.decimalPlaces)}
-                onChange={this.onChange}
-                onBlur={this.onBlur}
-            />
+            <div>
+                {this.state.warning && (
+                    <div className="warning-message">
+                        {this.state.warning === "tooHigh" ?
+                            "This number is too high. Try something lower." :
+                            "This number is too low. Try something higher."}
+                    </div>
+                )}
+                <input
+                    type="number"
+                    className={this.inputClass()}
+                    id={this.props.id}
+                    step={this.props.step}
+                    value={formatCurrency(convertBackToCurrencyFloat(this.state.value), this.props.decimalPlaces)}
+                    onChange={this.onChange}
+                    onBlur={this.onBlur}
+                />
+            </div>
         );
     }
 }

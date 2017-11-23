@@ -1,10 +1,17 @@
 .quoter-currency-group {
-  //flex: 1;
   .quoter-input {
-    //flex: 1;
+    position:relative;
     margin-right:10px;
     input.warning {
       border: 1px solid red;
+    }
+    .warning-message {
+      position:absolute;
+      bottom: 103%;
+      left: 0;
+      color: red;
+      font-size: 0.8rem;
+      white-space: nowrap;
     }
   }
   .quoter-buysell {
