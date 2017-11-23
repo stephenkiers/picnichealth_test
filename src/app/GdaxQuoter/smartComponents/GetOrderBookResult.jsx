@@ -74,7 +74,7 @@ class GetOrderBookResult extends Component {
         if (!orderBook || orderBook.get('state') === 'fetching') {
             return <div className="text-center"><Loading /></div>
         }
-        console.log(orderBook.toJS());
+        // console.log(orderBook.toJS());
         return children(this.calculateResult());
     }
 }

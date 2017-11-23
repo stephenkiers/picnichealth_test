@@ -27,6 +27,7 @@ const handleResponse = (response) => {
                 }, () => {
                     console.log(response.status);
                     console.log("error in fetch");
+                    //todo: handle these properly with inapp messaging
                     reject({status: response.status, error: "Bad response from server"});
                 })
         }

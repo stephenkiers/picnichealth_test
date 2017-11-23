@@ -7,7 +7,7 @@ class GdaxQuoter extends PureComponent {
         return (
             <GetCurrencies>
                 {(currencies) => {
-                    console.log(currencies.toJS());
+                    // console.log(currencies.toJS());
                     return <QuoteForm currencies={currencies}/>
                 }}
             </GetCurrencies>
