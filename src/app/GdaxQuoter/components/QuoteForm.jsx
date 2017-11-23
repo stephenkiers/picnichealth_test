@@ -9,7 +9,7 @@ import GetOrderBookResult from "../smartComponents/GetOrderBookResult";
 import {config} from "../../constants";
 
 const validPair = (currencies, base, quote) => {
-    return currencies.get(base).has(quote)
+    return currencies.get(base).hasIn(['orderBooks', quote])
 };
 
 class QuoteForm extends Component {
@@ -28,7 +28,7 @@ class QuoteForm extends Component {
             this.setState((state) => {
                 let {quoteCurrencyKey} = state;
                 if (!validPair(this.props.currencies, baseCurrencyKey, quoteCurrencyKey)) {
-                    quoteCurrencyKey = this.props.currencies.get(baseCurrencyKey).keySeq().first()
+                    quoteCurrencyKey = this.props.currencies.getIn(['orderBooks', baseCurrencyKey]).keySeq().first()
                 }
                 return {
                     baseCurrencyKey,
@@ -53,7 +53,7 @@ class QuoteForm extends Component {
         if (!this.state.baseCurrencyKey) {
             this.setState((state) => ({
                 baseCurrencyKey: this.props.currencies.keySeq().first(),
-                quoteCurrencyKey: this.props.currencies.first().keySeq().first(),
+                quoteCurrencyKey: this.props.currencies.first().get('orderBooks').keySeq().first(),
             }))
         }
     }
@@ -81,7 +81,7 @@ class QuoteForm extends Component {
     buySellButton() {
         return (
             <button
-                className="btn btn-primary"
+                className={`btn btn-${this.state.action === "buy" ? "success" : "danger"}`}
                 onClick={this.toggleAction}
             >
                 {this.state.action === "buy" ? "Buying" : "Selling"}
@@ -89,7 +89,7 @@ class QuoteForm extends Component {
         )
     }
     currentExchangeValues() {
-        return this.props.currencies.getIn([this.state.baseCurrencyKey, this.state.quoteCurrencyKey]);
+        return this.props.currencies.getIn([this.state.baseCurrencyKey, 'orderBooks', this.state.quoteCurrencyKey]);
     }
     quoteCurrenciesList() {
         if (!this.state.quoteCurrencyKey) {
@@ -102,7 +102,7 @@ class QuoteForm extends Component {
                 value={this.state.quoteCurrencyKey}
                 onChange={this.setQuoteCurrencyKey}
             >
-                {this.props.currencies.get(this.state.baseCurrencyKey).keySeq().map(currency => {
+                {this.props.currencies.getIn([this.state.baseCurrencyKey, 'orderBooks']).keySeq().map(currency => {
                     return (
                         <option
                             key={currency}

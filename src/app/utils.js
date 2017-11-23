@@ -99,7 +99,7 @@ export const convertToCurrencyInt = (currency, precision = Math.pow(10, config.D
     return parseInt(parseFloat(currency) * precision);
 };
 export const convertBackToCurrencyFloat = (currency, precision = Math.pow(10, config.DEFAULT_PRECISION)) => {
-    return parseInt(currency) / precision;
+    return parseFloat(currency) / precision;
 };
 
 export const getIndexOfHighestValueWithoutGoingOver = (array, count) => {

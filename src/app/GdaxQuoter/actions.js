@@ -6,14 +6,18 @@ import {Map, OrderedMap} from 'immutable';
 
 
 const setCurrency = (currencies, currency1, currency2, value, isBase) => {
-    currencies = immutableFindOrCreate(currencies, currency1, Map());
-    let currency = currencies.get(currency1);
-    currency =  immutableFindOrCreate(currency, currency2, value.set("isBase", isBase));
-    return currencies.set(currency1, currency);
+    currencies = immutableFindOrCreate(currencies, currency1, Map({
+        orderBooks: Map(),
+        decimalPlaces: 0,
+    }));
+    let currencyOrderBook = currencies.getIn([currency1, 'orderBooks']);
+    currencyOrderBook =  immutableFindOrCreate(currencyOrderBook, currency2, value.set("isBase", isBase));
+    return currencies.setIn([currency1, 'orderBooks'], currencyOrderBook);
 };
-export const apiGetCurrencies = () => {
+
+const apiGetProducts = () => {
     return dispatch => {
-        return apiFetchPromise(api(endpoints.PRODUCTS_LIST))
+        apiFetchPromise(api(endpoints.PRODUCTS_LIST))
             .then((res) => {
                 let currencies = Map();
                 for (let i = 0; i < res.length; i++) {
@@ -38,6 +42,27 @@ export const apiGetCurrencies = () => {
             });
     }
 };
+const apiGetCurrencyDetails = () => {
+    return dispatch => {
+        console.log('todo');
+        // apiFetchPromise(api(endpoints.CURRENCY_DETAILS))
+        //     .then((res) => {
+        //         dispatch({
+        //             type: gdax_constants.REPLACE_CURRENCIES,
+        //             currencies
+        //         });
+        //     }, (err) => {
+        //         console.log(err)
+        //         // dispatch(handleApiErrors(err))
+        //     });
+    }
+};
+export const apiGetCurrencies = () => {
+    return dispatch => {
+        dispatch(apiGetProducts());
+        dispatch(apiGetCurrencyDetails());
+    }
+};
 
 
 
@@ -59,7 +84,7 @@ const buildOrderedMapFromBook = (res, resKey) => {
         }));
         runningTotalAmount = newTotalAmount;
         runningPriceAverage = newPriceAverage
-    })
+    });
     return aggregated
 };
 

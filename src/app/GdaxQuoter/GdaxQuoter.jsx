@@ -9,7 +9,7 @@ class GdaxQuoter extends Component {
         return (
             <GetCurrencies>
                 {(currencies) => {
-                    console.log(currencies);
+                    console.log(currencies.toJS());
                     return <QuoteForm currencies={currencies}/>
                 }}
             </GetCurrencies>
