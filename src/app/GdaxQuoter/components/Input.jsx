@@ -24,10 +24,10 @@ class Input extends PureComponent {
             }
         };
         this.onBlur = () => {
-            if (this.state.value !== this.props.value) {
-                this.setState(() => ({
-                    value: this.props.value,
-                    warning: false,
+            if (this.state.value !== this.props.value && this.state.warning) {
+                this.setState((state) => ({
+                    value: state.warning === "tooLow" ? this.props.min : this.props.max,
+                    warning: "",
                 }));
             }
         }
