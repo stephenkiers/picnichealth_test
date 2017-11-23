@@ -1,10 +1,8 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import React, {PureComponent} from 'react';
 import GetCurrencies from "./smartComponents/GetCurrencies";
 import QuoteForm from "./components/QuoteForm";
 
-class GdaxQuoter extends Component {
+class GdaxQuoter extends PureComponent {
     render () {
         return (
             <GetCurrencies>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Map} from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Loading from "../../universal/Loading";
@@ -11,7 +11,7 @@ const validPair = (currencies, base, quote) => {
     return currencies.get(base).hasIn(['orderBooks', quote])
 };
 
-class QuoteForm extends Component {
+class QuoteForm extends PureComponent {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -159,7 +159,7 @@ class QuoteForm extends Component {
                                     className="btn btn-secondary"
                                     onClick={this.switchCurrencies}
                                 >
-                                    Switch currencies
+                                    Reverse currencies
                                 </button>
                             </div>
                         </div>

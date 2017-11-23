@@ -83,15 +83,6 @@ export const apiFetchPromise = (api_constant, body = {}, json_body = false) => {
     })
 };
 
-// export const immutableNestedGetIn = (immutable_object, getInPath, fallbackResponse) =>{
-//     try {
-//         return immutable_object.getIn(getInPath);
-//     }
-//     catch (err) {
-//         return fallbackResponse;
-//     }
-// };
-
 export const convertToCurrencyInt = (currency, precision = Math.pow(10, config.DEFAULT_PRECISION)) => {
     return parseInt(parseFloat(currency) * precision);
 };
@@ -135,7 +126,6 @@ export const invertCurrencyValue = (price) => {
     return convertToCurrencyInt(1 / convertBackToCurrencyFloat(price))
 };
 
-// [1,2,3,4,5,6,7,8,9,10], 8
 export const getIndexOfHighestValueWithoutGoingOver = (array, count) => {
     if (!array || array.length === 0 || !count) {
         return -1;
@@ -165,6 +155,6 @@ export const getIndexOfHighestValueWithoutGoingOver = (array, count) => {
     if (array[startI] > count && array[endI] <= count) {
         return endI
     }
-    console.log('whoops');
-    debugger;
+    // console.log("This shouldn't ever happen...");
+    return -1;
 };
