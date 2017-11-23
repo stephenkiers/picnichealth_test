@@ -6,6 +6,15 @@ import Loading from "../../universal/Loading";
 import {getOrderBook} from "../../reducers";
 import {convertBackToCurrencyFloat, convertToCurrencyInt, getIndexOfHighestValueWithoutGoingOver} from "../../utils";
 
+
+const getTransactionType = (isBase, action) => {
+    if (isBase) {
+        return action === "buy" ? "asks" : "bids";
+    } else {
+        return action === "buy" ? "bids" : "asks";
+    }
+};
+
 class GetOrderBookResult extends Component {
     componentWillMount() {
         this.getOrderBook(this.props);
@@ -14,37 +23,43 @@ class GetOrderBookResult extends Component {
         this.getOrderBook(nextProps);
     }
     calculateResult() {
-        let type;
         let {amount} = this.props;
-        if (this.props.isBase) {
-            type = this.props.action === "buy" ? "asks" : "bids";
-        } else {
-            type = this.props.action === "buy" ? "bids" : "asks";
+        const transactionType = getTransactionType(this.props.isBase, this.props.action);
+        const arrayOfBreakpoints = this.props.orderBook.get(transactionType).keySeq().toArray();
+        const currentTierIndex = getIndexOfHighestValueWithoutGoingOver(arrayOfBreakpoints, amount);
+        if (currentTierIndex === -1) {
+            return -1;
         }
-        const arrayOfBreakpoints = this.props.orderBook.get(type).keySeq().toArray();
-        const index = getIndexOfHighestValueWithoutGoingOver(arrayOfBreakpoints, amount);
-        const firstPriceGroup = this.props.orderBook.getIn([type, arrayOfBreakpoints[index-1]]);
-        const remainingPriceGroup = this.props.orderBook.getIn([type, arrayOfBreakpoints[index]]);
+        // set price tier that amount BEFORE current tier gets calculated at
+        const averagePriceTier = this.props.orderBook.getIn([transactionType, arrayOfBreakpoints[currentTierIndex-1]]);
+        // set current price tier that is used to calculate value of amount within current tier
+        const currentPriceTier = this.props.orderBook.getIn([transactionType, arrayOfBreakpoints[currentTierIndex]]);
 
         let totalCost = 0;
-        if (firstPriceGroup) {
-            totalCost = convertToCurrencyInt(convertBackToCurrencyFloat(firstPriceGroup.get('avgPrice')) * convertBackToCurrencyFloat(firstPriceGroup.get('amountAtPrice')));
-            amount -= firstPriceGroup.get('amountAtPrice');
+        // if this is not the first price tier
+        if (averagePriceTier) {
+            // calculate price for amount that falls within averagePriceTier
+            totalCost = convertToCurrencyInt(convertBackToCurrencyFloat(averagePriceTier.get('avgPrice')) * convertBackToCurrencyFloat(averagePriceTier.get('amountAtPrice')));
+            // remove amount that has already been priced out so it is not calculated twice
+            amount -= averagePriceTier.get('amountAtPrice');
         }
-        totalCost += convertToCurrencyInt(convertBackToCurrencyFloat(remainingPriceGroup.get('price')) * convertBackToCurrencyFloat(amount));
+        // add the cost of the remaining amount based on the currentPriceTier
+        totalCost += convertToCurrencyInt(convertBackToCurrencyFloat(currentPriceTier.get('price')) * convertBackToCurrencyFloat(amount));
 
+        // return the amount as a float that has been formated to correct number of decimal places for display purposes
         return convertBackToCurrencyFloat(totalCost).toFixed(this.props.decimalPlaces);
-    }
-    getOrderBook(props) {
-        if (!props.orderBook) {
-            props.apiGetOrderBook();
-        }
     }
     render () {
         if (!this.props.orderBook || this.props.orderBook.get('state') === 'fetching') {
             return <div className="text-center"><Loading /></div>
         }
         return this.props.children(this.calculateResult());
+    }
+
+    static getOrderBook(props) {
+        if (!props.orderBook) {
+            props.apiGetOrderBook();
+        }
     }
 }
 
