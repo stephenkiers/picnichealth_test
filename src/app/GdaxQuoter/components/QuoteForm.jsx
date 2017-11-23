@@ -19,6 +19,25 @@ const BuySellButton = ({action, onClick}) => (
         {action === "buy" ? "Buying" : "Selling"}
     </button>
 );
+const BaseCurrenciesList = ({baseCurrencyKey, currencies, setBaseCurrencyKey}) => (
+    <select
+        className="form-control"
+        id="baseCurrenciesList"
+        value={baseCurrencyKey}
+        onChange={setBaseCurrencyKey}
+    >
+        {currencies.map(currency => {
+            return (
+                <option
+                    key={currency}
+                    value={currency}
+                >
+                    {currency.toUpperCase()}
+                </option>
+            )
+        })}
+    </select>
+);
 
 class QuoteForm extends Component {
     constructor(props, context) {
@@ -73,27 +92,6 @@ class QuoteForm extends Component {
                 }))
             }
         }
-    }
-    baseCurrenciesList() {
-        return (
-            <select
-                className="form-control"
-                id="baseCurrenciesList"
-                value={this.state.baseCurrencyKey}
-                onChange={this.setBaseCurrencyKey}
-            >
-                {this.props.currencies.keySeq().map(currency => {
-                    return (
-                        <option
-                            key={currency}
-                            value={currency}
-                        >
-                            {currency.toUpperCase()}
-                        </option>
-                    )
-                })}
-            </select>
-        )
     }
     currentExchangeValues() {
         return this.props.currencies.getIn([this.state.baseCurrencyKey, 'orderBooks', this.state.quoteCurrencyKey]);
@@ -156,7 +154,11 @@ class QuoteForm extends Component {
                                 />
                             </div>
                             <div className="quoter-currency">
-                                {this.baseCurrenciesList()}
+                                <BaseCurrenciesList
+                                    baseCurrencyKey={this.state.baseCurrencyKey}
+                                    currencies={this.props.currencies.keySeq()}
+                                    setBaseCurrencyKey={this.setBaseCurrencyKey}
+                                />
                             </div>
                         </div>
                     </div>
