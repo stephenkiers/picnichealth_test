@@ -35,7 +35,7 @@ class GetOrderBookResult extends Component {
         }
         totalCost += convertToCurrencyInt(convertBackToCurrencyFloat(lastGroup.get('price')) * convertBackToCurrencyFloat(amount));
 
-        return convertBackToCurrencyFloat(totalCost).toFixed(this.props.decimalPlaces || 2);
+        return convertBackToCurrencyFloat(totalCost).toFixed(this.props.decimalPlaces);
     }
     getOrderBook(props) {
         if (!props.orderBook) {
@@ -51,6 +51,7 @@ class GetOrderBookResult extends Component {
 }
 
 GetOrderBookResult.defaultProps = {
+    decimalPlaces: 2,
 };
 GetOrderBookResult.propTypes = {
     orderBookId: PropTypes.string.isRequired,

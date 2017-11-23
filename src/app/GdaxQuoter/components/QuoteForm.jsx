@@ -156,6 +156,7 @@ class QuoteForm extends Component {
                                         step={currentExchange.get('quoteIncrement')}
                                         value={this.state.baseAmount}
                                         onChange={this.setBaseAmount}
+                                        decimalPlaces={this.props.currencies.getIn([this.state.baseCurrencyKey, "decimalPlaces"])}
                                     />
                                 </div>
                                 <div className="quoter-currency">

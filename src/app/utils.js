@@ -99,6 +99,15 @@ export const convertBackToCurrencyFloat = (currency, precision = Math.pow(10, co
     return parseFloat(currency) / precision;
 };
 
+export const formatCurrency = (amount, maxDecimals) => {
+    if (countDecimalPlaces(amount) > maxDecimals) {
+        return amount
+            .toFixed(maxDecimals) // set max number of decimals
+            .replace(/^0+(\d)|(\d)0+$/gm, '$1$2') // trim trailing 0s. floating point issues occasionally give ugly results
+    }
+    return amount;
+};
+
 export const getDecimalPlacesFromString = (string) => {
     let decimalPlaces = string.length;
     for (let i = string.length - 1; i >= 0; i--) {
@@ -108,6 +117,18 @@ export const getDecimalPlacesFromString = (string) => {
         }
     }
     return decimalPlaces
+};
+export const countDecimalPlaces = (number) => {
+    const match = ('' + number).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+    if (!match) {
+        return 0;
+    }
+    return Math.max(
+        0,
+        // Number of digits right of decimal point.
+        (match[1] ? match[1].length : 0)
+        // Adjust for scientific notation.
+        - (match[2] ? +match[2] : 0));
 };
 
 // [1,2,3,4,5,6,7,8,9,10], 8

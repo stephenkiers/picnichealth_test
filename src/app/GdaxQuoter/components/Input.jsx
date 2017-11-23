@@ -1,16 +1,14 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import {convertBackToCurrencyFloat, convertToCurrencyInt} from "../../utils";
-import {config} from "../../constants";
+import {convertBackToCurrencyFloat, convertToCurrencyInt, formatCurrency} from "../../utils";
 
-class Input extends Component {
+class Input extends PureComponent {
     constructor(props) {
         super();
         this.onChange = e => {
             const newAmount = parseFloat(e.target.value);
             if (newAmount > 0) {
-                this.props.onChange(convertToCurrencyInt(newAmount));
+                this.props.onChange(convertToCurrencyInt(e.target.value));
             }
         };
     }
@@ -21,7 +19,7 @@ class Input extends Component {
                 className="form-control"
                 id={this.props.id}
                 step={this.props.step}
-                value={convertBackToCurrencyFloat(this.props.value)}
+                value={formatCurrency(convertBackToCurrencyFloat(this.props.value), this.props.decimalPlaces)}
                 onChange={this.onChange}
             />
         );
@@ -29,12 +27,14 @@ class Input extends Component {
 }
 
 Input.defaultProps = {
+    decimalPlaces: 2,
 };
 Input.propTypes = {
     id: PropTypes.string.isRequired,
     step: PropTypes.string,
     value: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
+    decimalPlaces: PropTypes.number,
 };
 
 export default Input;
