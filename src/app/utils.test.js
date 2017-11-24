@@ -1,5 +1,8 @@
-import {countDecimalPlaces, getDecimalPlacesFromString, getIndexOfHighestValueWithoutGoingOver} from './utils';
-
+import {
+    buildOrderedMapFromBook, convertToCurrencyInt, countDecimalPlaces, getDecimalPlacesFromString,
+    getIndexOfHighestValueWithoutGoingOver
+} from './utils';
+import {Map} from 'immutable';
 
 describe('getIndexOfHighestValueWithoutGoingOver', () => {
     it('return correct number', () => {
@@ -29,4 +32,122 @@ describe('countDecimalPlaces', () => {
         expect(countDecimalPlaces("25e-100")).toEqual(100);
         expect(countDecimalPlaces("2.5e-99")).toEqual(100);
     })
+});
+
+describe('buildOrderedMapFromBook', () => {
+    const testRes = {
+        "sequence":12345,
+        "bids":[
+            // PRICE, AMOUNT, ORDERS
+            ["0.1","10",4],
+            ["0.2","10",2],
+            ["0.3","10",3],
+        ],
+        "asks":[
+            // PRICE, AMOUNT, ORDERS
+            ["0.09","10",6],
+            ["0.08","10",8],
+            ["0.07","10",6],
+        ]
+    };
+    it('return proper base bids', () => {
+        expect(
+            JSON.stringify(
+                buildOrderedMapFromBook(testRes, "bids", true).toJS()
+            )
+        ).toEqual(JSON.stringify(
+                Map({
+                    [convertToCurrencyInt(10)]: Map({
+                        amountAtPrice: convertToCurrencyInt(10),
+                        avgPrice: convertToCurrencyInt(0.1),
+                        price: convertToCurrencyInt(0.1),
+                    }),
+                    [convertToCurrencyInt(20)]: Map({
+                        amountAtPrice: convertToCurrencyInt(20),
+                        avgPrice: convertToCurrencyInt(0.15),
+                        price: convertToCurrencyInt(0.2),
+                    }),
+                    [convertToCurrencyInt(30)]: Map({
+                        amountAtPrice: convertToCurrencyInt(30),
+                        avgPrice: convertToCurrencyInt(0.2),
+                        price: convertToCurrencyInt(0.3),
+                    }),
+                }).toJS()
+            ));
+    });
+    it('return proper base asks', () => {
+        expect(
+            JSON.stringify(
+                buildOrderedMapFromBook(testRes, "asks", true).toJS()
+            )
+        ).toEqual(JSON.stringify(
+            Map({
+                [convertToCurrencyInt(10)]: Map({
+                    amountAtPrice: convertToCurrencyInt(10),
+                    avgPrice: convertToCurrencyInt(0.09),
+                    price: convertToCurrencyInt(0.09),
+                }),
+                [convertToCurrencyInt(20)]: Map({
+                    amountAtPrice: convertToCurrencyInt(20),
+                    avgPrice: convertToCurrencyInt((1.7/20)),
+                    price: convertToCurrencyInt(0.08),
+                }),
+                [convertToCurrencyInt(30)]: Map({
+                    amountAtPrice: convertToCurrencyInt(30),
+                    avgPrice: convertToCurrencyInt((2.4/30)),
+                    price: convertToCurrencyInt(0.07),
+                }),
+            }).toJS()
+        ));
+    });
+    it('return proper quote bids', () => {
+        expect(
+            JSON.stringify(
+                buildOrderedMapFromBook(testRes, "bids", false).toJS()
+            )
+        ).toEqual(JSON.stringify(
+            Map({
+                [convertToCurrencyInt(1)]: Map({
+                    amountAtPrice: convertToCurrencyInt(1),
+                    avgPrice: convertToCurrencyInt(0.1),
+                    price: convertToCurrencyInt(0.1),
+                }),
+                [convertToCurrencyInt(3)]: Map({
+                    amountAtPrice: convertToCurrencyInt(3),
+                    avgPrice: convertToCurrencyInt(0.08529411764705883),
+                    price: convertToCurrencyInt(0.2),
+                }),
+                [convertToCurrencyInt(6)]: Map({
+                    amountAtPrice: convertToCurrencyInt(6),
+                    avgPrice: convertToCurrencyInt(0.08083333333333334),
+                    price: convertToCurrencyInt(0.3),
+                }),
+            }).toJS()
+        ));
+    });
+    it('return proper quote asks', () => {
+        expect(
+            JSON.stringify(
+                buildOrderedMapFromBook(testRes, "asks", false).toJS()
+            )
+        ).toEqual(JSON.stringify(
+            Map({
+                [convertToCurrencyInt(0.8999999999999999)]: Map({
+                    amountAtPrice: convertToCurrencyInt(0.8999999999999999),
+                    avgPrice: convertToCurrencyInt(0.09),
+                    price: convertToCurrencyInt(0.09),
+                }),
+                [convertToCurrencyInt(1.7)]: Map({
+                    amountAtPrice: convertToCurrencyInt(1.7),
+                    avgPrice: convertToCurrencyInt(0.08470588235294117),
+                    price: convertToCurrencyInt(0.08),
+                }),
+                [convertToCurrencyInt(2.4)]: Map({
+                    amountAtPrice: convertToCurrencyInt(2.4),
+                    avgPrice: convertToCurrencyInt(0.07916230366492147),
+                    price: convertToCurrencyInt(0.07),
+                }),
+            }).toJS()
+        ));
+    });
 });

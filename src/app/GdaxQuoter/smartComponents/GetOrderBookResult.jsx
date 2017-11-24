@@ -14,11 +14,9 @@ const getTransactionType = (isBase, action) => {
     // bids = offers to buy
     // asks = offers to sell
     if (isBase) {
-        // if isBase, then it is default
-        return action === "buy" ? "asks" : "bids";
+        return action === "buy" ? "baseAsks" : "baseBids";
     }
-    // if not isBase, then it is reversed
-    return action === "buy" ? "bids" : "asks";
+    return action === "buy" ? "quoteAsks" : "quoteBids";
 };
 const invertPricePoints = (priceTier) => {
     return priceTier && priceTier

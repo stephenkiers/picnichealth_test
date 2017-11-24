@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import {api_method, config} from './constants';
+import {OrderedMap, Map} from "immutable";
 
 const handleResponse = (response) => {
     return new Promise((resolve, reject) => {
@@ -85,9 +86,11 @@ export const apiFetchPromise = (api_constant, body = {}, json_body = false) => {
 };
 
 export const convertToCurrencyInt = (currency, precision = Math.pow(10, config.DEFAULT_PRECISION)) => {
+    return parseFloat(currency);
     return parseInt(parseFloat(currency) * precision);
 };
 export const convertBackToCurrencyFloat = (currency, precision = Math.pow(10, config.DEFAULT_PRECISION)) => {
+    return parseFloat(currency);
     return parseFloat(currency) / precision;
 };
 
@@ -173,4 +176,32 @@ export const timeRemaining = (originalEpocheTime, secondsUntilExpires = config.S
     secondsRemaining = ("0" + secondsRemaining).slice(-2); // leftpadding to 2 digits
 
     return `${minutesRemaining}:${secondsRemaining}`;
+};
+
+
+export const buildOrderedMapFromBook = (res, resKey, isBase) => {
+    // PRICE, AMOUNT, ORDERS
+    let aggregated = OrderedMap();
+    let runningTotalAmount = 0;
+    let runningPriceAverage = 0;
+    res[resKey].forEach(current => {
+        const currentPrice = convertToCurrencyInt(current[0]);
+        let currentAmount = convertToCurrencyInt(current[1]);
+        if (!isBase) {
+            // if not base, then get amount of quote currency that is equal to base currency transaction
+            currentAmount = convertBackToCurrencyFloat(currentAmount * currentPrice);
+        }
+        const currentTotalValue = currentPrice * currentAmount;
+        const runningTotalValue = runningPriceAverage * runningTotalAmount;
+        const newTotalAmount = runningTotalAmount + currentAmount;
+        const newPriceAverage = (runningTotalValue + currentTotalValue) / newTotalAmount;
+        aggregated = aggregated.set(newTotalAmount, Map({
+            amountAtPrice: newTotalAmount,
+            avgPrice: newPriceAverage,
+            price: currentPrice
+        }));
+        runningTotalAmount = newTotalAmount;
+        runningPriceAverage = newPriceAverage
+    });
+    return aggregated
 };
