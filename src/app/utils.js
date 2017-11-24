@@ -86,11 +86,11 @@ export const apiFetchPromise = (api_constant, body = {}, json_body = false) => {
 };
 
 export const convertToCurrencyInt = (currency, precision = Math.pow(10, config.DEFAULT_PRECISION)) => {
-    return parseFloat(currency);
+    // return parseFloat(currency);
     return parseInt((parseFloat(currency) * precision), 10);
 };
 export const convertBackToCurrencyFloat = (currency, precision = Math.pow(10, config.DEFAULT_PRECISION)) => {
-    return parseFloat(currency);
+    // return parseFloat(currency);
     return parseFloat(currency) / precision;
 };
 
