@@ -127,10 +127,6 @@ export const countDecimalPlaces = (number) => {
         - (match[2] ? +match[2] : 0));
 };
 
-export const invertCurrencyValue = (price) => {
-    return convertToCurrencyInt(1 / convertBackToCurrencyFloat(price))
-};
-
 export const getIndexOfHighestValueWithoutGoingOver = (array, count) => {
     if (!array || array.length === 0 || !count) {
         return -1;
@@ -186,11 +182,13 @@ export const buildOrderedMapFromBook = (res, resKey, isBase) => {
     let runningTotalAmount = 0;
     let runningPriceAverage = 0;
     res[resKey].forEach(current => {
-        const currentPrice = convertToCurrencyInt(current[0]);
+        let currentPrice = convertToCurrencyInt(current[0]);
         let currentAmount = convertToCurrencyInt(current[1]);
         if (!isBase) {
             // if not base, then get amount of quote currency that is equal to base currency transaction
-            currentAmount = convertBackToCurrencyFloat(currentAmount * currentPrice);
+            const tempAmount = convertBackToCurrencyFloat(currentAmount * currentPrice); // good
+            currentPrice = convertToCurrencyInt(currentAmount / tempAmount);
+            currentAmount = tempAmount;
         }
         const currentTotalValue = currentPrice * currentAmount;
         const runningTotalValue = runningPriceAverage * runningTotalAmount;

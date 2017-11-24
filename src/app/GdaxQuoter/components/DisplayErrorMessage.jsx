@@ -1,14 +1,21 @@
 import React from 'react';
 
-const DisplayErrorMessage = ({errCode, quoterCurrencyComponent}) => {
+const DisplayErrorMessage = ({action, errCode, quoterCurrencyComponent}) => {
+    console.log('use action', action);
     return (
         <div className="d-flex align-items-center">
-            {errCode === "tooMuch" &&
-                <div className="quoter-text">is more than can be processed in one transaction for</div>}
+
+            {errCode === "tooMuch" && (
+                <div className="quoter-text">
+                    is more than can be {action === "buy" ? "bought" : "sold"} in one transaction for
+                </div>
+            )}
+
             {errCode === "tooLittle" &&
-                <div className="quoter-text">is less than the min threshold required for</div>}
+                <div className="quoter-text">is not enough to {action} any</div>}
+
             {errCode === "notEnoughAvailable" &&
-                <div className="quoter-text">is more than the max required for</div>}
+                <div className="quoter-text">is more than this calculator has data to process for </div>}
 
             <div className="quoter-currency">
                 {quoterCurrencyComponent}

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import {convertBackToCurrencyFloat, convertToCurrencyInt, formatCurrency} from "../../utils";
 
 class Input extends PureComponent {
-    constructor(props) {
+    constructor() {
         super();
         this.state = {
-            value: props.value,
+            value: 0,
             warning: "",
         };
         this.onChange = e => {
@@ -22,21 +22,25 @@ class Input extends PureComponent {
             }
         };
         this.onBlur = () => {
-            if (this.state.value !== this.props.value && this.state.warning) {
+            console.log('blur');
+            // if (this.state.value !== this.props.value && this.state.warning) {
                 this.setState((state) => ({
-                    value: state.warning === "lessThan0" ? 0 : this.props.value,
+                    value: state.warning === "lessThan0" ? 0 : this.formattedCurrency(this.props.value),
                     warning: "",
                 }));
-            }
+            // }
         }
     }
+    componentWillMount() {
+        this.formattedCurrency(this.props.value);
+    }
     componentWillReceiveProps(nextProps) {
-        if (this.props.step !==  nextProps.step) {
-
-        }
         if (nextProps.value !== this.state.value) {
-            this.setState(() => ({value: nextProps.value}));
+            this.setState(() => ({value: this.formattedCurrency(nextProps.value)}));
         }
+    }
+    formattedCurrency(value) {
+        return formatCurrency(convertBackToCurrencyFloat(value), this.props.decimalPlaces);
     }
     inputClass() {
         let className = "form-control";
@@ -58,7 +62,7 @@ class Input extends PureComponent {
                     className={this.inputClass()}
                     id={this.props.id}
                     step={this.props.step}
-                    value={formatCurrency(convertBackToCurrencyFloat(this.state.value), this.props.decimalPlaces)}
+                    value={this.state.value}
                     onChange={this.onChange}
                     onBlur={this.onBlur}
                 />

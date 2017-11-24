@@ -4,10 +4,7 @@ import { connect } from 'react-redux';
 import {apiGetOrderBook} from "../actions";
 import Loading from "../../universal/Loading";
 import {getOrderBook} from "../../reducers";
-import {
-    convertBackToCurrencyFloat, convertToCurrencyInt, getIndexOfHighestValueWithoutGoingOver,
-    invertCurrencyValue
-} from "../../utils";
+import {convertBackToCurrencyFloat, convertToCurrencyInt, getIndexOfHighestValueWithoutGoingOver} from "../../utils";
 
 
 const getTransactionType = (isBase, action) => {
@@ -17,11 +14,6 @@ const getTransactionType = (isBase, action) => {
         return action === "buy" ? "baseAsks" : "baseBids";
     }
     return action === "buy" ? "quoteAsks" : "quoteBids";
-};
-const invertPricePoints = (priceTier) => {
-    return priceTier && priceTier
-        .set('avgPrice', invertCurrencyValue(priceTier.get('avgPrice')))
-        .set('price', invertCurrencyValue(priceTier.get('price')));
 };
 
 class GetOrderBookResult extends Component {
@@ -60,11 +52,7 @@ class GetOrderBookResult extends Component {
         let averagePriceTier = orderBook.getIn([transactionType, arrayOfBreakpoints[currentTierIndex-1]]);
         // set current price tier that is used to calculate value of amount within current tier
         let currentPriceTier = orderBook.getIn([transactionType, arrayOfBreakpoints[currentTierIndex]]);
-        // if not base, then invert the price tiers so that we get proper values
-        if (!isBase) {
-            averagePriceTier = invertPricePoints(averagePriceTier);
-            currentPriceTier = invertPricePoints(currentPriceTier);
-        }
+
         let totalCost = 0;
         let tempAmount = amount;
         // if this is not the first price tier
@@ -80,11 +68,11 @@ class GetOrderBookResult extends Component {
         // if not base currency, then you must run check after price has been calculated
         if (!isBase) {
             const amountOfBaseCurrency = convertBackToCurrencyFloat(amount * totalCost);
-            if (amountOfBaseCurrency < minBase) {
-                console.log(2, amountOfBaseCurrency, minBase);
+            if (totalCost < minBase) {
+                console.log(2, totalCost, minBase);
                 return "tooLittle";
-            } else if (amountOfBaseCurrency > maxBase) {
-                console.log(3, amountOfBaseCurrency, maxBase);
+            } else if (totalCost > maxBase) {
+                console.log(3, totalCost, maxBase);
                 return "tooMuch";
             }
         }

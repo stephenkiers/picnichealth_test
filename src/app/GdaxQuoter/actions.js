@@ -50,7 +50,7 @@ export const apiGetOrderBook = (orderBookId) => {
         });
         return apiFetchPromise(api(endpoints.ORDER_BOOK, orderBookId), {level:2})
             .then((res) => {
-                // console.log(res);
+                console.log(orderBookId);
                 const orderBook = Map({
                     baseAsks: buildOrderedMapFromBook(res, 'asks', true),
                     baseBids: buildOrderedMapFromBook(res, 'bids', true),

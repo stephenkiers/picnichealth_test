@@ -66,11 +66,18 @@ class QuoteForm extends PureComponent {
     }
     setDefault(props) {
         if (!this.state.baseCurrencyKey) {
-            const firstCurrency = props.currencies.first();
-            if (firstCurrency.has('orderBooks')) {
+            // this auto set a default based on what was loaded
+            // const firstCurrency = props.currencies.first();
+            // if (firstCurrency.has('orderBooks')) {
+            //     this.setState((state) => ({
+            //         baseCurrencyKey: firstCurrency.get('id'),
+            //         quoteCurrencyKey: firstCurrency.get('orderBooks').keySeq().first(),
+            //     }))
+            // }
+            if (props.currencies.get('BTC').has('orderBooks')) {
                 this.setState((state) => ({
-                    baseCurrencyKey: firstCurrency.get('id'),
-                    quoteCurrencyKey: firstCurrency.get('orderBooks').keySeq().first(),
+                    baseCurrencyKey: "BTC",
+                    quoteCurrencyKey: "USD",
                 }))
             }
         }
@@ -136,11 +143,12 @@ class QuoteForm extends PureComponent {
                     >
                         {(result) => {
                             console.log(result);
-                            
+
                             // check if it is a string or number
                             // show error if string
                             if (!parseFloat(result)) {
                                 return <DisplayErrorMessage
+                                    action={action}
                                     errCode={result}
                                     quoterCurrencyComponent={
                                         <ChooseCurrencySelect
