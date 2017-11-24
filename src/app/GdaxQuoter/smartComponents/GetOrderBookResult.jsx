@@ -34,10 +34,8 @@ class GetOrderBookResult extends Component {
         // if it is a base currency, and outside the acceptable range, return error
         if (isBase) {
             if (amount < minBase) {
-                console.log(1, amount, minBase);
                 return "tooLittle";
             } else if (amount > maxBase) {
-                console.log(2, amount, maxBase);
                 return "tooMuch";
             }
         }
@@ -69,10 +67,8 @@ class GetOrderBookResult extends Component {
         if (!isBase) {
             const amountOfBaseCurrency = convertBackToCurrencyFloat(amount * totalCost);
             if (totalCost < minBase) {
-                console.log(2, totalCost, minBase);
                 return "tooLittle";
             } else if (totalCost > maxBase) {
-                console.log(3, totalCost, maxBase);
                 return "tooMuch";
             }
         }

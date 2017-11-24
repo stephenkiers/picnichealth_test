@@ -100,7 +100,7 @@ class QuoteForm extends PureComponent {
         const currentExchange = this.currentExchangeValues();
         const {action, baseAmount, baseCurrencyKey, quoteCurrencyKey} = this.state;
         const {currencies} = this.props;
-        console.log(currentExchange);
+        // console.log(currentExchange);
         return (
             <form onSubmit={this.preventSubmit}>
                 <div className="d-flex align-items-center d-mobile-column d-mobile-wrap">
@@ -142,7 +142,7 @@ class QuoteForm extends PureComponent {
                         minBase={currentExchange.get('baseMinSize')}
                     >
                         {(result) => {
-                            console.log(result);
+                            // console.log(result);
 
                             // check if it is a string or number
                             // show error if string

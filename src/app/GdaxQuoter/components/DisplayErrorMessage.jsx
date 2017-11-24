@@ -1,7 +1,6 @@
 import React from 'react';
 
 const DisplayErrorMessage = ({action, errCode, quoterCurrencyComponent}) => {
-    console.log('use action', action);
     return (
         <div className="d-flex align-items-center">
 

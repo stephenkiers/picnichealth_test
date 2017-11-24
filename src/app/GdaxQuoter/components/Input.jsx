@@ -22,7 +22,6 @@ class Input extends PureComponent {
             }
         };
         this.onBlur = () => {
-            console.log('blur');
             // if (this.state.value !== this.props.value && this.state.warning) {
                 this.setState((state) => ({
                     value: this.formattedCurrency(this.props.value),
