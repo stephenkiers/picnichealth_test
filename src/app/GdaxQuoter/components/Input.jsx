@@ -25,7 +25,7 @@ class Input extends PureComponent {
             console.log('blur');
             // if (this.state.value !== this.props.value && this.state.warning) {
                 this.setState((state) => ({
-                    value: state.warning === "lessThan0" ? 0 : this.formattedCurrency(this.props.value),
+                    value: this.formattedCurrency(this.props.value),
                     warning: "",
                 }));
             // }
