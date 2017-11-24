@@ -14,10 +14,8 @@ class Input extends PureComponent {
             const convertedValue = convertToCurrencyInt(newAmount);
 
             this.setState(() => ({value: convertedValue}));
-            if (convertedValue < this.props.min) {
-                this.setState(() => ({warning: 'tooLow'}));
-            } else if(convertedValue > this.props.max) {
-                this.setState(() => ({warning: 'tooHigh'}));
+            if (convertedValue <= 0) {
+                this.setState(() => ({warning: 'lessThan0'}));
             } else {
                 this.props.onChange(convertedValue);
                 this.setState(() => ({warning: ""}));
@@ -26,7 +24,7 @@ class Input extends PureComponent {
         this.onBlur = () => {
             if (this.state.value !== this.props.value && this.state.warning) {
                 this.setState((state) => ({
-                    value: state.warning === "tooLow" ? this.props.min : this.props.max,
+                    value: state.warning === "lessThan0" ? 0 : this.props.value,
                     warning: "",
                 }));
             }
@@ -52,9 +50,7 @@ class Input extends PureComponent {
             <div>
                 {this.state.warning && (
                     <div className="warning-message">
-                        {this.state.warning === "tooHigh" ?
-                            "This number is too high. Try something lower." :
-                            "This number is too low. Try something higher."}
+                        Your bid must be more than 0.
                     </div>
                 )}
                 <input
@@ -76,8 +72,6 @@ Input.defaultProps = {
 };
 Input.propTypes = {
     id: PropTypes.string.isRequired,
-    min: PropTypes.number.isRequired,
-    max: PropTypes.number.isRequired,
     step: PropTypes.string,
     value: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,

@@ -87,7 +87,7 @@ export const apiFetchPromise = (api_constant, body = {}, json_body = false) => {
 
 export const convertToCurrencyInt = (currency, precision = Math.pow(10, config.DEFAULT_PRECISION)) => {
     return parseFloat(currency);
-    return parseInt(parseFloat(currency) * precision);
+    return parseInt((parseFloat(currency) * precision), 10);
 };
 export const convertBackToCurrencyFloat = (currency, precision = Math.pow(10, config.DEFAULT_PRECISION)) => {
     return parseFloat(currency);
@@ -96,11 +96,12 @@ export const convertBackToCurrencyFloat = (currency, precision = Math.pow(10, co
 
 export const formatCurrency = (amount, maxDecimals) => {
     if (countDecimalPlaces(amount) > maxDecimals) {
-        return amount
+        amount = amount
             .toFixed(maxDecimals) // set max number of decimals
-            .replace(/^0+(\d)|(\d)0+$/gm, '$1$2') // trim trailing 0s. floating point issues occasionally give ugly results
+            .replace(/^0+(\d)|(\d)0+$/gm, '$1$2'); // trim trailing 0s. floating point issues occasionally give ugly results
     }
-    return amount;
+    return amount.toString()
+        .replace(/^0+/, ''); // remove leading 0s
 };
 
 export const getDecimalPlacesFromString = (string) => {

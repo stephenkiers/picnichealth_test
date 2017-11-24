@@ -7,6 +7,7 @@ import {convertToCurrencyInt} from "../../utils";
 import GetOrderBookResult from "../smartComponents/GetOrderBookResult";
 import ChooseCurrencySelect from "./ChooseCurrencySelect";
 import OrderBookTimer from "./OrderBookTimer";
+import DisplayErrorMessage from "./DisplayErrorMessage";
 
 const validPair = (currencies, base, quote) => {
     return currencies.get(base).hasIn(['orderBooks', quote])
@@ -92,6 +93,7 @@ class QuoteForm extends PureComponent {
         const currentExchange = this.currentExchangeValues();
         const {action, baseAmount, baseCurrencyKey, quoteCurrencyKey} = this.state;
         const {currencies} = this.props;
+        console.log(currentExchange);
         return (
             <form onSubmit={this.preventSubmit}>
                 <div className="d-flex align-items-center d-mobile-column d-mobile-wrap">
@@ -111,8 +113,6 @@ class QuoteForm extends PureComponent {
                                     step={currentExchange.get('quoteIncrement')}
                                     value={baseAmount}
                                     onChange={this.setBaseAmount}
-                                    min={currentExchange.get("baseMinSize")}
-                                    max={currentExchange.get("baseMaxSize")}
                                     decimalPlaces={currencies.getIn([baseCurrencyKey, "decimalPlaces"])}
                                 />
                             </div>
@@ -131,13 +131,26 @@ class QuoteForm extends PureComponent {
                         isBase={currentExchange.get('isBase')}
                         action={action}
                         decimalPlaces={currencies.getIn([quoteCurrencyKey, "decimalPlaces"])}
+                        maxBase={currentExchange.get('baseMaxSize')}
+                        minBase={currentExchange.get('baseMinSize')}
                     >
                         {(result) => {
-                            if (result === -1) {
-                                return (
-                                    <div className="quoter-text">is more than can be quoted at this time.</div>
-                                )
+                            console.log(result);
+                            
+                            // check if it is a string or number
+                            // show error if string
+                            if (!parseFloat(result)) {
+                                return <DisplayErrorMessage
+                                    errCode={result}
+                                    quoterCurrencyComponent={
+                                        <ChooseCurrencySelect
+                                            currencies={currencies.getIn([baseCurrencyKey, 'orderBooks']).keySeq()}
+                                            currentKey={quoteCurrencyKey}
+                                            onChange={this.setQuoteCurrencyKey}
+                                        />}
+                                />;
                             }
+
                             return (
                                 <div className="d-flex align-items-center justify-content-center d-mobile-wrap">
                                     <div className="quoter-text">

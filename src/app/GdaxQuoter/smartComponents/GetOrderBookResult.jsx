@@ -37,12 +37,24 @@ class GetOrderBookResult extends Component {
         }
     }
     calculateResult() {
-        let {action, amount, decimalPlaces, isBase, orderBook} = this.props;
+        let {action, amount, decimalPlaces, isBase, orderBook, maxBase, minBase} = this.props;
+
+        // if it is a base currency, and outside the acceptable range, return error
+        if (isBase) {
+            if (amount < minBase) {
+                console.log(1, amount, minBase);
+                return "tooLittle";
+            } else if (amount > maxBase) {
+                console.log(2, amount, maxBase);
+                return "tooMuch";
+            }
+        }
+
         const transactionType = getTransactionType(isBase, action);
         const arrayOfBreakpoints = orderBook.get(transactionType).keySeq().toArray();
         const currentTierIndex = getIndexOfHighestValueWithoutGoingOver(arrayOfBreakpoints, amount, !isBase);
         if (currentTierIndex === -1) {
-            return -1;
+            return "notEnoughAvailable";
         }
         // set price tier that amount BEFORE current tier gets calculated at
         let averagePriceTier = orderBook.getIn([transactionType, arrayOfBreakpoints[currentTierIndex-1]]);
@@ -54,15 +66,28 @@ class GetOrderBookResult extends Component {
             currentPriceTier = invertPricePoints(currentPriceTier);
         }
         let totalCost = 0;
+        let tempAmount = amount;
         // if this is not the first price tier
         if (averagePriceTier) {
             // calculate price for amount that falls within averagePriceTier
             totalCost = convertToCurrencyInt(convertBackToCurrencyFloat(averagePriceTier.get('avgPrice')) * convertBackToCurrencyFloat(averagePriceTier.get('amountAtPrice')));
             // remove amount that has already been priced out so it is not calculated twice
-            amount -= averagePriceTier.get('amountAtPrice');
+            tempAmount -= averagePriceTier.get('amountAtPrice');
         }
         // add the cost of the remaining amount based on the currentPriceTier
-        totalCost += convertToCurrencyInt(convertBackToCurrencyFloat(currentPriceTier.get('price')) * convertBackToCurrencyFloat(amount));
+        totalCost += convertToCurrencyInt(convertBackToCurrencyFloat(currentPriceTier.get('price')) * convertBackToCurrencyFloat(tempAmount));
+
+        // if not base currency, then you must run check after price has been calculated
+        if (!isBase) {
+            const amountOfBaseCurrency = convertBackToCurrencyFloat(amount * totalCost);
+            if (amountOfBaseCurrency < minBase) {
+                console.log(2, amountOfBaseCurrency, minBase);
+                return "tooLittle";
+            } else if (amountOfBaseCurrency > maxBase) {
+                console.log(3, amountOfBaseCurrency, maxBase);
+                return "tooMuch";
+            }
+        }
 
         // return the amount as a float that has been formated to correct number of decimal places for display purposes
         return convertBackToCurrencyFloat(totalCost).toFixed(decimalPlaces);
@@ -79,6 +104,8 @@ class GetOrderBookResult extends Component {
 
 GetOrderBookResult.defaultProps = {
     decimalPlaces: 2,
+    maxBase: 1,
+    minBase: 0,
 };
 GetOrderBookResult.propTypes = {
     orderBookId: PropTypes.string.isRequired,
@@ -86,6 +113,8 @@ GetOrderBookResult.propTypes = {
     isBase: PropTypes.bool.isRequired,
     action: PropTypes.string.isRequired,
     decimalPlaces: PropTypes.number,
+    maxBase: PropTypes.number,
+    minBase: PropTypes.number,
 };
 const mapStateToProps = (state, ownProps) => ({
     orderBook: getOrderBook(state, ownProps.orderBookId),
