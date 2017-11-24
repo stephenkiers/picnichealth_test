@@ -109,18 +109,18 @@ describe('buildOrderedMapFromBook', () => {
             Map({
                 [convertToCurrencyInt(1)]: Map({
                     amountAtPrice: convertToCurrencyInt(1),
-                    avgPrice: convertToCurrencyInt(0.1),
-                    price: convertToCurrencyInt(0.1),
+                    avgPrice: convertToCurrencyInt(10),
+                    price: convertToCurrencyInt(10),
                 }),
                 [convertToCurrencyInt(3)]: Map({
                     amountAtPrice: convertToCurrencyInt(3),
-                    avgPrice: convertToCurrencyInt(0.08529411764705883),
-                    price: convertToCurrencyInt(0.2),
+                    avgPrice: convertToCurrencyInt(6.666666666666667),
+                    price: convertToCurrencyInt(5),
                 }),
                 [convertToCurrencyInt(6)]: Map({
                     amountAtPrice: convertToCurrencyInt(6),
-                    avgPrice: convertToCurrencyInt(0.08083333333333334),
-                    price: convertToCurrencyInt(0.3),
+                    avgPrice: convertToCurrencyInt(5),
+                    price: convertToCurrencyInt(3.3333333333333335),
                 }),
             }).toJS()
         ));
@@ -134,18 +134,18 @@ describe('buildOrderedMapFromBook', () => {
             Map({
                 [convertToCurrencyInt(0.8999999999999999)]: Map({
                     amountAtPrice: convertToCurrencyInt(0.8999999999999999),
-                    avgPrice: convertToCurrencyInt(0.09),
-                    price: convertToCurrencyInt(0.09),
+                    avgPrice: convertToCurrencyInt(11.111111111111112),
+                    price: convertToCurrencyInt(11.111111111111112),
                 }),
                 [convertToCurrencyInt(1.7)]: Map({
                     amountAtPrice: convertToCurrencyInt(1.7),
-                    avgPrice: convertToCurrencyInt(0.08470588235294117),
-                    price: convertToCurrencyInt(0.08),
+                    avgPrice: convertToCurrencyInt(11.764705882352942),
+                    price: convertToCurrencyInt(12.5),
                 }),
                 [convertToCurrencyInt(2.4)]: Map({
                     amountAtPrice: convertToCurrencyInt(2.4),
-                    avgPrice: convertToCurrencyInt(0.07916230366492147),
-                    price: convertToCurrencyInt(0.07),
+                    avgPrice: convertToCurrencyInt(12.5),
+                    price: convertToCurrencyInt(14.285714285714285),
                 }),
             }).toJS()
         ));
