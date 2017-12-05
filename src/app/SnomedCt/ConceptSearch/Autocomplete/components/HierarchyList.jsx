@@ -12,7 +12,6 @@ class HierarchyList extends Component {
           levels_to_show: 2,
       };
       this.expandParent = () => {
-          console.log(1);
           this.setState({levels_to_show: 999});
       };
     };
