@@ -28,12 +28,14 @@ class LoadMoreChildrenButton extends Component {
         if (childrenSize === childrenCount) {
             return null;
         }
+        const diff = childrenCount - childrenSize;
         return (
             <a
                 href="javascript:void(0);"
                 onClick={this.onClick}
+                className="hierarchy-link"
             >
-                There are {childrenCount - childrenSize} additional children
+                show {Math.min(10, diff)} more&hellip; ({diff} left)
             </a>
         )
     }
