@@ -6,6 +6,62 @@ import HierarchyNode from "./HierarchyNode";
 import HierarchyChildren from "./HierarchyChildren";
 
 class HierarchyList extends Component {
+    constructor() {
+      super();
+      this.state = {
+          levels_to_show: 2,
+      };
+      this.expandParent = () => {
+          console.log(1);
+          this.setState({levels_to_show: 999});
+      };
+    };
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.current_id !== this.props.current_id) {
+            this.setState({levels_to_show: 2});
+        }
+    }
+
+    expandParentsButton(concept) {
+        const parent_tree = concept.get('parentTree');
+        if (
+            !parent_tree
+            || parent_tree.size === 0
+            || parent_tree.size <= this.state.levels_to_show
+        ) {
+            return null
+        }
+        return (
+            <a
+                href="javascript:void(0);"
+                onClick={this.expandParent}
+                className="hierarchy-link"
+            >
+                &hellip; expand {parent_tree.size - this.state.levels_to_show} parents
+            </a>
+        )
+    }
+    showParents(concept) {
+        let parent_tree = concept.get('parentTree');
+        if (
+            !parent_tree
+            || parent_tree.size === 0
+        ) {
+           return null;
+        }
+        if (parent_tree.size > this.state.levels_to_show) {
+            parent_tree = parent_tree.slice(this.state.levels_to_show * -1)
+        }
+        return parent_tree.map(id => (
+            <HierarchyNode
+                key={id}
+                id={id}
+                className="hierarchy-parent"
+                setNewSearchQuery={this.props.setNewSearchQuery}
+            />
+        ));
+    }
+
     render () {
         const {current_id} = this.props;
         if (!current_id) {
@@ -21,16 +77,9 @@ class HierarchyList extends Component {
                     }
                     return (
                         <div className="concept-hierarchy">
-                            {concept.get('parentTree')
-                                && concept.get('parentTree').size > 0
-                                && concept.get('parentTree').map(id => (
-                                    <HierarchyNode
-                                        key={id}
-                                        id={id}
-                                        className="hierarchy-parent"
-                                        setNewSearchQuery={this.props.setNewSearchQuery}
-                                    />
-                                ))}
+
+                            {this.expandParentsButton(concept)}
+                            {this.showParents(concept)}
                             <div>
                                 <HierarchyNode
                                     className="hierarchy-current"

@@ -7,6 +7,18 @@
   .hierarchy-children {
     border-left: 10px solid #ccc;
   }
+  .hierarchy-link {
+    background: #eee;
+    display: block;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    color: #444;
+    font-size: 0.8em;
+    line-height: 1.1;
+    &:hover {
+      text-decoration: none;
+    }
+  }
   .hierarchy-node {
     cursor: pointer;
     padding:5px;
