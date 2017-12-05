@@ -62,6 +62,7 @@ class AutocompleteResultsList extends Component {
                     return (
                         <AutocompleteResultsListItem
                             key={result.get('id')}
+                            index={i}
                             result={result}
                             setNewIndex={this.props.setNewIndex}
                             current={this.props.currentIndex === i}
