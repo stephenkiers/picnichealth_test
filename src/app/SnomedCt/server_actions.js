@@ -99,14 +99,14 @@ const prepareChildren = (node_array, parentTree) => {
     });
     return results;
 };
-export const snomedGetChildren = parentTree => {
+export const snomedGetChildren = (parentTree, startIndex = 0) => {
     return dispatch => {
-        // console.log("Get children for", id);
         const id = parentTree.last();
+        // console.log("Get children for", id, parentTree.toJS());
         apiFetch(api(api_endpoint.SNOMED_GET_CHILDREN, id), {
             maxResults: 10,
             sortField:"nodeName",
-            startIndex: 0,
+            startIndex,
             queryRestriction: null,
         }, true)
             .then((res) => {

@@ -96,6 +96,7 @@ class HierarchyList extends Component {
                                                 setNewSearchQuery={this.props.setNewSearchQuery}
                                             />
                                             <LoadMoreChildrenButton
+                                                parentTree={concept.get('parentTree').add(concept.get('id'))}
                                                 children_count={concept.get('childrenCount')}
                                                 children={concept.get('children')}
                                             />
@@ -114,6 +115,7 @@ class HierarchyList extends Component {
                                                         skip={concept.get('id')}
                                                     />
                                                     <LoadMoreChildrenButton
+                                                        parentTree={parentConcept.get('parentTree').add(parentConcept.get('id'))}
                                                         children_count={parentConcept.get('childrenCount')}
                                                         children={parentConcept.get('children')}
                                                     />

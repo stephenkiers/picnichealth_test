@@ -21,6 +21,13 @@
       color: red;
     }
 
+    .col-autocomplete,
+    .col-heirarchy,
+    .col-definition {
+      max-height: 500px;
+      overflow: scroll;
+    }
+
     .col-autocomplete {
       width:25%;
       background: #fff;

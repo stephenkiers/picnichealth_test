@@ -1,24 +1,53 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import {OrderedSet} from 'immutable';
+import {connect} from 'react-redux'
+import {OrderedSet, Set} from 'immutable';
+import {snomedGetChildren} from "../../../server_actions";
 
-const LoadMoreChildrenButton  = ({children, children_count}) => {
-    if (children.size === children_count) {
-        return null;
+
+class LoadMoreChildrenButton extends Component {
+    constructor() {
+        super();
+        this.onClick = () => {
+            this.props.snomedGetChildren(this.props.children.size);
+        };
     }
-    return (
-        <div>There are {children_count - children.size} additional children</div>
-    )
-};
+    render () {
+        const {children, children_count} = this.props;
+        if (children.size === children_count) {
+            return null;
+        }
+        return (
+            <a
+                href="javascript:void(0);"
+                onClick={this.onClick}
+            >
+                There are {children_count - children.size} additional children
+            </a>
+        )
+    }
+}
 
 LoadMoreChildrenButton.defaultProps = {
     children: OrderedSet(),
     children_count: 0,
 };
 LoadMoreChildrenButton.propTypes = {
+    parentTree: ImmutablePropTypes.orderedSet,
     children: ImmutablePropTypes.orderedSet,
     children_count: PropTypes.number,
 };
 
-export default LoadMoreChildrenButton;
+// const mapStateToProps = (state, ownProps) => ({
+// });
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    snomedGetChildren(start) {
+        dispatch(snomedGetChildren(ownProps.parentTree, start))
+    },
+});
+
+export default connect(
+    undefined, mapDispatchToProps
+)(LoadMoreChildrenButton);
