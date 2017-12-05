@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import GetConcept from "../../getters/GetConcept";
 import HierarchyNode from "./HierarchyNode";
 import HierarchyChildren from "./HierarchyChildren";
+import LoadMoreChildrenButton from "./LoadMoreChildrenButton";
 
 class HierarchyList extends Component {
     constructor() {
@@ -94,6 +95,10 @@ class HierarchyList extends Component {
                                                 concept={concept}
                                                 setNewSearchQuery={this.props.setNewSearchQuery}
                                             />
+                                            <LoadMoreChildrenButton
+                                                children_count={concept.get('childrenCount')}
+                                                children={concept.get('children')}
+                                            />
                                         </div>
                                 )}
                                 {concept.get('parentTree')
@@ -102,11 +107,17 @@ class HierarchyList extends Component {
                                             id={concept.get('parentTree').last()}
                                         >
                                             {parentConcept =>
-                                                <HierarchyChildren
-                                                    concept={parentConcept}
-                                                    setNewSearchQuery={this.props.setNewSearchQuery}
-                                                    skip={concept.get('id')}
-                                                />
+                                                <div>
+                                                    <HierarchyChildren
+                                                        concept={parentConcept}
+                                                        setNewSearchQuery={this.props.setNewSearchQuery}
+                                                        skip={concept.get('id')}
+                                                    />
+                                                    <LoadMoreChildrenButton
+                                                        children_count={parentConcept.get('childrenCount')}
+                                                        children={parentConcept.get('children')}
+                                                    />
+                                                </div>
                                             }
                                         </GetConcept>
                                 }
