@@ -11,12 +11,19 @@ class AutocompleteResultsListItem extends Component {
             this.props.setNewIndex(this.props.index)
         };
     }
+    className() {
+        let className = "autocomplete-item";
+        if (this.props.current) {
+            className += " current";
+        }
+        return className;
+    }
     render () {
         const {result} = this.props;
         return(
             <div
                 key={result.get('id')}
-                className={`autocomplete-item${this.props.current ? ' current' : ''}`}
+                className={this.className()}
                 onClick={this.onClick}
             >
                 <div className="label">
@@ -56,7 +63,6 @@ class AutocompleteResultsList extends Component {
                         <AutocompleteResultsListItem
                             key={result.get('id')}
                             result={result}
-                            index={i}
                             setNewIndex={this.props.setNewIndex}
                             current={this.props.currentIndex === i}
                         />
