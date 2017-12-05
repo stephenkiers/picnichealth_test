@@ -4,18 +4,28 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux'
 import {OrderedSet, Set} from 'immutable';
 import {snomedGetChildren} from "../../../server_actions";
+import {getConcept} from "../../../../reducers";
 
 
 class LoadMoreChildrenButton extends Component {
     constructor() {
         super();
         this.onClick = () => {
-            this.props.snomedGetChildren(this.props.children.size);
+            const newParentTree = this.props.concept.get('parentTree').add(this.props.concept.get('id'));
+            this.props.snomedGetChildren(
+                newParentTree,
+                this.props.concept.get('children').size
+            );
         };
     }
     render () {
-        const {children, children_count} = this.props;
-        if (children.size === children_count) {
+        const {concept} = this.props;
+        if (!concept || !concept.get('children')) {
+            return null;
+        }
+        const childrenSize = concept.get('children').size;
+        const childrenCount = concept.get('childrenCount');
+        if (childrenSize === childrenCount) {
             return null;
         }
         return (
@@ -23,31 +33,28 @@ class LoadMoreChildrenButton extends Component {
                 href="javascript:void(0);"
                 onClick={this.onClick}
             >
-                There are {children_count - children.size} additional children
+                There are {childrenCount - childrenSize} additional children
             </a>
         )
     }
 }
 
 LoadMoreChildrenButton.defaultProps = {
-    children: OrderedSet(),
-    children_count: 0,
 };
 LoadMoreChildrenButton.propTypes = {
-    parentTree: ImmutablePropTypes.orderedSet,
-    children: ImmutablePropTypes.orderedSet,
-    children_count: PropTypes.number,
+    conceptId: PropTypes.number.isRequired,
 };
 
-// const mapStateToProps = (state, ownProps) => ({
-// });
+const mapStateToProps = (state, ownProps) => ({
+    concept: getConcept(state, ownProps.conceptId),
+});
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    snomedGetChildren(start) {
-        dispatch(snomedGetChildren(ownProps.parentTree, start))
+    snomedGetChildren(parentTree, start) {
+        dispatch(snomedGetChildren(parentTree, start))
     },
 });
 
 export default connect(
-    undefined, mapDispatchToProps
+    mapStateToProps, mapDispatchToProps
 )(LoadMoreChildrenButton);
