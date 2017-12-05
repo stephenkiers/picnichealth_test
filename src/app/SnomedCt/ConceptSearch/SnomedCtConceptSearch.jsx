@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import SnomedCtConceptAutocomplete from "./Autocomplete/SnomedCtConceptAutocomplete";
 import Input from "./Autocomplete/components/Input";
+import SnomedInput from "./Autocomplete/components/SnomedInput";
 
 class SnomedCtConceptSearch extends Component {
     constructor() {
@@ -96,7 +97,7 @@ class SnomedCtConceptSearch extends Component {
             ) {
                 this.hideDd();
             } else {
-                this._input._input.focus();
+                this._input._input._input.focus();
             }
         }
     }
@@ -121,11 +122,9 @@ class SnomedCtConceptSearch extends Component {
                 className="snomed-concept-search"
                 ref={snomedInput => this._snomedInput = snomedInput}
             >
-                <Input
+                <SnomedInput
                     id={this.props.id}
                     tabIndex={this.props.tabIndex}
-                    label="SNOMED CT Code"
-                    className="snomed-concept-search-input"
                     value={value}
                     onChange={this.onInputChange}
                     onFocus={this.onInputFocus}
