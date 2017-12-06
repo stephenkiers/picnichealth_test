@@ -25,7 +25,7 @@ class SnomedCtConceptSearch extends Component {
         this.onInputFocus = e => {
             this.showDd();
             if (this.props.onFocus) {
-                this.props.onFocus(e);
+                this.props.onFocus({target: {id: this.props.id}});
             }
         };
         this.onInputKeyDown = e => {
@@ -79,12 +79,10 @@ class SnomedCtConceptSearch extends Component {
             if (new_state === true) {
                 // Hide dropdown block on click outside the block
                 window.addEventListener('click', this.handleWindowClick);
-                // console.log('added listener')
                 this.setState(() => ({ddOpen: true}));
             } else {
                 // Remove click event listener on component unmount
                 window.removeEventListener('click', this.handleWindowClick);
-                // console.log('removed listener')
                 this.setState(() => ({ddOpen: false}));
             }
         };
@@ -101,6 +99,15 @@ class SnomedCtConceptSearch extends Component {
             }
         }
     }
+    componentDidUpdate(prevProps, prevState) {
+        // debugger;
+        if (
+            prevState.ddOpen !== this.state.ddOpen
+            && this.state.ddOpen === true
+        ) {
+            this._input._input._input.focus();
+        }
+    }
     componentWillReceiveProps(nextProps) {
         if (
             this.props.currentInputId !== nextProps.currentInputId
@@ -111,7 +118,6 @@ class SnomedCtConceptSearch extends Component {
     }
     componentWillUnmount() {
         if (this.state.open) {
-            // console.log('removed listener')
             window.removeEventListener('click', this.handleWindowClick);
         }
     }
@@ -129,6 +135,7 @@ class SnomedCtConceptSearch extends Component {
                     onChange={this.onInputChange}
                     onFocus={this.onInputFocus}
                     onKeyDown={this.onInputKeyDown}
+                    isFocused={this.state.ddOpen}
                     ref={input => this._input = input}
                 />
                 {

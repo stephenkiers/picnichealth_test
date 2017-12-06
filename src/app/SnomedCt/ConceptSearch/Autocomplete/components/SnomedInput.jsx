@@ -8,18 +8,28 @@ class SnomedInput extends Component {
         super();
     }
     render () {
+        if (this.props.isFocused) {
+            return (
+                <Input
+                    ref={input => this._input = input}
+                    id={this.props.id}
+                    tabIndex={this.props.tabIndex}
+                    label="SNOMED CT Code"
+                    className={`snomed-concept-search-input ${this.props.className}`}
+                    value={this.props.value}
+                    onChange={this.props.onChange}
+                    onFocus={this.props.onFocus}
+                    onKeyDown={this.props.onKeyDown}
+                />
+            );
+        }
         return (
-            <Input
-                ref={input => this._input = input}
-                id={this.props.id}
-                tabIndex={this.props.tabIndex}
-                label="SNOMED CT Code"
-                className={`snomed-concept-search-input ${this.props.className}`}
-                value={this.props.value}
-                onChange={this.props.onChange}
-                onFocus={this.props.onFocus}
-                onKeyDown={this.props.onKeyDown}
-            />
+            <a
+                href="javascript:void(0);"
+                onClick={this.props.onFocus}
+            >
+                click me to focus
+            </a>
         );
     }
 }
@@ -32,6 +42,7 @@ SnomedInput.propTypes = {
     onChange: PropTypes.func,
     onKeyDown: PropTypes.func,
     onFocus: PropTypes.func,
+    isFocused: PropTypes.bool,
     value: PropTypes.string,
     tabIndex: PropTypes.number.isRequired,
 };
