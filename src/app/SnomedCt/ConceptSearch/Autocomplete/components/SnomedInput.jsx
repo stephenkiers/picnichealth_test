@@ -75,6 +75,12 @@ class SnomedInput extends Component {
                         }}
                     </GetConcept>
                 )}
+                <input
+                    type="text"
+                    className="dummy-input"
+                    onFocus={this.props.onFocus}
+                    tabIndex={this.props.tabIndex}
+                />
             </a>
         );
     }

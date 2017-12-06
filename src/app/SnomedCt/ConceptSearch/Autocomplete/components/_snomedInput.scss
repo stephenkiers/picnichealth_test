@@ -7,6 +7,16 @@
     text-decoration: none;
   }
 }
+.dummy-input {
+  position:absolute;
+  height: 1px;
+  width: 1px;
+  border:none;
+  outline: none;
+  background: none;
+  padding:0;
+  margin:0;
+}
 
 .snomed-input-card {
   display:block;
